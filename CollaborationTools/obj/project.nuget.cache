@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "cYXMVOBpIHc=",
+  "dgSpecHash": "TkvpGhJMniw=",
   "success": true,
   "projectFilePath": "C:\\Users\\leegunho\\RiderProjects\\Wpf-Collaboration-Tools\\CollaborationTools\\CollaborationTools.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\leegunho\\.nuget\\packages\\materialdesigncolors\\5.2.2-ci998\\materialdesigncolors.5.2.2-ci998.nupkg.sha512",
+    "C:\\Users\\leegunho\\.nuget\\packages\\materialdesignthemes\\5.2.2-ci998\\materialdesignthemes.5.2.2-ci998.nupkg.sha512",
+    "C:\\Users\\leegunho\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512"
+  ],
   "logs": []
 }
