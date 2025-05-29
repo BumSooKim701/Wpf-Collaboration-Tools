@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "TkvpGhJMniw=",
+  "dgSpecHash": "A6/rzAL1Ewk=",
   "success": true,
-  "projectFilePath": "C:\\Users\\leegunho\\RiderProjects\\Wpf-Collaboration-Tools\\CollaborationTools\\CollaborationTools.csproj",
+  "projectFilePath": "C:\\my_codes\\wpf\\WPF_Project\\CollaborationTools\\CollaborationTools.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\leegunho\\.nuget\\packages\\materialdesigncolors\\5.2.2-ci998\\materialdesigncolors.5.2.2-ci998.nupkg.sha512",
-    "C:\\Users\\leegunho\\.nuget\\packages\\materialdesignthemes\\5.2.2-ci998\\materialdesignthemes.5.2.2-ci998.nupkg.sha512",
-    "C:\\Users\\leegunho\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512"
+    "C:\\Users\\qjatn\\.nuget\\packages\\materialdesigncolors\\5.2.2-ci998\\materialdesigncolors.5.2.2-ci998.nupkg.sha512",
+    "C:\\Users\\qjatn\\.nuget\\packages\\materialdesignthemes\\5.2.2-ci998\\materialdesignthemes.5.2.2-ci998.nupkg.sha512",
+    "C:\\Users\\qjatn\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.2\\microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\qjatn\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.2\\microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
+    "C:\\Users\\qjatn\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512",
+    "C:\\Users\\qjatn\\.nuget\\packages\\mysqlconnector\\2.4.0\\mysqlconnector.2.4.0.nupkg.sha512"
   ],
   "logs": []
 }

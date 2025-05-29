@@ -1,0 +1,87 @@
+﻿<Window x:Class="CollaborationTools.login.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:CollaborationTools.login"
+        mc:Ignorable="d"
+        Title="Login" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <!-- 로고 및 타이틀 -->
+        <StackPanel Grid.Row="0" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center">
+            <TextBlock Text="로그인"
+                       FontSize="32"
+                       FontWeight="Bold"
+                       Margin="0,20,0,0"/>
+        </StackPanel>
+
+        <!-- 로그인 폼 -->
+        <StackPanel Grid.Row="1" 
+                    Margin="40,0">
+            
+            <!-- 아이디 입력 -->
+            <TextBlock Text="아이디"
+                       Margin="5,0,0,5"/>
+            <TextBox x:Name="txtUserId"
+                     Height="40"
+                     FontSize="14"
+                     Padding="10,0"
+                     VerticalContentAlignment="Center"
+                     BorderThickness="1"
+                     BorderBrush="#CCCCCC"/>
+
+            <!-- 비밀번호 입력 -->
+            <TextBlock Text="비밀번호"
+                       Margin="5,20,0,5"/>
+            <PasswordBox x:Name="txtPassword"
+                         Height="40"
+                         FontSize="14"
+                         Padding="10,0"
+                         VerticalContentAlignment="Center"
+                         BorderThickness="1"
+                         BorderBrush="#CCCCCC"/>
+
+            <!-- 로그인 버튼 -->
+            <Button x:Name="btnLogin"
+                    Content="로그인"
+                    Height="45"
+                    Margin="0,30,0,0"
+                    Background="#007AFF"
+                    Foreground="White"
+                    FontSize="16"
+                    BorderThickness="0"
+                    Click="btnLogin_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <!-- 회원가입 링크 -->
+            <TextBlock Margin="0,15,0,0"
+                       HorizontalAlignment="Center">
+                <Hyperlink x:Name="lnkRegister"
+                          Click="lnkRegister_Click">
+                    회원가입
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+
+        <!-- 하단 상태바 -->
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <TextBlock x:Name="txtStatus"/>
+            </StatusBarItem>
+        </StatusBar>
+
+    </Grid>
+</Window>
