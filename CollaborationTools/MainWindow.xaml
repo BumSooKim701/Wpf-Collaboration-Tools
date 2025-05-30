@@ -8,6 +8,6 @@
         Style="{StaticResource MaterialDesignWindow}"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Frame Source="schedule/TeamCalendar.xaml"/>
     </Grid>
 </Window>
