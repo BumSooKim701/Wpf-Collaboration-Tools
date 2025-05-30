@@ -31,7 +31,6 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-
                         <materialDesign:Card
                             Height="50"
                             Background="{DynamicResource MaterialDesign.Brush.Primary}"
