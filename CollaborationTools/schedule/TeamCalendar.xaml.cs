@@ -20,5 +20,6 @@ public partial class TeamCalendar : UserControl
         schedules.Add(new ScheduleItem { scheduleTitle = "휴가", scheduleDate = "2024-03-22" });
 
         CardListView.ItemsSource = schedules;
+        CardListViewSelected.ItemsSource = schedules;
     }
 }

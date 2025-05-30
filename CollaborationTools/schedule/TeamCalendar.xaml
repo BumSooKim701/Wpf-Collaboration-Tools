@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:CollaborationTools"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
-             d:DesignHeight="500" d:DesignWidth="600">
+             d:DesignHeight="600" d:DesignWidth="800">
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -14,51 +14,110 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
-        <Calendar />
-        
-        <ListView Grid.Column="1" x:Name="CardListView" 
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-        
-            <ListView.ItemTemplate>
-                <DataTemplate>
+        <Grid Grid.Column="0" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <Calendar Grid.Row="0"  />
+            <ListView Grid.Row="1" x:Name="CardListViewSelected"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
 
-                    <materialDesign:Card
-                        Height="50"
-                        Background="{DynamicResource MaterialDesign.Brush.Primary}"
-                        Foreground="{DynamicResource MaterialDesign.Brush.Primary.Foreground}">
-                        <DockPanel>
-                            <TextBlock
-                                x:Name="title"
-                                DockPanel.Dock="Left"
-                                VerticalAlignment="Center"
-                                Margin="10"
-                                Style="{StaticResource MaterialDesignBody1TextBlock}"
-                                Text="{Binding scheduleTitle}"/>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
 
-                            <TextBlock
-                                x:Name="date"
-                                DockPanel.Dock="Right"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right"
-                                Margin="10"
-                                Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                Text="{Binding scheduleDate}" />
-                        </DockPanel>
-                    </materialDesign:Card>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+                        <materialDesign:Card
+                            Height="50"
+                            Background="{DynamicResource MaterialDesign.Brush.Primary}"
+                            Foreground="{DynamicResource MaterialDesign.Brush.Primary.Foreground}">
+                            <DockPanel>
+                                <TextBlock
+                                    x:Name="title"
+                                    DockPanel.Dock="Left"
+                                    VerticalAlignment="Center"
+                                    Margin="10"
+                                    Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                    Text="{Binding scheduleTitle}" />
+
+                                <TextBlock
+                                    x:Name="date"
+                                    DockPanel.Dock="Right"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    Margin="10"
+                                    Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                    Text="{Binding scheduleDate}"/>
+                            </DockPanel>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+        </Grid>
         
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" Text="다가오는 일정" FontSize="25" FontWeight="Bold" Margin="10"/>
+            
+            <ListView Grid.Row="1" x:Name="CardListView"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+
+                        <materialDesign:Card
+                            Height="50"
+                            Background="{DynamicResource MaterialDesign.Brush.Primary}"
+                            Foreground="{DynamicResource MaterialDesign.Brush.Primary.Foreground}">
+                            <DockPanel>
+                                <TextBlock
+                                    x:Name="title"
+                                    DockPanel.Dock="Left"
+                                    VerticalAlignment="Center"
+                                    Margin="10"
+                                    Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                    Text="{Binding scheduleTitle}" />
+
+                                <TextBlock
+                                    x:Name="date"
+                                    DockPanel.Dock="Right"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    Margin="10"
+                                    Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                    Text="{Binding scheduleDate}" />
+                            </DockPanel>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+        </Grid>
     </Grid>
 
 </UserControl>
