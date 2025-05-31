@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using MaterialDesignThemes.Wpf;
 
 namespace CollaborationTools;
@@ -8,40 +9,36 @@ namespace CollaborationTools;
 /// </summary>
 public partial class MainWindow : Window
 {
-    // private List<MenuItem> MenuList { get; set; }
     public MainWindow()
     {
         InitializeComponent();
-        // DataContext = this;
-        //
-        // MenuList = new()
-        // {
-        //     new MenuItem
-        //     {
-        //         Title = "홈",
-        //         SelectedIcon = PackIconKind.Home,
-        //         UnselectedIcon = PackIconKind.HomeOutline,
-        //     },
-        //     new MenuItem
-        //     {
-        //         Title = "캘린더",
-        //         SelectedIcon = PackIconKind.Calendar,
-        //         UnselectedIcon = PackIconKind.CalendarOutline,
-        //     },
-        //     new MenuItem
-        //     {
-        //         Title = "파일",
-        //         SelectedIcon = PackIconKind.Folder,
-        //         UnselectedIcon = PackIconKind.FolderOutline,
-        //     },
-        //     new MenuItem
-        //     {
-        //         Title = "메모",
-        //         SelectedIcon = PackIconKind.Note,
-        //         UnselectedIcon = PackIconKind.NoteOutline,
-        //     },
-        // };
-        // NavigationBar.ItemsSource = MenuList;
+        this.SizeChanged += MainWindow_SizeChanged;
+        CenterWindowOnScreen();
     }
+    
+    private void CenterWindowOnScreen()
+    {
+        // 작업표시줄을 제외한 작업 영역
+        double workAreaWidth = SystemParameters.WorkArea.Width;
+        double workAreaHeight = SystemParameters.WorkArea.Height;
+        double windowWidth = this.Width;
+        double windowHeight = this.Height;
+    
+        this.Left = (workAreaWidth / 2) - (windowWidth / 2);
+        this.Top = (workAreaHeight / 2) - (windowHeight / 2);
+    }
+    
+    private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        // 현재 윈도우의 실제 크기
+        Debug.WriteLine($"Window Size - Width: {this.Width}, Height: {this.Height}");
+    
+        // 클라이언트 영역(타이틀바 제외)의 크기
+        Debug.WriteLine($"Client Size - Width: {this.ActualWidth}, Height: {this.ActualHeight}");
+    
+        // 구분선 추가
+        Debug.WriteLine("-------------------");
+    }
+
 }
 

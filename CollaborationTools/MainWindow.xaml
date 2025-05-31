@@ -6,58 +6,42 @@
         xmlns:local="clr-namespace:CollaborationTools"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Style="{StaticResource MaterialDesignWindow}"
-        Title="MainWindow" Height="450" Width="800">
-    <DockPanel>
-        <!-- <ListView x:Name="TeamListView" DockPanel.Dock="Left" ItemsSource="{Binding TeamItem}"> -->
-        <!--     <ListView.ItemTemplate> -->
-        <!--         <DataTemplate> -->
-        <!--             <Button x:Name="teamButton" Width="30" Height="30" Margin="5" Content="{Binding Path=TeamName}"/> -->
-        <!--         </DataTemplate> -->
-        <!--     </ListView.ItemTemplate> -->
-        <!--      -->
-        <!--     <ListView.ItemsPanel> -->
-        <!--         <ItemsPanelTemplate> -->
-        <!--             <StackPanel/> -->
-        <!--         </ItemsPanelTemplate> -->
-        <!--     </ListView.ItemsPanel> -->
-        <!-- </ListView> -->
+        Style="{StaticResource MaterialDesignWindow}"    
+        Title="MainWindow" Width="900" Height="600">
+        <!-- MinWidth="760" MinHeight="512" -->
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         
-        <!-- <Grid DockPanel.Dock="Top" Height="50" Background="{DynamicResource MaterialDesign.Brush.Card.Background}"> -->
-        <!--     <ListBox Height="50" x:Name="NavigationBar" -->
-        <!--              SelectedIndex="0" Style="{StaticResource MaterialDesign3.NavigationBarListBox}"> -->
-        <!--         <ListBox.ItemContainerStyle> -->
-        <!--             <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesign3.NavigationBarListBoxItem}"> -->
-        <!--                 <Setter Property="materialDesign:NavigationBarAssist.IsTextVisible" -->
-        <!--                         Value="True" /> -->
-        <!--                 <Setter -->
-        <!--                     Property="materialDesign:NavigationBarAssist.SelectedIcon" -->
-        <!--                     Value="{Binding SelectedIcon}" /> -->
-        <!--                 <Setter -->
-        <!--                     Property="materialDesign:NavigationBarAssist.UnselectedIcon" -->
-        <!--                     Value="{Binding UnselectedIcon}" /> -->
-        <!--             </Style> -->
-        <!--         </ListBox.ItemContainerStyle> -->
-        <!--          -->
-        <!--         <ListBox.Resources> -->
-        <!--             <DataTemplate -->
-        <!--                 DataType="{x:Type local:MenuItem}"> -->
-        <!--                 <TextBlock -->
-        <!--                     Text="{Binding Title}" /> -->
-        <!--             </DataTemplate> -->
-        <!--         </ListBox.Resources> -->
-        <!-- -->
-        <!--     </ListBox> -->
-        <!-- </Grid> -->
+        <DockPanel>
+            <!-- <ListView x:Name="TeamListView" DockPanel.Dock="Left" ItemsSource="{Binding TeamItem}"> -->
+            <!--     <ListView.ItemTemplate> -->
+            <!--         <DataTemplate> -->
+            <!--             <Button x:Name="teamButton" Width="30" Height="30" Margin="5" Content="{Binding Path=TeamName}"/> -->
+            <!--         </DataTemplate> -->
+            <!--     </ListView.ItemTemplate> -->
+            <!-- -->
+            <!--     <ListView.ItemsPanel> -->
+            <!--         <ItemsPanelTemplate> -->
+            <!--             <StackPanel/> -->
+            <!--         </ItemsPanelTemplate> -->
+            <!--     </ListView.ItemsPanel> -->
+            <!-- </ListView> -->
         
-        <!-- <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"> -->
-        <!--     <Button x:Name="homeButton" Margin="5" Content="홈"/> -->
-        <!--     <Button x:Name="scheduleButton" Margin="5" Content="일정"/> -->
-        <!--     <Button x:Name="fileButton" Margin="5" Content="파일"/> -->
-        <!--     <Button x:Name="MemoButton" Margin="5" Content="메모"/> -->
-        <!-- </StackPanel> -->
+            <!-- <local:MenuBar DockPanel.Dock="Top"/> -->
+        
+            <!-- <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"> -->
+            <!--     <Button x:Name="homeButton" Margin="5" Content="홈"/> -->
+            <!--     <Button x:Name="scheduleButton" Margin="5" Content="일정"/> -->
+            <!--     <Button x:Name="fileButton" Margin="5" Content="파일"/> -->
+            <!--     <Button x:Name="MemoButton" Margin="5" Content="메모"/> -->
+            <!-- </StackPanel> -->
         
         
-        <Frame Source="/CollaborationTools;component/schedule/TeamCalendar.xaml"/>
-    </DockPanel>
+            <Frame Source="/CollaborationTools;component/schedule/TeamCalendar.xaml"/>
+        </DockPanel>    
+    </Grid>
+    
 </Window>
