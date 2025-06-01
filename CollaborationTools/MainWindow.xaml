@@ -5,43 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CollaborationTools"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:googleLogin="clr-namespace:CollaborationTools.google_login"
         mc:Ignorable="d"
         Style="{StaticResource MaterialDesignWindow}"    
         Title="MainWindow" Width="900" Height="600">
         <!-- MinWidth="760" MinHeight="512" -->
     
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
-        <DockPanel>
-            <!-- <ListView x:Name="TeamListView" DockPanel.Dock="Left" ItemsSource="{Binding TeamItem}"> -->
-            <!--     <ListView.ItemTemplate> -->
-            <!--         <DataTemplate> -->
-            <!--             <Button x:Name="teamButton" Width="30" Height="30" Margin="5" Content="{Binding Path=TeamName}"/> -->
-            <!--         </DataTemplate> -->
-            <!--     </ListView.ItemTemplate> -->
-            <!-- -->
-            <!--     <ListView.ItemsPanel> -->
-            <!--         <ItemsPanelTemplate> -->
-            <!--             <StackPanel/> -->
-            <!--         </ItemsPanelTemplate> -->
-            <!--     </ListView.ItemsPanel> -->
-            <!-- </ListView> -->
-        
-            <!-- <local:MenuBar DockPanel.Dock="Top"/> -->
-        
-            <!-- <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"> -->
-            <!--     <Button x:Name="homeButton" Margin="5" Content="홈"/> -->
-            <!--     <Button x:Name="scheduleButton" Margin="5" Content="일정"/> -->
-            <!--     <Button x:Name="fileButton" Margin="5" Content="파일"/> -->
-            <!--     <Button x:Name="MemoButton" Margin="5" Content="메모"/> -->
-            <!-- </StackPanel> -->
-        
-        
-            <Frame Source="/CollaborationTools;component/schedule/TeamCalendar.xaml"/>
-        </DockPanel>    
+        <Frame Source="google_login/GoogleLoginPage.xaml" NavigationUIVisibility="Hidden"/>
     </Grid>
-    
 </Window>
