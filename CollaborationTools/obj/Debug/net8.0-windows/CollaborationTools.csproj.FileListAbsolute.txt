@@ -18,3 +18,15 @@ C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\D
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.pdb
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.genruntimeconfig.cache
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\ref\CollaborationTools.dll
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.csproj.AssemblyReference.cache
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\login\Login.g.cs
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\login\Registeration.g.cs
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\schedule\TeamCalendar.g.cs
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\TeamCalendar.g.cs
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\App.g.cs
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools_MarkupCompile.cache
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools_MarkupCompile.lref
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.dll
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\refint\CollaborationTools.dll
+C:\my_codes\wpf\WPF_Project\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.pdb

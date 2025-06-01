@@ -1,23 +1,54 @@
-﻿namespace CollaborationTools.database;
-
+﻿using CollaborationTools.user;
 using MySqlConnector;
+
+namespace CollaborationTools.database;
 
 public class LoginRepository
 {
-    private static MySqlConnection conn;
+    private ConnectionPool _connectionPool = ConnectionPool.GetInstance();
 
-    private LoginRepository()
+    public User CheckUserId(string userId)
     {
-        // Empty Constructor
-    }
-    
-    public static MySqlConnection GetInstance()
-    {
-        if (conn == null)
+        MySqlConnection connection = null;
+        User user = null;
+        
+        try
         {
-            conn = new MySqlConnection("Server=34.47.120.22; Uid=kimbumsoo; Pwd=rlaqjatn1026@; Database=collaboration-tools;");
+            connection = _connectionPool.GetConnection();
+
+            using (var command = new MySqlCommand("SELECT user_account_id FROM user_account WHERE user_account_id = @id", connection))
+            {
+                command.Parameters.AddWithValue("@id", userId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        user = new User(reader.GetString("id"), reader.GetString("name"),
+                            reader.GetString("phoneNumber"), reader.GetString("email"),
+                            reader.GetDateTime("registrationDate"));
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"사용자 아이디로 조회 중 오류: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null)
+            {
+                _connectionPool.ReleaseConnection(connection);
+            }
         }
         
-        return conn;
+        return user;
+    }
+    
+    public bool CheckUserpassword()
+    {
+     
+        return true;
     }
 }

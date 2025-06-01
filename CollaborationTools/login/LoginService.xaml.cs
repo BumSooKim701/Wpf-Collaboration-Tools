@@ -1,10 +1,14 @@
 ﻿using System.Windows;
+using CollaborationTools.database;
+using CollaborationTools.user;
+using MySqlConnector;
 
 namespace CollaborationTools.login;
 
-public partial class Login : Window
+public partial class LoginService : Window
 {
-    public Login()
+    private ConnectionPool _connectionPool = ConnectionPool.GetInstance();
+    public LoginService()
     {
         InitializeComponent();
     }
@@ -13,10 +17,19 @@ public partial class Login : Window
     {
         string userId = txtUserId.Text;
         string userPassword = txtPassword.Password;
+        
+        
     }
 
     private void lnkRegister_Click(object sender, RoutedEventArgs e)
     {
         
+    }
+
+    private bool CheckLogin(string userId, string userPassword)
+    {
+        
+        
+        return true;
     }
 }
