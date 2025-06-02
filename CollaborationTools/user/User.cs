@@ -2,18 +2,13 @@
 
 public class User
 {
-    private string _userId { get; set; }
-    private string _name { get; set; }
-    private string _phoneNumber { get; set; }
-    private string _email { get; set; }
-    private DateTime _registrationDate { get; set; }
-    
-    public User(string userId, string name, string phoneNumber, string email, DateTime registrationDate)
-    {
-        _userId = userId;
-        _name = name;
-        _phoneNumber = phoneNumber;
-        _email = email;
-        _registrationDate = registrationDate;
-    }
+    public string GoogleId { get; set; }
+    public string Email { get; set; }
+    public string Name { get; set; }
+    public string GivenName { get; set; }
+    public string FamilyName { get; set; }
+    public string PictureUrl { get; set; }
+    public string RefreshToken { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime LastLoginAt { get; set; }
 }   

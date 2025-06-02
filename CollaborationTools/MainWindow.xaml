@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CollaborationTools"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:googleLogin="clr-namespace:CollaborationTools.google_login"
+        xmlns:googleLogin="clr-namespace:CollaborationTools.authentication"
         mc:Ignorable="d"
         Style="{StaticResource MaterialDesignWindow}"    
         Title="MainWindow" Width="900" Height="600">
         <!-- MinWidth="760" MinHeight="512" -->
     
     <Grid>
-        <Frame Source="google_login/GoogleLoginPage.xaml" NavigationUIVisibility="Hidden"/>
+        <Frame Source="login/Login.xaml" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

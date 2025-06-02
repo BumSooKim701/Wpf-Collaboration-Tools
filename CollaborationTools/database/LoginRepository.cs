@@ -24,9 +24,7 @@ public class LoginRepository
                 {
                     if (reader.Read())
                     {
-                        user = new User(reader.GetString("id"), reader.GetString("name"),
-                            reader.GetString("phoneNumber"), reader.GetString("email"),
-                            reader.GetDateTime("registrationDate"));
+                        user = new User();
                     }
                 }
             }

@@ -1,13 +1,13 @@
 ﻿using System.IO;
 using System.Net.Http;
-using CollaborationTools.google_user;
+using CollaborationTools.user;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Newtonsoft.Json.Linq;
 
-namespace CollaborationTools.google_login;
+namespace CollaborationTools.authentication;
 
 public class GoogleAuthentication
 {
@@ -20,9 +20,9 @@ public class GoogleAuthentication
     private static readonly string ApplicationName = "CollaborationTools App";
     public static CalendarService CalendarService;
     private UserCredential _credential;
-    private GoogleUserInfo? userInfo;
+    private User? user;
     
-    public async Task<GoogleUserInfo> AuthenticateGoogleAsync()
+    public async Task<User> AuthenticateGoogleAsync()
     {
         try
         {
@@ -47,12 +47,12 @@ public class GoogleAuthentication
             });
                 
             // 사용자 정보 가져오기
-            userInfo = await GetUserInfoAsync();
+            user = await GetUserInfoAsync();
         
             // 리프레시 토큰 저장 (중요: 첫 인증시에만 제공됨)
-            userInfo.RefreshToken = _credential.Token.RefreshToken;
+            user.RefreshToken = _credential.Token.RefreshToken;
         
-            return userInfo;
+            return user;
         }
         catch (FileNotFoundException)
         {
@@ -64,7 +64,7 @@ public class GoogleAuthentication
         }
     }
     
-    private async Task<GoogleUserInfo> GetUserInfoAsync()
+    private async Task<User> GetUserInfoAsync()
     {
         using (var httpClient = new HttpClient())
         {
@@ -81,7 +81,7 @@ public class GoogleAuthentication
                 var json = await response.Content.ReadAsStringAsync();
                 var userInfoJson = JObject.Parse(json);
 
-                return new GoogleUserInfo
+                return new User
                 {
                     GoogleId = userInfoJson["sub"]?.ToString(),
                     Email = userInfoJson["email"]?.ToString(),
@@ -98,8 +98,8 @@ public class GoogleAuthentication
         }
     }
 
-    public GoogleUserInfo getUserInfo()
+    public User getUserInfo()
     {
-        return userInfo;
+        return user;
     }
 }

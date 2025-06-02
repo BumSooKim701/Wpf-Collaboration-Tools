@@ -24,9 +24,7 @@ public class UserRepository
                 {
                     if (reader.Read())
                     {
-                        user = new User(reader.GetString("id"), reader.GetString("name"),
-                            reader.GetString("phoneNumber"), reader.GetString("email"),
-                            reader.GetDateTime("registrationDate"));
+                        user = new User();
                     }
                 }
             }
@@ -63,9 +61,7 @@ public class UserRepository
                 {
                     while (reader.Read())
                     {
-                        userList.Add(new User(reader.GetString("id"), reader.GetString("name"),
-                            reader.GetString("phoneNumber"), reader.GetString("email"),
-                            reader.GetDateTime("registrationDate")));
+                        userList.Add(new User());
                     }
                 }
             }
@@ -102,9 +98,7 @@ public class UserRepository
                 {
                     if (reader.Read())
                     {
-                        user = new User(reader.GetString("id"), reader.GetString("name"),
-                            reader.GetString("phoneNumber"), reader.GetString("email"),
-                            reader.GetDateTime("registrationDate"));
+                        user = new User();
                     }
                 }
             }

@@ -1,12 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using CollaborationTools.google_login;
-using CollaborationTools.google_user;
+using CollaborationTools.authentication;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
 
-namespace CollaborationTools;
+namespace CollaborationTools.calendar;
 
 public partial class PersonalCalendar : UserControl
 {
