@@ -5,24 +5,26 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:CollaborationTools"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:smtx="clr-namespace:ShowMeTheXAML;assembly=ShowMeTheXAML"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Column="0" Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
             </Grid.RowDefinitions>
-            
-            <Calendar Grid.Row="0" Language="ko-KR"/>
-            
-            <TextBlock Grid.Row="1" x:Name="CalendarNoScheduleMsg" Text="예정된 일정이 없습니다" Visibility="Hidden" FontSize="20" FontWeight="SemiBold" Margin="10" HorizontalAlignment="Center"/>
+
+            <Calendar Grid.Row="0" Language="ko-KR" />
+
+            <TextBlock Grid.Row="1" x:Name="CalendarNoScheduleMsg" Text="예정된 일정이 없습니다" Visibility="Hidden"
+                       FontSize="20" FontWeight="SemiBold" Margin="10" HorizontalAlignment="Center" />
             <ListView Grid.Row="1" x:Name="CardListViewSelected"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemContainerStyle>
@@ -53,7 +55,7 @@
                                     HorizontalAlignment="Right"
                                     Margin="10"
                                     Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                    Text="{Binding startDate}"/>
+                                    Text="{Binding startDate}" />
                             </DockPanel>
                         </materialDesign:Card>
                     </DataTemplate>
@@ -61,22 +63,25 @@
 
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel/>
+                        <StackPanel />
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>
         </Grid>
-        
+
         <Grid Grid.Column="1" Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            
-            <TextBlock Grid.Row="0" Text="다가오는 일정" FontSize="25" FontWeight="Bold" Margin="10"/>
-            
-            <TextBlock Grid.Row="1" x:Name="NoScheduleMsg" Text="예정된 일정이 없습니다" Visibility="Hidden" FontSize="20" FontWeight="SemiBold" Margin="10" HorizontalAlignment="Center"/>
+
+            <TextBlock Grid.Row="0" Text="다가오는 일정" FontSize="25" FontWeight="Bold" Margin="10" />
+
+            <TextBlock Grid.Row="1" x:Name="NoScheduleMsg" Text="예정된 일정이 없습니다" Visibility="Hidden" FontSize="20"
+                       FontWeight="SemiBold" Margin="10" HorizontalAlignment="Center" />
+
             <ListView Grid.Row="1" x:Name="CardListView"
+                      MouseDoubleClick="ListView_MouseDoubleClick"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -86,7 +91,6 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-
                         <materialDesign:Card
                             Height="50"
                             Background="{DynamicResource MaterialDesign.Brush.Primary}"
@@ -107,7 +111,7 @@
                                     HorizontalAlignment="Right"
                                     Margin="10"
                                     Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                    Text="{Binding startDate}" />
+                                    Text="{Binding Date}" />
                             </DockPanel>
                         </materialDesign:Card>
                     </DataTemplate>

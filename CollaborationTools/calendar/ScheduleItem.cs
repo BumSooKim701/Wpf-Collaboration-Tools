@@ -18,64 +18,36 @@ public class ScheduleItem : INotifyPropertyChanged
         }
     }
 
-    private string _startDate;
-    public string startDate
+    private string _date;
+    public string Date
     {
-        get { return _startDate; }
+        get { return _date; }
         set
         {
-            if (_startDate != value)
+            if (_date != value)
             {
-                _startDate = value;
-                NotifyPropertyChanged(nameof(startDate));   
+                _date = value;
+                NotifyPropertyChanged(nameof(Date));   
             }
         }
     }
     
-    private string _endDate;
-    public string endDate
+    private string _dateDetails;
+    public string DateDetails
     {
-        get { return _endDate; }
+        get { return _dateDetails; }
         set
         {
-            if (_endDate != value)
+            if (_dateDetails != value)
             {
-                _endDate = value;
-                NotifyPropertyChanged(nameof(endDate));   
-            }
-        }
-    }
-    
-    private string _startTime;
-    public string startTime
-    {
-        get { return _startTime; }
-        set
-        {
-            if (_startTime != value)
-            {
-                _startTime = value;
-                NotifyPropertyChanged(nameof(startTime));   
-            }
-        }
-    }
-    
-    private string _endTime;
-    public string endTime
-    {
-        get { return _endTime; }
-        set
-        {
-            if (_endTime != value)
-            {
-                _endTime = value;
-                NotifyPropertyChanged(nameof(endTime));   
+                _dateDetails = value;
+                NotifyPropertyChanged(nameof(DateDetails));   
             }
         }
     }
     
     private string _location;
-    public string location
+    public string Location
     {
         get { return _location; }
         set
@@ -83,13 +55,13 @@ public class ScheduleItem : INotifyPropertyChanged
             if (_location != value)
             {
                 _location = value;
-                NotifyPropertyChanged(nameof(location));   
+                NotifyPropertyChanged(nameof(Location));   
             }
         }
     }
     
     private string _description;
-    public string description
+    public string Description
     {
         get { return _description; }
         set
@@ -97,7 +69,7 @@ public class ScheduleItem : INotifyPropertyChanged
             if (_description != value)
             {
                 _description = value;
-                NotifyPropertyChanged(nameof(description));   
+                NotifyPropertyChanged(nameof(Description));   
             }
         }
     }

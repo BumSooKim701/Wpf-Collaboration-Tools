@@ -135,7 +135,7 @@ public class UserRepository
         {
             connection = _connectionPool.GetConnection();
 
-            using (var command = new MySqlCommand("INSERT INTO user VALUES (@googleId, @email, @name, @pictureUri, @refreshToken, @createdAt, @lastLoginAt)", connection))
+            using (var command = new MySqlCommand("INSERT INTO user(google_id, email, name, picture_uri, refresh_token, created_at, last_login_at) VALUES (@googleId, @email, @name, @pictureUri, @refreshToken, @createdAt, @lastLoginAt)", connection))
             {
                 command.Parameters.AddWithValue("@googleId", user.GoogleId);
                 command.Parameters.AddWithValue("@email", user.Email);

@@ -14,6 +14,14 @@
       <PackageReference Include="MaterialDesignColors" Version="5.2.2-ci998" />
       <PackageReference Include="MaterialDesignThemes" Version="5.2.2-ci998" />
       <PackageReference Include="MySqlConnector" Version="2.4.0" />
+      <PackageReference Include="ShowMeTheXAML" Version="2.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="credential\client_secret.json" />
+      <Content Include="credential\client_secret.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 <PropertyGroup>

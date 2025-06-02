@@ -1,0 +1,57 @@
+﻿<Window x:Class="CollaborationTools.calendar.ScheduleDetailsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:CollaborationTools.calendar"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="ScheduleDetailsDialog" Height="450" Width="400"
+        WindowStyle="None" ResizeMode="NoResize" 
+        AllowsTransparency="True" Background="Transparent">
+    
+    <materialDesign:Card Margin="20" Padding="20">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Grid.Row="0" Text="{Binding Title}" 
+                       Margin="0, 5"
+                       Style="{StaticResource MaterialDesignHeadline5TextBlock}"/>
+            <TextBlock Grid.Row="1" Text="{Binding DateDetails}" 
+                       Margin="0, 5"
+                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+            
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Label Grid.Row="0" Grid.Column="0" Content="장소 : "/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Location}"
+                           Margin="0,5"
+                           Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
+                
+                <Label Grid.Row="1" Grid.Column="0" Content="메모 : "/>
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Text="{Binding Description}"
+                           TextTrimming="WordEllipsis" TextWrapping="Wrap"
+                           Margin="0,5"
+                           Style="{StaticResource MaterialDesignBodyLargeTextBlock}" />
+            </Grid>
+            <Button Grid.Row="3" Content="Close" 
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Click="CloseButton_Click"/>
+        </Grid>
+    </materialDesign:Card>
+</Window>

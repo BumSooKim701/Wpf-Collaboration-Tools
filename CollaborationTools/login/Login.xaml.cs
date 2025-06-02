@@ -36,6 +36,11 @@ public partial class Login : Page
                 {
                     txtStatus.Text = "회원 등록 실패";
                 }
+                else
+                {
+                    Page MainPage = new MainPage();
+                    NavigationService.Navigate(MainPage);
+                }
             }
             else
             {
