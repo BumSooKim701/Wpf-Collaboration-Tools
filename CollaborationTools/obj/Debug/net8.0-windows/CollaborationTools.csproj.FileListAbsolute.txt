@@ -80,3 +80,5 @@ C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools_copy\CollaborationTools\
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools_copy\CollaborationTools\obj\Debug\net8.0-windows\Collabor.D79BC842.Up2Date
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools_copy\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.genruntimeconfig.cache
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools_copy\CollaborationTools\obj\Debug\net8.0-windows\ref\CollaborationTools.dll
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools_copy\CollaborationTools\obj\Debug\net8.0-windows\calendar\PersonalCalendar.g.cs
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools_copy\CollaborationTools\obj\Debug\net8.0-windows\calendar\PersonalCalendar.baml

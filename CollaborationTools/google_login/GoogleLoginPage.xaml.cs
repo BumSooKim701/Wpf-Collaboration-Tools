@@ -18,16 +18,15 @@ public partial class GoogleLoginPage : Page
         try
         {
             LoginButton.IsEnabled = false;
-            Debug.Print("Google 로그인 중...");
+            Debug.WriteLine("Google 로그인 중...");
 
             // OAuth 인증 및 사용자 정보 수집
             var googleUser = await _googleAuthentication.AuthenticateGoogleAsync();
                 
-            Debug.Print("로그인 성공!");
-            Debug.Print("email: " + googleUser.Email + ". name: " + googleUser.Name);
+            Debug.WriteLine("로그인 성공! email: {0}. name: {1}", googleUser.Email, googleUser.Name);;
             
-            Page MainPage = new MainPage();
-            NavigationService.Navigate(MainPage);
+            Application.Current.Properties["GoogleUser"] = googleUser;
+            NavigationService.Navigate(new MainPage());
         }
         catch (Exception ex)
         {

@@ -12,7 +12,6 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-        this.SizeChanged += MainWindow_SizeChanged;
         CenterWindowOnScreen();
     }
     
@@ -28,17 +27,5 @@ public partial class MainWindow : Window
         this.Top = (workAreaHeight / 2) - (windowHeight / 2);
     }
     
-    private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
-    {
-        // 현재 윈도우의 실제 크기
-        Debug.WriteLine($"Window Size - Width: {this.Width}, Height: {this.Height}");
-    
-        // 클라이언트 영역(타이틀바 제외)의 크기
-        Debug.WriteLine($"Client Size - Width: {this.ActualWidth}, Height: {this.ActualHeight}");
-    
-        // 구분선 추가
-        Debug.WriteLine("-------------------");
-    }
-
 }
 

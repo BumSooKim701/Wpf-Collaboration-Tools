@@ -18,7 +18,7 @@ public class GoogleAuthentication
         "https://www.googleapis.com/auth/userinfo.email"
     ];
     private static readonly string ApplicationName = "CollaborationTools App";
-    private CalendarService _calendarService;
+    public static CalendarService CalendarService;
     private UserCredential _credential;
     private GoogleUserInfo? userInfo;
     
@@ -40,7 +40,7 @@ public class GoogleAuthentication
             }
 
             // Calendar 서비스 초기화
-            _calendarService = new CalendarService(new BaseClientService.Initializer()
+            CalendarService = new CalendarService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = _credential,
                 ApplicationName = ApplicationName,
