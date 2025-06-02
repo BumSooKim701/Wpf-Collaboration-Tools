@@ -21,11 +21,15 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <Calendar Grid.Row="0" Language="ko-KR" />
+            <Calendar Grid.Row="0" Language="ko-KR"
+                      x:Name="Calendar"
+                      SelectedDatesChanged="CalendarDateChanged"/>
 
-            <TextBlock Grid.Row="1" x:Name="CalendarNoScheduleMsg" Text="예정된 일정이 없습니다" Visibility="Hidden"
-                       FontSize="20" FontWeight="SemiBold" Margin="10" HorizontalAlignment="Center" />
-            <ListView Grid.Row="1" x:Name="CardListViewSelected"
+            <TextBlock Grid.Row="1" x:Name="NoScheduleMsgCalendar" Text="예정된 일정이 없습니다" Visibility="Hidden"
+                       FontSize="20" FontWeight="Medium" Margin="10" HorizontalAlignment="Center" />
+            <ListView Grid.Row="1" x:Name="CardListViewCalendar"
+                      Width="300"
+                      MouseDoubleClick="ListView_MouseDoubleClick"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
@@ -46,16 +50,8 @@
                                     VerticalAlignment="Center"
                                     Margin="10"
                                     Style="{StaticResource MaterialDesignBody1TextBlock}"
-                                    Text="{Binding Title}" />
-
-                                <TextBlock
-                                    x:Name="date"
-                                    DockPanel.Dock="Right"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Right"
-                                    Margin="10"
-                                    Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                    Text="{Binding startDate}" />
+                                    Text="{Binding Title}" 
+                                    TextTrimming="CharacterEllipsis"/>
                             </DockPanel>
                         </materialDesign:Card>
                     </DataTemplate>
@@ -97,14 +93,6 @@
                             Foreground="{DynamicResource MaterialDesign.Brush.Primary.Foreground}">
                             <DockPanel>
                                 <TextBlock
-                                    x:Name="title"
-                                    DockPanel.Dock="Left"
-                                    VerticalAlignment="Center"
-                                    Margin="10"
-                                    Style="{StaticResource MaterialDesignBody1TextBlock}"
-                                    Text="{Binding Title}" />
-
-                                <TextBlock
                                     x:Name="date"
                                     DockPanel.Dock="Right"
                                     VerticalAlignment="Center"
@@ -112,6 +100,15 @@
                                     Margin="10"
                                     Style="{StaticResource MaterialDesignBody2TextBlock}"
                                     Text="{Binding Date}" />
+                                
+                                <TextBlock
+                                    x:Name="title"
+                                    DockPanel.Dock="Left"
+                                    VerticalAlignment="Center"
+                                    Margin="10"
+                                    Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                    Text="{Binding Title}" 
+                                    TextTrimming="CharacterEllipsis"/>
                             </DockPanel>
                         </materialDesign:Card>
                     </DataTemplate>

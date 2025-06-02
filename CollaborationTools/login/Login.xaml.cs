@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using CollaborationTools.authentication;
 using CollaborationTools.database;
@@ -21,7 +22,7 @@ public partial class Login : Page
         try
         {
             LoginButton.IsEnabled = false;
-            Console.WriteLine("Google 로그인 중...");
+            Debug.WriteLine("Google 로그인 중...");
 
             // OAuth 인증 및 사용자 정보 수집
             var googleUser = await _googleAuthentication.AuthenticateGoogleAsync();
@@ -44,8 +45,8 @@ public partial class Login : Page
             }
             else
             {
-                Console.WriteLine("로그인 성공!");
-                Console.WriteLine("email: " + googleUser.Email + ". name: " + googleUser.Name);
+                Debug.WriteLine("로그인 성공!");
+                Debug.WriteLine("email: " + googleUser.Email + ". name: " + googleUser.Name);
 
                 Page MainPage = new MainPage();
                 NavigationService.Navigate(MainPage);

@@ -21,9 +21,11 @@
             </Grid.RowDefinitions>
             
             <TextBlock Grid.Row="0" Text="{Binding Title}" 
+                       TextWrapping="Wrap"
                        Margin="0, 5"
                        Style="{StaticResource MaterialDesignHeadline5TextBlock}"/>
             <TextBlock Grid.Row="1" Text="{Binding DateDetails}" 
+                       TextWrapping="Wrap"
                        Margin="0, 5"
                        Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
             
@@ -39,13 +41,15 @@
                 
                 <Label Grid.Row="0" Grid.Column="0" Content="장소 : "/>
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Location}"
+                           TextWrapping="Wrap"
                            Margin="0,5"
                            Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
                 
                 <Label Grid.Row="1" Grid.Column="0" Content="메모 : "/>
                 <TextBlock Grid.Row="1" Grid.Column="1"
                            Text="{Binding Description}"
-                           TextTrimming="WordEllipsis" TextWrapping="Wrap"
+                           TextWrapping="Wrap"
+                           TextTrimming="CharacterEllipsis"
                            Margin="0,5"
                            Style="{StaticResource MaterialDesignBodyLargeTextBlock}" />
             </Grid>
