@@ -86,8 +86,6 @@ public class GoogleAuthentication
                     GoogleId = userInfoJson["sub"]?.ToString(),
                     Email = userInfoJson["email"]?.ToString(),
                     Name = userInfoJson["name"]?.ToString(),
-                    GivenName = userInfoJson["given_name"]?.ToString(),
-                    FamilyName = userInfoJson["family_name"]?.ToString(),
                     PictureUrl = userInfoJson["picture"]?.ToString(),
                     CreatedAt = DateTime.Now,
                     LastLoginAt = DateTime.Now

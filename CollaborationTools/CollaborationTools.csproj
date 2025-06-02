@@ -16,4 +16,8 @@
       <PackageReference Include="MySqlConnector" Version="2.4.0" />
     </ItemGroup>
 
+<PropertyGroup>
+  <NeutralLanguage>ko-KR</NeutralLanguage>
+  <InvariantGlobalization>false</InvariantGlobalization>
+</PropertyGroup>
 </Project>

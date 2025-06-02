@@ -85,7 +85,6 @@ C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools_copy\CollaborationTools\
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.csproj.AssemblyReference.cache
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\PersonalCalendar.g.cs
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\TeamCalendar.g.cs
-C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\login\Registeration.g.cs
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\MainPage.g.cs
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\MainWindow.g.cs
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\main_window_component\MenuBar.g.cs
@@ -119,7 +118,6 @@ C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-wind
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\PersonalCalendar.baml
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\TeamCalendar.baml
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\login\Login.baml
-C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\login\Registeration.baml
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\MainPage.baml
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\MainWindow.baml
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\main_window_component\MenuBar.baml
@@ -132,3 +130,5 @@ C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-wind
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\Collabor.D79BC842.Up2Date
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.genruntimeconfig.cache
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\ref\CollaborationTools.dll
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\login\RegisterAddiinfo.g.cs
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\login\RegisterAddiinfo.baml

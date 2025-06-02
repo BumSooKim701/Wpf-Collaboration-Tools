@@ -46,15 +46,6 @@
                     <TextBlock Text="Google 계정으로 로그인" FontSize="20" Margin="10,0" />
                 </StackPanel>
             </Button>
-
-            <!-- 회원가입 링크 -->
-            <TextBlock Margin="0,15,0,0"
-                       HorizontalAlignment="Center">
-                <Hyperlink x:Name="lnkRegister"
-                           Click="lnkRegister_Click">
-                    회원가입
-                </Hyperlink>
-            </TextBlock>
         </StackPanel>
 
         <!-- 하단 상태바 -->

@@ -2,9 +2,9 @@
 
 namespace CollaborationTools.login;
 
-public partial class Registeration : Page
+public partial class RegisterAddiinfo : Page
 {
-    public Registeration()
+    public RegisterAddiinfo()
     {
         InitializeComponent();
     }
