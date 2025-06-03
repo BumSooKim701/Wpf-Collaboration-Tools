@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using MaterialDesignThemes.Wpf;
 
 namespace CollaborationTools;
@@ -9,6 +10,10 @@ namespace CollaborationTools;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private Grid mainGrid;
+    private TabControl sideTabControl;
+    private ContentControl mainContentArea;
+    
     public MainWindow()
     {
         InitializeComponent();
@@ -26,6 +31,4 @@ public partial class MainWindow : Window
         this.Left = (workAreaWidth / 2) - (windowWidth / 2);
         this.Top = (workAreaHeight / 2) - (windowHeight / 2);
     }
-    
 }
-
