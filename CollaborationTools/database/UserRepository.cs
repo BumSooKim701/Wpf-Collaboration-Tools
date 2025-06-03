@@ -103,7 +103,7 @@ public class UserRepository
                             GoogleId = reader.GetString("google_id"),
                             Email = reader.GetString("email"),
                             Name = reader.GetString("name"),
-                            PictureUrl = reader.GetString("picture_uri"),
+                            PictureUri = reader.GetString("picture_uri"),
                             CreatedAt = reader.GetDateTime("created_at"),
                             LastLoginAt = reader.GetDateTime("last_login_at")
                         };
@@ -135,12 +135,12 @@ public class UserRepository
         {
             connection = _connectionPool.GetConnection();
 
-            using (var command = new MySqlCommand("INSERT INTO user(google_id, email, name, picture_uri, refresh_token, created_at, last_login_at) VALUES (@googleId, @email, @name, @pictureUri, @refreshToken, @createdAt, @lastLoginAt)", connection))
+            using (var command = new MySqlCommand("INSERT INTO user VALUES (@googleId, @email, @name, @pictureUri, @refreshToken, @createdAt, @lastLoginAt)", connection))
             {
                 command.Parameters.AddWithValue("@googleId", user.GoogleId);
                 command.Parameters.AddWithValue("@email", user.Email);
                 command.Parameters.AddWithValue("@name", user.Name);
-                command.Parameters.AddWithValue("@pictureUri", user.PictureUrl);
+                command.Parameters.AddWithValue("@pictureUri", user.PictureUri);
                 command.Parameters.AddWithValue("@refreshToken", user.RefreshToken);
                 command.Parameters.AddWithValue("@createdAt", user.CreatedAt);
                 command.Parameters.AddWithValue("@lastLoginAt", user.LastLoginAt);

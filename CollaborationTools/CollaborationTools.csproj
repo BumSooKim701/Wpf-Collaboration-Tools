@@ -24,6 +24,10 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="team\" />
+    </ItemGroup>
+
 <PropertyGroup>
   <NeutralLanguage>ko-KR</NeutralLanguage>
   <InvariantGlobalization>false</InvariantGlobalization>
