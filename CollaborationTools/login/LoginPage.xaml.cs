@@ -7,12 +7,12 @@ using CollaborationTools.user;
 
 namespace CollaborationTools.login;
 
-public partial class Login : Page
+public partial class LoginPage : Page
 {
     private GoogleAuthentication _googleAuthentication = new GoogleAuthentication();
     private UserRepository _userRepository = new UserRepository(); 
 
-    public Login()
+    public LoginPage()
     {
         InitializeComponent();
     }

@@ -12,6 +12,6 @@
         <!-- MinWidth="760" MinHeight="512" -->
     
     <Grid>
-        <Frame Source="login/Login.xaml" NavigationUIVisibility="Hidden"/>
+        <Frame Source="login/LoginPage.xaml" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
