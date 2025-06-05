@@ -7,9 +7,9 @@ public class UserRepository
 {
     private ConnectionPool _connectionPool = ConnectionPool.GetInstance();
     
-    public User FindUserById(string id)
+    public User? FindUserById(string id)
     {
-        User user = null;
+        User? user = null;
         MySqlConnection connection = null;
 
         try
@@ -44,9 +44,9 @@ public class UserRepository
         return user;
     }
     
-    public List<User> FindUserByName(string name)
+    public List<User?>? FindUserByName(string name)
     {
-        List<User> userList = null;
+        List<User?> userList = new List<User?>();
         MySqlConnection connection = null;
 
         try
@@ -61,7 +61,15 @@ public class UserRepository
                 {
                     while (reader.Read())
                     {
-                        userList.Add(new User());
+                        userList?.Add(new User
+                        {
+                            GoogleId = reader.GetString("google_id"),
+                            Email = reader.GetString("email"),
+                            Name = reader.GetString("name"),
+                            PictureUri = reader.GetString("picture_uri"),
+                            CreatedAt = reader.GetDateTime("created_at"),
+                            LastLoginAt = reader.GetDateTime("last_login_at")
+                        });
                     }
                 }
             }

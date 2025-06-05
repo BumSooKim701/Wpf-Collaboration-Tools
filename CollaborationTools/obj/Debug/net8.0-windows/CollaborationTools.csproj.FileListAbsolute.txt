@@ -118,7 +118,6 @@ C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-wind
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.dll
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\refint\CollaborationTools.dll
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.pdb
-C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\login\Login.g.cs
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-windows\CollaborationTools.exe
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-windows\CollaborationTools.deps.json
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-windows\CollaborationTools.runtimeconfig.json
@@ -139,7 +138,6 @@ C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-wind
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-windows\runtimes\win\lib\net7.0\System.Management.dll
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\App.baml
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\TeamCalendar.baml
-C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\login\Login.baml
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\MainPage.baml
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\MainWindow.baml
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\main_window_component\MenuBar.baml
@@ -166,3 +164,9 @@ C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-wind
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\ScheduleDetailsDialog.g.cs
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools_Content.g.cs
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\ScheduleDetailsDialog.baml
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\login\LoginPage.g.cs
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\login\LoginPage.baml
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\main_window_component\SideBar.g.cs
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\main_window_component\SideBar.baml
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\team\TeamCreateWindow.g.cs
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\team\TeamCreateWindow.baml

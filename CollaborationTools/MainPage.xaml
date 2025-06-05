@@ -12,37 +12,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DockPanel>
-            <!-- 왼쪽 사이드바 (개인/팀 탭) -->
-            <TabControl DockPanel.Dock="Left" Width="200" TabStripPlacement="Left">
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="AccountCircle" Width="24" Height="24" Margin="0,0,10,0" />
-                            <TextBlock Text="개인" VerticalAlignment="Center" />
-                        </StackPanel>
-                    </TabItem.Header>
-                    <StackPanel Margin="10">
-                        <TextBlock Text="개인 메뉴" FontWeight="Bold" Margin="0,0,0,10" FontSize="16"/>
-                        <Button Content="내 프로필" Margin="0,5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left"/>
-                        <Button Content="내 작업" Margin="0,5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left"/>
-                        <Button Content="내 일정" Margin="0,5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left"/>
-                    </StackPanel>
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="AccountGroup" Width="24" Height="24" Margin="0,0,10,0" />
-                            <TextBlock Text="팀" VerticalAlignment="Center" />
-                        </StackPanel>
-                    </TabItem.Header>
-                    <StackPanel Margin="10">
-                        <TextBlock Text="팀 메뉴" FontWeight="Bold" Margin="0,0,0,10" FontSize="16"/>
-                        <Button Content="팀 프로젝트" Margin="0,5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left"/>
-                        <Button Content="팀 멤버" Margin="0,5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left"/>
-                        <Button Content="팀 일정" Margin="0,5" Style="{StaticResource MaterialDesignFlatButton}" HorizontalContentAlignment="Left"/>
-                    </StackPanel>
-                </TabItem>
-            </TabControl>
+            <local:SideBar DockPanel.Dock="Left"/>
             
             <local:MenuBar DockPanel.Dock="Top"/>
             
