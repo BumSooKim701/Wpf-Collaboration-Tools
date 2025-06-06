@@ -9,7 +9,7 @@ public class TeamRepository
 {
     private ConnectionPool _connectionPool = ConnectionPool.GetInstance();
 
-    public bool AddTeam(Team team)
+    public bool AddTeam(string teamName, string uuid, int teamMemberCount, DateTime dateOfCreated, string teamCalName, string teamCalId, string teamDescription)
     {
         MySqlConnection connection = null;
         bool result = true;
@@ -18,13 +18,15 @@ public class TeamRepository
         {
             connection = _connectionPool.GetConnection();
 
-            using (var command = new MySqlCommand("INSERT INTO team VALUES (@teamName, @teamMemberCount, @dateOfCreated, @teamCalendarName, @teamCalendarId)", connection))
+            using (var command = new MySqlCommand("INSERT INTO team (uuid, team_name, team_member_count, date_of_created, team_calendar_name, team_calendar_id, team_description) VALUES (@uuid, @teamName, @teamMemberCount, @dateOfCreated, @teamCalendarName, @teamCalendarId, @teamDescription)", connection))
             {
-                command.Parameters.AddWithValue("@teamName", team.teamCalendarName);
-                command.Parameters.AddWithValue("@teamMemberCount", team.teamMemberCount);
-                command.Parameters.AddWithValue("@dateOfCreated", team.dateOfCreated);
-                command.Parameters.AddWithValue("@teamCalendarName", team.teamCalendarName);
-                command.Parameters.AddWithValue("@teamCalendarId", team.teamCalendarId);
+                command.Parameters.AddWithValue("@uuid", uuid);
+                command.Parameters.AddWithValue("@teamName", teamName);
+                command.Parameters.AddWithValue("@teamMemberCount", teamMemberCount);
+                command.Parameters.AddWithValue("@dateOfCreated", dateOfCreated);
+                command.Parameters.AddWithValue("@teamCalendarName", teamCalName);
+                command.Parameters.AddWithValue("@teamCalendarId", teamCalId);
+                command.Parameters.AddWithValue("@teamDescription", teamDescription);
 
                 int executeResult = command.ExecuteNonQuery();
                 
@@ -105,6 +107,7 @@ public class TeamRepository
                         team = new Team
                         {
                             teamId = reader.GetInt32("id"),
+                            uuid = reader.GetString("uuid"),
                             teamName = reader.GetString("team_name"),
                             teamMemberCount = reader.GetInt32("team_member_count"),
                             dateOfCreated = reader.GetDateTime("date_of_created"),
@@ -157,6 +160,7 @@ public class TeamRepository
                                 teams.Add(new Team
                                 {
                                     teamId = teamMember.teamId,
+                                    uuid = reader.GetString("uuid"),
                                     teamName = reader.GetString("team_name"),
                                     teamMemberCount = reader.GetInt32("team_member_count"),
                                     dateOfCreated = reader.GetDateTime("date_of_created"),
@@ -175,7 +179,7 @@ public class TeamRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine($"find team by id error: {e.Message}");
+            Console.WriteLine($"find team by user error: {e.Message}");
         }
         finally
         {
@@ -186,5 +190,96 @@ public class TeamRepository
         }
 
         return teams;
+    }
+
+    public List<Team?>? FindTeamByName(string teamName)
+    {
+        List<Team?>? teamList = new List<Team?>();
+        MySqlConnection connection = null;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            
+            using (var command = new MySqlCommand("SELECT * FROM team WHERE team_name = @name", connection))
+            {
+                command.Parameters.AddWithValue("@name", teamName);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        teamList?.Add(new Team
+                        {
+                            teamId = reader.GetInt32("id"),
+                            uuid = reader.GetString("uuid"),
+                            teamName = reader.GetString("team_name"),
+                            teamMemberCount = reader.GetInt32("team_member_count"),
+                            dateOfCreated = reader.GetDateTime("date_of_created"),
+                            teamCalendarName = reader.GetString("team_calendar_name"),
+                            teamCalendarId = reader.GetString("team_calendar_id")
+                        });
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"find team by name error: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null)
+            {
+                _connectionPool.ReleaseConnection(connection);
+            }
+        }
+
+        return teamList;
+    }
+    public Team? FindTeamByUuid(string uuid)
+    {
+        Team? team = null;
+        MySqlConnection connection = null;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            
+            using (var command = new MySqlCommand("SELECT * FROM team WHERE uuid = @uuid", connection))
+            {
+                command.Parameters.AddWithValue("@uuid", uuid);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        team = new Team
+                        {
+                            teamId = reader.GetInt32("id"),
+                            uuid = reader.GetString("uuid"),
+                            teamName = reader.GetString("team_name"),
+                            teamMemberCount = reader.GetInt32("team_member_count"),
+                            dateOfCreated = reader.GetDateTime("date_of_created"),
+                            teamCalendarName = reader.GetString("team_calendar_name"),
+                            teamCalendarId = reader.GetString("team_calendar_id")
+                        };
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"find team by uuid error: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null)
+            {
+                _connectionPool.ReleaseConnection(connection);
+            }
+        }
+
+        return team;
     }
 }

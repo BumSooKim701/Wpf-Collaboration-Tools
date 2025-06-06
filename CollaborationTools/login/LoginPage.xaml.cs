@@ -10,7 +10,7 @@ namespace CollaborationTools.login;
 public partial class LoginPage : Page
 {
     private GoogleAuthentication _googleAuthentication = new GoogleAuthentication();
-    private UserRepository _userRepository = new UserRepository(); 
+    private UserRepository _userRepository = new UserRepository();
 
     public LoginPage()
     {
@@ -39,8 +39,7 @@ public partial class LoginPage : Page
                 }
                 else
                 {
-                    Page MainPage = new MainPage();
-                    NavigationService.Navigate(MainPage);
+                    NavigatePage(_userRepository.FindUserByEmail(googleUser.Email));
                 }
             }
             else
@@ -48,8 +47,7 @@ public partial class LoginPage : Page
                 Debug.WriteLine("로그인 성공!");
                 Debug.WriteLine("email: " + googleUser.Email + ". name: " + googleUser.Name);
 
-                Page MainPage = new MainPage();
-                NavigationService.Navigate(MainPage);
+                NavigatePage(dbUser);
             }
         }
         catch (Exception ex)
@@ -63,4 +61,12 @@ public partial class LoginPage : Page
             LoginButton.IsEnabled = true;
         }
     }
+    
+    private void NavigatePage(User user)
+    {
+        UserSession.Login(user);
+        
+        Page mainPage = new MainPage();
+        NavigationService.Navigate(mainPage);
+    }   
 }

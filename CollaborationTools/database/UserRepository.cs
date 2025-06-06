@@ -63,6 +63,7 @@ public class UserRepository
                     {
                         userList?.Add(new User
                         {
+                            userId = reader.GetInt32("id"),
                             GoogleId = reader.GetString("google_id"),
                             Email = reader.GetString("email"),
                             Name = reader.GetString("name"),
@@ -108,6 +109,7 @@ public class UserRepository
                     {
                         user = new User
                         {
+                            userId = reader.GetInt32("id"),
                             GoogleId = reader.GetString("google_id"),
                             Email = reader.GetString("email"),
                             Name = reader.GetString("name"),
@@ -121,7 +123,7 @@ public class UserRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine($"사용자 이메일로 조회 중 오류: {e.Message}");
+            Console.WriteLine($"searching to email error: {e.Message}");
         }
         finally
         {
