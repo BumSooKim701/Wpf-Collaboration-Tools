@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CollaborationTools.Common;
 using CollaborationTools.team;
 
 namespace CollaborationTools;
@@ -61,23 +62,44 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
         {
             new MenuItem
             {
-                Title = "팁 생성",
+                Title = "팀 정보",
+                MenuType = "Team",
+                Action = "TeamInfo"
+            },
+            
+            new MenuItem
+            {
+                Title = "팀 생성",
                 MenuType = "Team",
                 Action = "TeamCreate"
+            },
+            
+            new MenuItem
+            {
+                Title = "팀 삭제",
+                MenuType = "Team",
+                Action = "TeamDelete"
             },
 
             new MenuItem
             {
-                Title = "팀 맴버",
+                Title = "팀 맴버 등록",
                 MenuType = "Team",
-                Action = "Members"
+                Action = "MemberRegistration"
+            },
+            
+            new MenuItem
+            {
+                Title = "팀 맴버 조회",
+                MenuType = "Team",
+                Action = "MemberSearch"
             },
 
             new MenuItem
             {
                 Title = "팀 프로젝트",
                 MenuType = "Team",
-                Action = "TeamSchedule"
+                Action = "TeamProject"
             }
         };
     }
@@ -94,6 +116,8 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
             {
                 case "TeamCreate":
                     OpenTeamCreateWindow();
+                    break;
+                case "TeamDelete":
                     break;
             }
         }
@@ -113,6 +137,11 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
             
         }
     }
+    
+    private void OpenTeamDeleteWindow()
+    {
+        
+    }
 
     
     // private void OnPersonalMenuClick(object sender, RoutedEventArgs e)
@@ -130,41 +159,11 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
     //         MessageBox.Show($"팀 메뉴 - {button.Content} 클릭됨");
     //     }
     // }
-
-    //INotifyPropertyChanged 구현
+    
     public event PropertyChangedEventHandler PropertyChanged;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-    
-    // RelayCommand 구현
-    public class RelayCommand : ICommand
-    {
-        private readonly Action<object> _execute; //실행할 메서드
-        private readonly Func<object, bool> _canExecute; //실행 가능 여부 확인
-
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
-        {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            _canExecute = canExecute;
-        }
-
-        public event EventHandler CanExecuteChanged
-        {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute == null || _canExecute(parameter);
-        }
-
-        public void Execute(object parameter)
-        {
-            _execute(parameter);
-        }
     }
 }

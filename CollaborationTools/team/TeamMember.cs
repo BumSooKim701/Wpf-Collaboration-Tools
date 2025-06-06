@@ -2,9 +2,9 @@
 
 public class TeamMember
 {
-    public static int TEAM_LEADER_AUTHORITY = 1;
+    public static byte TEAM_LEADER_AUTHORITY = 1;
     
-    public static int TEAM_MEMBER_AUTHORITY = 0;
+    public static byte TEAM_MEMBER_AUTHORITY = 0;
     
     public int memberId { get; set; }
 

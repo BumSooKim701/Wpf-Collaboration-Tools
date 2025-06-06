@@ -31,7 +31,7 @@
                  Text="{Binding TeamName, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- 팀 설명 입력 -->
-        <TextBox Grid.Row="2" 
+        <TextBox Grid.Row="2"
                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                  materialDesign:HintAssist.Hint="팀 설명"
                  Margin="0,0,0,15"
