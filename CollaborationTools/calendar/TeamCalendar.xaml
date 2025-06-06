@@ -5,11 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:global="clr-namespace:"
+             xmlns:calendar="clr-namespace:CollaborationTools.calendar"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
     
     <UserControl.Resources>
-        <global:StartDateTimeConverter x:Key="StartDateTimeConverter"/>
+        <calendar:StartDateTimeConverter x:Key="StartDateTimeConverter"/>
         
         <Style x:Key="StretchListViewItemStyle" TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -91,6 +92,17 @@
             <Calendar Grid.Row="0" Language="ko-KR"
                       x:Name="Calendar"
                       SelectedDatesChanged="CalendarDateChanged"/>
+            <Button Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="일정 추가"
+            >
+                <materialDesign:PackIcon
+                    Width="15"
+                    Height="15"
+                    Kind="CalendarAdd"
+                />
+            </Button>
 
             <TextBlock Grid.Row="1" x:Name="NoScheduleMsgCalendar" Text="예정된 일정이 없습니다" FontWeight="Medium" 
                        Style="{StaticResource NoScheduleMsgStyle}" />
@@ -114,7 +126,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="다가오는 일정" Style="{StaticResource NoScheduleMsgStyle}" />
+            <TextBlock Grid.Row="0" Text="다가오는 일정" FontSize="25" FontWeight="Bold" Margin="10" />
 
             <TextBlock Grid.Row="1" x:Name="NoScheduleMsg" Text="예정된 일정이 없습니다"
                        FontWeight="SemiBold" Style="{StaticResource NoScheduleMsgStyle}"/>

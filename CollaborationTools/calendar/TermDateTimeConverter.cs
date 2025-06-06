@@ -1,6 +1,7 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Data;
+
+namespace CollaborationTools.calendar;
 
 public class TermDateTimeConverter : IMultiValueConverter
 {

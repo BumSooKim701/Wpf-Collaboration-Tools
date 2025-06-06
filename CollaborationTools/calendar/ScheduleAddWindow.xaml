@@ -10,50 +10,73 @@
         Title="ScheduleDetailsDialog" Height="450" Width="400"
         WindowStyle="None" ResizeMode="NoResize" 
         AllowsTransparency="True" Background="Transparent">
+    <Window.Resources>
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+    </Window.Resources>
     
     <materialDesign:Card Margin="20" Padding="20">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            
-            <TextBlock Grid.Row="0" Text="{Binding Title}" 
-                       TextWrapping="Wrap"
-                       Margin="0, 5"
-                       Style="{StaticResource MaterialDesignHeadline5TextBlock}"/>
-            <TextBlock Grid.Row="1" Text="{Binding DateDetails}" 
-                       TextWrapping="Wrap"
-                       Margin="0, 5"
-                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
-            
-            <Grid Grid.Row="2">
+        <DockPanel>
+            <Grid DockPanel.Dock="Top">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 
-                <Label Grid.Row="0" Grid.Column="0" Content="장소 : "/>
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Location}"
-                           TextWrapping="Wrap"
-                           Margin="0,5"
-                           Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="일정명" Style="{StaticResource TextBlockStyle}"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Title}"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="시작 날짜" Style="{StaticResource TextBlockStyle}"/>
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                    <DatePicker
+                        HorizontalAlignment="Left"
+                        Width="100"
+                        Margin="10,0"
+                        materialDesign:HintAssist.Hint="Pick Date"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                    />
+                    <materialDesign:TimePicker 
+                        Width="100"
+                        Margin="10,0"
+                        materialDesign:HintAssist.Hint="Custom hint"
+                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                    />
+                </StackPanel>
                 
-                <Label Grid.Row="1" Grid.Column="0" Content="메모 : "/>
-                <TextBlock Grid.Row="1" Grid.Column="1"
-                           Text="{Binding Description}"
-                           TextWrapping="Wrap"
-                           TextTrimming="CharacterEllipsis"
-                           Margin="0,5"
-                           Style="{StaticResource MaterialDesignBodyLargeTextBlock}" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="종료 날짜" Style="{StaticResource TextBlockStyle}"/>
+                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                    <DatePicker
+                        HorizontalAlignment="Left"
+                        Width="100"
+                        Margin="10,0"
+                        materialDesign:HintAssist.Hint="Pick Date"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                    />
+                    <materialDesign:TimePicker 
+                        Width="100"
+                        Margin="10,0"
+                        materialDesign:HintAssist.Hint="Custom hint"
+                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                    />
+                </StackPanel>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="장소" Style="{StaticResource TextBlockStyle}"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Location}"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="메모" Style="{StaticResource TextBlockStyle}"/>
+                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Description}"/>
+
             </Grid>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="저장"
                         Style="{StaticResource MaterialDesignFlatButton}"
                         Click="SaveButton_Click" />
@@ -61,6 +84,6 @@
                         Style="{StaticResource MaterialDesignFlatButton}"
                         Click="CloseButton_Click" />
             </StackPanel>
-        </Grid>
+        </DockPanel>
     </materialDesign:Card>
 </Window>

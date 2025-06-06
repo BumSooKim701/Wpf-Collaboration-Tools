@@ -18,6 +18,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         CenterWindowOnScreen();
+        this.Title = "CollaborationTools";
     }
     
     private void CenterWindowOnScreen()
