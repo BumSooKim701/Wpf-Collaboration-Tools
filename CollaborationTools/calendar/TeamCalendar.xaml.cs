@@ -12,15 +12,16 @@ namespace CollaborationTools.calendar;
 
 public partial class TeamCalendar : UserControl
 {
-    private ObservableCollection<ScheduleItem> _schedules = new ObservableCollection<ScheduleItem>();
-    private ObservableCollection<ScheduleItem> _oneDaySchedules = new ObservableCollection<ScheduleItem>();
+    private List<ScheduleItem> _schedules = [];
+    private List<ScheduleItem> _oneDaySchedules = [];
     private string _calendarId;
     private static string[] _dayOfWeek = { "일", "월", "화", "수", "목", "금", "토"};
 
     public TeamCalendar()
     {
         InitializeComponent();
-        _calendarId = "primary";
+        // _calendarId = "primary";
+        _calendarId = "34e62ffc970cfcdeebd447c1d975cda54f3b1fa43673b6e53c65e8bf6b808cf9@group.calendar.google.com";
         LoadScheduleItems();
     }
     public TeamCalendar(string calendarId = "primary")
@@ -73,15 +74,15 @@ public partial class TeamCalendar : UserControl
                 DateTime startDateTime = DateTime.Parse(start);
                 DateTime endDateTime = DateTime.Parse(end);
                 
-                string startDateTimeStr = getDateTimeStr(startDateTime, isAllDayEventStart); 
-                string endDateTimeStr = getDateTimeStr(endDateTime, isAllDayEventEnd); 
-                
                 bool isOneDayEvent = (startDateTime.Date == endDateTime.Date);
                 
                 ScheduleItem schedule = new ScheduleItem();
                 schedule.Title = eventItem.Summary;
-                schedule.Date = startDateTimeStr;  
-                schedule.DateDetails = getDateTimeTermStr(startDateTimeStr, endDateTimeStr, endDateTime, isOneDayEvent);
+                schedule.StartDateTime = startDateTime;
+                schedule.EndDateTime = endDateTime;
+                schedule.IsAllDayEventStart = isAllDayEventStart;
+                schedule.IsAllDayEventEnd = isAllDayEventEnd;
+                schedule.IsOneDayEvent = isOneDayEvent;
                 schedule.Location = eventItem.Location;
                 schedule.Description = eventItem.Description;
                 _schedules.Add(schedule);
@@ -102,7 +103,7 @@ public partial class TeamCalendar : UserControl
         {
             if (listView.SelectedItem is ScheduleItem scheduleItem)
             {
-                ScheduleDetailsDialog scheduleDetailsDialog = new ScheduleDetailsDialog();
+                ScheduleDetailsWindow scheduleDetailsDialog = new ScheduleDetailsWindow();
                 scheduleDetailsDialog.DataContext = scheduleItem;
                 ShowDialog(scheduleDetailsDialog);
             }
@@ -170,15 +171,15 @@ public partial class TeamCalendar : UserControl
                 DateTime startDateTime = DateTime.Parse(start);
                 DateTime endDateTime = DateTime.Parse(end);
                 
-                string startDateTimeStr = getDateTimeStr(startDateTime, isAllDayEventStart); 
-                string endDateTimeStr = getDateTimeStr(endDateTime, isAllDayEventEnd); 
-                
                 bool isOneDayEvent = (startDateTime.Date == endDateTime.Date);
                 
                 ScheduleItem schedule = new ScheduleItem();
                 schedule.Title = eventItem.Summary;
-                schedule.Date = startDateTimeStr;  
-                schedule.DateDetails = getDateTimeTermStr(startDateTimeStr, endDateTimeStr, endDateTime, isOneDayEvent);
+                schedule.StartDateTime = startDateTime;  
+                schedule.EndDateTime = endDateTime;
+                schedule.IsAllDayEventStart = isAllDayEventStart;
+                schedule.IsAllDayEventEnd = isAllDayEventEnd;
+                schedule.IsOneDayEvent = isOneDayEvent;
                 schedule.Location = eventItem.Location;
                 schedule.Description = eventItem.Description;
                 _oneDaySchedules.Add(schedule);
@@ -193,22 +194,4 @@ public partial class TeamCalendar : UserControl
     
     }
     
-    
-    private string getDateTimeStr(DateTime dateTime, bool isAllDayEvent)
-    {
-        string dateTimeStr = isAllDayEvent ? 
-            String.Format("{0}월 {1}일 ({2})", dateTime.Month, dateTime.Day, _dayOfWeek[(int)dateTime.DayOfWeek])
-            : String.Format("{0}월 {1}일 ({2}) {3:D2}:{4:D2}", dateTime.Month, dateTime.Day, _dayOfWeek[(int)dateTime.DayOfWeek], dateTime.Hour, dateTime.Minute);
-
-        return dateTimeStr;
-    }
-
-    private string getDateTimeTermStr(string startDateTimeStr, string endDateTimeStr, DateTime endDateTime, bool isOneDayEvent)
-    {
-        string dateTimeTermStr = isOneDayEvent ?  
-            String.Format("{0} ~ {1:D2}:{2:D2}", startDateTimeStr, endDateTime.Hour, endDateTime.Minute)
-            : String.Format("{0} ~ {1}", startDateTimeStr, endDateTimeStr);
-        
-        return dateTimeTermStr;
-    }
 }

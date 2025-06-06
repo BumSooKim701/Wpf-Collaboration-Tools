@@ -1,83 +1,17 @@
 ﻿using System.ComponentModel;
 
-namespace CollaborationTools;
+namespace CollaborationTools.calendar;
 
-public class ScheduleItem : INotifyPropertyChanged
+public class ScheduleItem
 {
-    private string _title;
-    public string Title
-    {
-        get { return _title; }
-        set
-        {
-            if (_title != value)
-            {
-                _title = value;
-                NotifyPropertyChanged(nameof(Title));
-            }
-        }
-    }
+    public string Title { get; set; }
 
-    private string _date;
-    public string Date
-    {
-        get { return _date; }
-        set
-        {
-            if (_date != value)
-            {
-                _date = value;
-                NotifyPropertyChanged(nameof(Date));   
-            }
-        }
-    }
+    public DateTime StartDateTime { get; set; }
+    public DateTime EndDateTime { get; set; }
+    public bool IsAllDayEventStart { get; set; }
+    public bool IsAllDayEventEnd { get; set; }
+    public bool IsOneDayEvent { get; set; }
+    public string Location { get; set; }
+    public string Description { get; set; }
     
-    private string _dateDetails;
-    public string DateDetails
-    {
-        get { return _dateDetails; }
-        set
-        {
-            if (_dateDetails != value)
-            {
-                _dateDetails = value;
-                NotifyPropertyChanged(nameof(DateDetails));   
-            }
-        }
-    }
-    
-    private string _location;
-    public string Location
-    {
-        get { return _location; }
-        set
-        {
-            if (_location != value)
-            {
-                _location = value;
-                NotifyPropertyChanged(nameof(Location));   
-            }
-        }
-    }
-    
-    private string _description;
-    public string Description
-    {
-        get { return _description; }
-        set
-        {
-            if (_description != value)
-            {
-                _description = value;
-                NotifyPropertyChanged(nameof(Description));   
-            }
-        }
-    }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-    
-    private void NotifyPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

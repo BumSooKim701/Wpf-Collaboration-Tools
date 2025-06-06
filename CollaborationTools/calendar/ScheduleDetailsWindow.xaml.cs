@@ -2,9 +2,9 @@
 
 namespace CollaborationTools.calendar;
 
-public partial class ScheduleDetailsDialog : Window
+public partial class ScheduleDetailsWindow : Window
 {
-    public ScheduleDetailsDialog()
+    public ScheduleDetailsWindow()
     {
         InitializeComponent();
     }

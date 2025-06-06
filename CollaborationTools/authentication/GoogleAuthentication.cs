@@ -29,14 +29,14 @@ public class GoogleAuthentication
             string credentialPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "credential/client_secret.json");
             using (var stream = new FileStream(credentialPath, FileMode.Open, FileAccess.Read))
             {
-                string tokenPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "credential/token.json");
+                string tokenPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "credential/");
                     
                 _credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     Scopes,
                     "user",
                     CancellationToken.None,
-                    new FileDataStore("tokenPath", true));
+                    new FileDataStore(tokenPath, true));
             }
 
             // Calendar 서비스 초기화

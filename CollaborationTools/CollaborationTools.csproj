@@ -24,6 +24,14 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Page Update="calendar\ScheduleAddWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
 <PropertyGroup>
   <NeutralLanguage>ko-KR</NeutralLanguage>
   <InvariantGlobalization>false</InvariantGlobalization>
