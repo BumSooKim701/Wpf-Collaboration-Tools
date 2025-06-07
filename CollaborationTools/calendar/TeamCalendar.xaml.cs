@@ -50,6 +50,7 @@ public partial class TeamCalendar : UserControl
                 var scheduleDetailsWindow = new ScheduleDetailsWindow
                 {
                     DataContext = scheduleItem
+                    
                 };
                 ShowDialog(scheduleDetailsWindow);
             }

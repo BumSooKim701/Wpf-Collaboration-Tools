@@ -10,9 +10,12 @@ public partial class ScheduleEditWindow : Window
     }
 
 
-    private void SaveButton_Click(object sender, RoutedEventArgs e)
+    private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        
+        if (this.DataContext is ScheduleItem scheduleItem)
+        {
+            await ScheduleService.UpdateScheduleItem(scheduleItem.Event, scheduleItem.CalendarId);
+        }
     }
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
