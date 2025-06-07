@@ -170,7 +170,7 @@ C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\D
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\login\LoginPage.baml
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\main_window_component\SideBar.baml
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\team\TeamCreateWindow.baml
-C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\ScheduleAddWindow.g.cs
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\ScheduleDetailsWindow.g.cs
-C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\ScheduleAddWindow.baml
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\ScheduleDetailsWindow.baml
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\ScheduleEditWindow.g.cs
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\ScheduleEditWindow.baml

@@ -12,82 +12,26 @@ namespace CollaborationTools.calendar;
 
 public partial class TeamCalendar : UserControl
 {
-    private List<ScheduleItem> _schedules = [];
-    private List<ScheduleItem> _oneDaySchedules = [];
+    private List<ScheduleItem> _schedules;
+    private List<ScheduleItem> _oneDaySchedules;
     private string _calendarId;
-    private static string[] _dayOfWeek = { "일", "월", "화", "수", "목", "금", "토"};
 
-    public TeamCalendar()
-    {
-        InitializeComponent();
-        // _calendarId = "primary";
-        _calendarId = "34e62ffc970cfcdeebd447c1d975cda54f3b1fa43673b6e53c65e8bf6b808cf9@group.calendar.google.com";
-        LoadScheduleItems();
-    }
+    public TeamCalendar() : this("primary") { }
     public TeamCalendar(string calendarId = "primary")
     {
         InitializeComponent();
         _calendarId = calendarId;
-        LoadScheduleItems();
+        _schedules = new List<ScheduleItem>();
+        _oneDaySchedules = new List<ScheduleItem>();
+        _ = LoadScheduleItems();
     }
 
-    private async void LoadScheduleItems()
+    private async Task LoadScheduleItems()
     {
-        var calendarService = GoogleAuthentication.CalendarService;
+        _schedules = await ScheduleService.GetScheduleItems(_calendarId);
         
-        if (calendarService == null)
+        if(_schedules != null)
         {
-            throw new InvalidOperationException("먼저 Google에 로그인하세요.");
-        }
-
-        // 이벤트 요청 설정
-        EventsResource.ListRequest request = calendarService.Events.List(_calendarId);
-        request.TimeMin = DateTime.Now;
-        request.ShowDeleted = false;
-        request.SingleEvents = true;
-        request.MaxResults = 10;
-        request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
-        
-        // 비동기로 이벤트 실행
-        Events events = await request.ExecuteAsync();
-
-        if (events.Items != null && events.Items.Count > 0)
-        {
-            foreach (var eventItem in events.Items)
-            {
-                bool isAllDayEventStart = false;
-                string start = eventItem.Start.DateTimeRaw;
-                if (start == null)
-                {
-                    isAllDayEventStart = true;
-                    start = eventItem.Start.Date;
-                }
-                
-                bool isAllDayEventEnd = false;
-                string end = eventItem.End.DateTimeRaw;
-                if (end == null)
-                {
-                    isAllDayEventEnd = true;
-                    end = eventItem.End.Date;
-                }
-                
-                DateTime startDateTime = DateTime.Parse(start);
-                DateTime endDateTime = DateTime.Parse(end);
-                
-                bool isOneDayEvent = (startDateTime.Date == endDateTime.Date);
-                
-                ScheduleItem schedule = new ScheduleItem();
-                schedule.Title = eventItem.Summary;
-                schedule.StartDateTime = startDateTime;
-                schedule.EndDateTime = endDateTime;
-                schedule.IsAllDayEventStart = isAllDayEventStart;
-                schedule.IsAllDayEventEnd = isAllDayEventEnd;
-                schedule.IsOneDayEvent = isOneDayEvent;
-                schedule.Location = eventItem.Location;
-                schedule.Description = eventItem.Description;
-                _schedules.Add(schedule);
-                
-            }
             CardListView.ItemsSource = _schedules;
         }
         else
@@ -103,18 +47,20 @@ public partial class TeamCalendar : UserControl
         {
             if (listView.SelectedItem is ScheduleItem scheduleItem)
             {
-                ScheduleDetailsWindow scheduleDetailsDialog = new ScheduleDetailsWindow();
-                scheduleDetailsDialog.DataContext = scheduleItem;
-                ShowDialog(scheduleDetailsDialog);
+                var scheduleDetailsWindow = new ScheduleDetailsWindow
+                {
+                    DataContext = scheduleItem
+                };
+                ShowDialog(scheduleDetailsWindow);
             }
         }
     }
 
-    private void ShowDialog(Window dialog)
+    private void ShowDialog(Window window)
     {
-        dialog.Owner = Application.Current.MainWindow;
-        dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-        dialog.ShowDialog();
+        window.Owner = Application.Current.MainWindow;
+        window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        window.ShowDialog();
     }
 
     private void CalendarDateChanged(object sender, SelectionChangedEventArgs e)
@@ -123,68 +69,16 @@ public partial class TeamCalendar : UserControl
         {
             DateTime selectedDate = Calendar.SelectedDate.Value;
             _oneDaySchedules.Clear();
-            DisplayCalendarSchedule(selectedDate);
+            _ = DisplayCalendarSchedule(selectedDate);
         }
     }
     
-    private async void DisplayCalendarSchedule(DateTime selectedDate) // 캘린더에서 선택된 날짜 일정
+    private async Task DisplayCalendarSchedule(DateTime selectedDate) // 캘린더에서 선택된 날짜 일정
     {
-        var calendarService = GoogleAuthentication.CalendarService;
+        _oneDaySchedules = await ScheduleService.GetOneDayScheduleItems(_calendarId, selectedDate);
         
-        if (calendarService == null)
+        if(_oneDaySchedules != null)
         {
-            throw new InvalidOperationException("먼저 Google에 로그인하세요.");
-        }
-    
-        // 이벤트 요청 설정
-        EventsResource.ListRequest request = calendarService.Events.List(_calendarId);
-        request.TimeMinDateTimeOffset = selectedDate;
-        request.TimeMaxDateTimeOffset = selectedDate.AddDays(1);;
-        request.ShowDeleted = false;
-        request.SingleEvents = true;
-        request.MaxResults = 20;
-        request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
-        
-        // 비동기로 이벤트 실행
-        Events events = await request.ExecuteAsync();
-    
-        if (events.Items != null && events.Items.Count > 0)
-        {
-            foreach (var eventItem in events.Items)
-            {
-                bool isAllDayEventStart = false;
-                string start = eventItem.Start.DateTimeRaw;
-                if (start == null)
-                {
-                    isAllDayEventStart = true;
-                    start = eventItem.Start.Date;
-                }
-                
-                bool isAllDayEventEnd = false;
-                string end = eventItem.End.DateTimeRaw;
-                if (end == null)
-                {
-                    isAllDayEventEnd = true;
-                    end = eventItem.End.Date;
-                }
-                
-                DateTime startDateTime = DateTime.Parse(start);
-                DateTime endDateTime = DateTime.Parse(end);
-                
-                bool isOneDayEvent = (startDateTime.Date == endDateTime.Date);
-                
-                ScheduleItem schedule = new ScheduleItem();
-                schedule.Title = eventItem.Summary;
-                schedule.StartDateTime = startDateTime;  
-                schedule.EndDateTime = endDateTime;
-                schedule.IsAllDayEventStart = isAllDayEventStart;
-                schedule.IsAllDayEventEnd = isAllDayEventEnd;
-                schedule.IsOneDayEvent = isOneDayEvent;
-                schedule.Location = eventItem.Location;
-                schedule.Description = eventItem.Description;
-                _oneDaySchedules.Add(schedule);
-                
-            }
             CardListViewCalendar.ItemsSource = _oneDaySchedules;
         }
         else

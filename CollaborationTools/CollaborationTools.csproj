@@ -25,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Page Update="calendar\ScheduleAddWindow.xaml">
+      <Page Update="calendar\ScheduleEditWindow.xaml">
         <Generator>MSBuild:Compile</Generator>
         <XamlRuntime>Wpf</XamlRuntime>
         <SubType>Designer</SubType>
