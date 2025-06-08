@@ -16,5 +16,5 @@ public class Team
 
     public string teamCalendarId { get; set; }
 
-    public string? teamDescription { get; set; } = null;
+    public string? teamDescription { get; set; } = "_";
 }
