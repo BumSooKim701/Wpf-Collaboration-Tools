@@ -4,104 +4,212 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CollaborationTools.calendar;
 using CollaborationTools.Common;
+using CollaborationTools.database;
 using CollaborationTools.team;
+using CollaborationTools.user;
 
 namespace CollaborationTools;
 
 public partial class SideBar : UserControl, INotifyPropertyChanged
 {
-    private ObservableCollection<MenuItem> _personalMenuList;
-    private ObservableCollection<MenuItem> _teamMenuList;
-    
-    public ObservableCollection<MenuItem> PersonalMenuList
+    private readonly TeamService _teamService = new();
+    private readonly CalendarService _calendarService = new();
+    private readonly TeamRepository _teamRepository = new();
+    private ObservableCollection<TabItem> _tabItems;
+    private Team _selectedTeam;
+    private List<Team> _curUserTeams;
+    private byte _curUserAuthority;
+
+    public SideBar()
     {
-        get => _personalMenuList;
+        InitializeComponent();
+        
+        _curUserTeams = _teamService.FindUsersTeams(UserSession.CurrentUser);
+        
+        MenuClickCommand = new RelayCommand(OnMenuClick);
+        SideTapCommand = new RelayCommand(OnSideTapClick);
+        
+        InitializeMenuItems();
+
+        DataContext = this;
+    }
+
+    public ObservableCollection<TabItem> TabItems
+    {
+        get => _tabItems;
         set
         {
-            _personalMenuList = value;
+            _tabItems = value;
             OnPropertyChanged();
         }
     }
 
-    public ObservableCollection<MenuItem> TeamMenuList
+    public Team SelectedTeam
     {
-        get => _teamMenuList;
+        get => _selectedTeam;
         set
         {
-            _teamMenuList = value;
+            _selectedTeam = value;
             OnPropertyChanged();
+        }
+    }
+
+    private List<Team> CurUserTeams
+    {
+        get => _curUserTeams;
+        set
+        {
+            _curUserTeams = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    private byte CurUserAuthority
+    {
+        get => _curUserAuthority;
+        set
+        {
+            _curUserAuthority = value;
         }
     }
     
     public ICommand MenuClickCommand { get; }
+    public ICommand SideTapCommand { get; }
     
-    public SideBar()
+    public event PropertyChangedEventHandler PropertyChanged;
+    
+    private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        InitializeComponent();
-
-        MenuClickCommand = new RelayCommand(OnMenuClick);
-        InitializeMenuItems();
-        
-        DataContext = this;
+        if (e.AddedItems.Count > 0 && e.AddedItems[0] is TabItem tabItem)
+        {
+            OnSideTapClick(tabItem);
+        }
     }
-    
+
+
     private void InitializeMenuItems()
     {
-        PersonalMenuList = new ObservableCollection<MenuItem>
+        TabItems = new ObservableCollection<TabItem>();
+        
+        AddPersonalTab();
+        
+        foreach (var team in CurUserTeams)
         {
-            new MenuItem
+            AddTeamTab(team);
+        }
+        
+        AddPlusTab();
+    }
+    
+    private void AddPersonalTab()
+    {
+        var personalTab = new TabItem
+        {
+            Header = "개인",
+            IconKind = "AccountCircle",
+            Title = "개인 메뉴",
+            Type = "Personal",
+            CurTeam = null,
+            MenuItems = new ObservableCollection<MenuItem>
             {
-                Title = "내 프로필",
-                MenuType = "Personal",
-                Action = "Profile"
+                new()
+                {
+                    Title = "내 프로필",
+                    MenuType = "Personal",
+                    Action = "Profile"
+                }
             }
         };
+        TabItems.Add(personalTab);
+    }
 
-        TeamMenuList = new ObservableCollection<MenuItem>
+    private void AddPlusTab()
+    {
+        var addTeamTab = new TabItem
         {
-            new MenuItem
-            {
-                Title = "팀 정보",
-                MenuType = "Team",
-                Action = "TeamInfo"
-            },
-            
-            new MenuItem
-            {
-                Title = "팀 생성",
-                MenuType = "Team",
-                Action = "TeamCreate"
-            },
-            
-            new MenuItem
-            {
-                Title = "팀 삭제",
-                MenuType = "Team",
-                Action = "TeamDelete"
-            },
+            Header = null,
+            IconKind = "PlusBox",
+            Title = null,
+            CurTeam = null,
+            Type = "Plus"
+        };
+        TabItems.Add(addTeamTab);
+    }
 
-            new MenuItem
+    private void AddTeamTab(Team team)
+    {
+        TabItem newTeamTab = new TabItem
+        {
+            Header = team.teamName,
+            IconKind = "AccountGroup",
+            Title = "팀 메뉴",
+            Type = "Team",
+            CurTeam = team,
+            MenuItems = new ObservableCollection<MenuItem>
             {
-                Title = "팀 맴버 등록",
-                MenuType = "Team",
-                Action = "MemberRegistration"
-            },
-            
-            new MenuItem
-            {
-                Title = "팀 맴버 조회",
-                MenuType = "Team",
-                Action = "MemberSearch"
-            },
-
-            new MenuItem
-            {
-                Title = "팀 프로젝트",
-                MenuType = "Team",
-                Action = "TeamProject"
+                new()
+                {
+                    Title = "팀 정보",
+                    MenuType = "Team",
+                    Action = "TeamInfo"
+                },
+                new()
+                {
+                    Title = "팀 삭제",
+                    MenuType = "Team",
+                    Action = "TeamDelete"
+                },
+                new()
+                {
+                    Title = "팀 맴버 등록",
+                    MenuType = "Team",
+                    Action = "MemberRegistration"
+                }
             }
         };
+        
+        int insertIndex = TabItems.Count;
+        TabItems.Insert(insertIndex, newTeamTab);
+    }
+
+    public void DeleteTeam(Team team)
+    {
+        bool result1 = _teamService.RemoveAllTeamMember(team);
+        
+        bool result2 = _teamService.RemoveTeam(team);
+        
+        if (result1 && result2)
+        {
+            MessageBox.Show("팀 삭제 완료");
+            RefreshTeamList();
+        }
+        else
+        {
+            MessageBox.Show("팀 삭제 실패");
+        }
+    }
+
+    private void RefreshTeamList()
+    {
+        // 현재 TabItems를 완전히 비움
+        TabItems.Clear();
+        
+        // 개인 탭 다시 추가 (첫 번째 위치)
+        AddPersonalTab();
+        
+        // 사용자의 팀 목록 다시 가져오기
+        _curUserTeams = _teamService.FindUsersTeams(UserSession.CurrentUser);
+        
+        // 팀 탭들 다시 추가
+        foreach (var team in _curUserTeams)
+        {
+            AddTeamTab(team);
+        }
+        
+        // 플러스 탭 다시 추가 (마지막 위치)
+        AddPlusTab();
     }
     
     private void OnMenuClick(object parameter)
@@ -111,56 +219,101 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
             // 메뉴 클릭 처리 로직
             MessageBox.Show($"{menuItem.MenuType} - {menuItem.Title} 클릭됨");
             
-            // 실제 구현에서는 Navigation이나 다른 처리를 할 수 있습니다
             switch (menuItem.Action)
             {
-                case "TeamCreate":
-                    OpenTeamCreateWindow();
+                case "TeamInfo":
+                    OpenTeamInfoWindow();
                     break;
                 case "TeamDelete":
+                    if (CurUserAuthority == TeamMember.TEAM_LEADER_AUTHORITY)
+                    {
+                        DeleteTeam(SelectedTeam);
+                    }
+                    else
+                    {
+                        MessageBox.Show("권한이 없습니다.");
+                    }
+                    break;
+                case "MemberRegistration":
+                    if (CurUserAuthority == TeamMember.TEAM_LEADER_AUTHORITY)
+                    {
+                        OpenTeamMemberRegistrationWindow();
+                    }
+                    else
+                    {
+                        MessageBox.Show("권한이 없습니다.");
+                    }
                     break;
             }
         }
     }
-    
-    private void OpenTeamCreateWindow()
+
+    private void OnSideTapClick(object parameter)
+    {
+        if (parameter is TabItem tabItem)
+        {
+            switch (tabItem.Type)
+            {
+                case "Team":
+                    SelectedTeam = tabItem.CurTeam;
+                    CurUserAuthority = _teamService.FindAuthority(SelectedTeam, UserSession.CurrentUser);
+                    break;
+                case "Plus":
+                    OpenTeamCreateWindow();
+                    break;
+            }
+        }
+    }
+
+    private void OpenTeamInfoWindow()
+    {
+        var teamInfoWindow = new TeamInfoWindow(SelectedTeam);
+        
+        var result = teamInfoWindow.ShowDialog();
+        
+        if (result == true)
+        {
+        }
+    }
+
+    private async Task OpenTeamCreateWindow()
     {
         // 팀 생성 창 인스턴스 생성
         var teamCreateWindow = new TeamCreateWindow();
-    
+
         // 모달 대화상자로 표시
-        bool? result = teamCreateWindow.ShowDialog();
-    
+        var result = teamCreateWindow.ShowDialog();
+
         // 결과 처리 (팀이 생성되었을 경우)
         if (result == true)
         {
+            var calendar = await _calendarService.CreateCalendarAsync(teamCreateWindow.TeamName, teamCreateWindow.TeamDescription);
             
+            if (calendar != null)
+            {
+                string calendarId = calendar.Id;
+                
+                Team newTeam = _teamService.FindTeamByUuid(teamCreateWindow.Uuid);
+                
+                // _teamRepository.UpdateTeamCalendarId(newTeam.teamId, calendarId);
+
+                _teamService.UpdateTeamCalendarId(newTeam, calendarId);
+            }
+            
+            RefreshTeamList();
         }
     }
-    
-    private void OpenTeamDeleteWindow()
-    {
-        
-    }
 
-    
-    // private void OnPersonalMenuClick(object sender, RoutedEventArgs e)
-    // {
-    //     if (sender is Button button)
-    //     {
-    //         MessageBox.Show($"개인 메뉴 - {button.Content} 클릭됨");
-    //     }
-    // }
-    //
-    // private void OnTeamMenuClick(object sender, RoutedEventArgs e)
-    // {
-    //     if (sender is Button button)
-    //     {
-    //         MessageBox.Show($"팀 메뉴 - {button.Content} 클릭됨");
-    //     }
-    // }
-    
-    public event PropertyChangedEventHandler PropertyChanged;
+    private void OpenTeamMemberRegistrationWindow()
+    {
+        var teamMemberRegistrationWindow = new TeamMemberRegistrationWindow(SelectedTeam);
+        
+        var result = teamMemberRegistrationWindow.ShowDialog();
+        
+        if (result == true)
+        {
+        }
+    }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {

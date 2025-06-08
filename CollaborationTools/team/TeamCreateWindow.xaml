@@ -3,32 +3,31 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:CollaborationTools.team"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="팀 생성" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!-- 제목 -->
-        <TextBlock Grid.Row="0" Text="새 팀 만들기" 
+        <TextBlock Grid.Row="0" Text="새 팀 만들기"
                    Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                   Margin="0,0,0,20"/>
+                   Margin="0,0,0,20" />
 
         <!-- 팀 이름 입력 -->
-        <TextBox Grid.Row="1" 
+        <TextBox Grid.Row="1"
                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                  materialDesign:HintAssist.Hint="팀 이름"
                  Margin="0,0,0,15"
-                 Text="{Binding TeamName, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding TeamName, UpdateSourceTrigger=PropertyChanged}" />
 
         <!-- 팀 설명 입력 -->
         <TextBox Grid.Row="2"
@@ -39,38 +38,38 @@
                  AcceptsReturn="True"
                  VerticalScrollBarVisibility="Auto"
                  Height="100"
-                 Text="{Binding TeamDescription, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding TeamDescription, UpdateSourceTrigger=PropertyChanged}" />
 
         <!-- 팀원 추가 영역 -->
-        <TextBlock Grid.Row="3" Text="팀원 추가" 
+        <TextBlock Grid.Row="3" Text="팀원 추가"
                    Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-                   Margin="0,0,0,10"/>
+                   Margin="0,0,0,10" />
 
         <Grid Grid.Row="4">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <!-- 이메일 입력 및 추가 버튼 -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" 
+                <TextBox Grid.Column="0"
                          Style="{StaticResource MaterialDesignOutlinedTextBox}"
                          materialDesign:HintAssist.Hint="팀원 이메일"
                          Margin="0,0,10,0"
-                         Text="{Binding NewMemberEmail, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Grid.Column="1" 
+                         Text="{Binding NewMemberEmail, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Grid.Column="1"
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         Content="추가"
-                        Command="{Binding AddMemberCommand}"/>
+                        Command="{Binding AddMemberCommand}" />
             </Grid>
 
             <!-- 추가된 팀원 목록 -->
-            <ListBox Grid.Row="1" 
+            <ListBox Grid.Row="1"
                      ItemsSource="{Binding TeamMembers}"
                      Margin="0,10,0,0"
                      Style="{StaticResource MaterialDesignListBox}">
@@ -78,11 +77,11 @@
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
-                            <Button Grid.Column="1" 
+                            <TextBlock Text="{Binding}" VerticalAlignment="Center" />
+                            <Button Grid.Column="1"
                                     Style="{StaticResource MaterialDesignIconButton}"
                                     Command="{Binding DataContext.RemoveMemberCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                     CommandParameter="{Binding}">
@@ -99,10 +98,10 @@
             <Button Style="{StaticResource MaterialDesignOutlinedButton}"
                     Content="취소"
                     Margin="0,0,10,0"
-                    Command="{Binding CancelCommand}"/>
+                    Command="{Binding CancelCommand}" />
             <Button Style="{StaticResource MaterialDesignRaisedButton}"
                     Content="팀 생성"
-                    Command="{Binding CreateTeamCommand}"/>
+                    Command="{Binding CreateTeamCommand}" />
         </StackPanel>
     </Grid>
 

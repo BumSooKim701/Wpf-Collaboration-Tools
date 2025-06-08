@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Style="{StaticResource MaterialDesignWindow}"    
+        Style="{StaticResource MaterialDesignWindow}"
         Title="MainWindow" Width="900" Height="600">
-        <!-- MinWidth="760" MinHeight="512" -->
-    
+    <!-- MinWidth="760" MinHeight="512" -->
+
     <Grid>
-        <Frame Source="login/LoginPage.xaml" NavigationUIVisibility="Hidden"/>
+        <Frame Source="login/LoginPage.xaml" NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>

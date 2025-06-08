@@ -1,5 +1,4 @@
-﻿using System.Windows.Documents;
-using CollaborationTools.team;
+﻿using CollaborationTools.team;
 using CollaborationTools.user;
 using MySqlConnector;
 
@@ -7,33 +6,31 @@ namespace CollaborationTools.database;
 
 public class TeamRepository
 {
-    private ConnectionPool _connectionPool = ConnectionPool.GetInstance();
+    private readonly ConnectionPool _connectionPool = ConnectionPool.GetInstance();
 
-    public bool AddTeam(string teamName, string uuid, int teamMemberCount, DateTime dateOfCreated, string teamCalName, string teamCalId, string teamDescription)
+    public bool AddTeam(string teamName, string uuid, int teamMemberCount, DateTime dateOfCreated, string teamCalName, string teamDescription)
     {
         MySqlConnection connection = null;
-        bool result = true;
-        
+        var result = true;
+
         try
         {
             connection = _connectionPool.GetConnection();
 
-            using (var command = new MySqlCommand("INSERT INTO team (uuid, team_name, team_member_count, date_of_created, team_calendar_name, team_calendar_id, team_description) VALUES (@uuid, @teamName, @teamMemberCount, @dateOfCreated, @teamCalendarName, @teamCalendarId, @teamDescription)", connection))
+            using (var command = new MySqlCommand(
+                       "INSERT INTO team (uuid, team_name, team_member_count, date_of_created, team_calendar_name, team_description) VALUES (@uuid, @teamName, @teamMemberCount, @dateOfCreated, @teamCalendarName, @teamDescription)",
+                       connection))
             {
                 command.Parameters.AddWithValue("@uuid", uuid);
                 command.Parameters.AddWithValue("@teamName", teamName);
                 command.Parameters.AddWithValue("@teamMemberCount", teamMemberCount);
                 command.Parameters.AddWithValue("@dateOfCreated", dateOfCreated);
                 command.Parameters.AddWithValue("@teamCalendarName", teamCalName);
-                command.Parameters.AddWithValue("@teamCalendarId", teamCalId);
                 command.Parameters.AddWithValue("@teamDescription", teamDescription);
 
-                int executeResult = command.ExecuteNonQuery();
-                
-                if (executeResult == 0)
-                {
-                    result = false;
-                }
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult == 0) result = false;
             }
         }
         catch (Exception e)
@@ -42,10 +39,37 @@ public class TeamRepository
         }
         finally
         {
-            if (connection != null)
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
+    }
+    
+    public bool UpdateTeamCalendarId(int teamId, string teamCalId)
+    {
+        MySqlConnection connection = null;
+        var result = true;
+        
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            using (var command = new MySqlCommand("UPDATE team SET team_calendar_id = @teamCalId WHERE id = @teamId", connection))
             {
-                _connectionPool.ReleaseConnection(connection);
+                command.Parameters.AddWithValue("@teamCalId", teamCalId);
+                command.Parameters.AddWithValue("@teamId", teamId);
+
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult == 0) result = false;
             }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error adding team: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
 
         return result;
@@ -54,8 +78,8 @@ public class TeamRepository
     public bool RemoveTeam(int teamId)
     {
         MySqlConnection connection = null;
-        bool result = true;
-        
+        var result = true;
+
         try
         {
             connection = _connectionPool.GetConnection();
@@ -64,12 +88,9 @@ public class TeamRepository
             {
                 command.Parameters.AddWithValue("@teamId", teamId);
 
-                int executeResult = command.ExecuteNonQuery();
-                
-                if (executeResult == 0)
-                {
-                    result = false;
-                }
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult == 0) result = false;
             }
         }
         catch (Exception e)
@@ -78,16 +99,13 @@ public class TeamRepository
         }
         finally
         {
-            if (connection != null)
-            {
-                _connectionPool.ReleaseConnection(connection);
-            }
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
 
         return result;
     }
-    
-    public Team? FindTeamById (int id)
+
+    public Team? FindTeamById(int id)
     {
         Team? team = null;
         MySqlConnection connection = null;
@@ -103,7 +121,6 @@ public class TeamRepository
                 using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())
-                    {
                         team = new Team
                         {
                             teamId = reader.GetInt32("id"),
@@ -114,7 +131,6 @@ public class TeamRepository
                             teamCalendarName = reader.GetString("team_calendar_name"),
                             teamCalendarId = reader.GetString("team_calendar_id")
                         };
-                    }
                 }
             }
         }
@@ -124,10 +140,7 @@ public class TeamRepository
         }
         finally
         {
-            if (connection != null)
-            {
-                _connectionPool.ReleaseConnection(connection);
-            }
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
 
         return team;
@@ -135,28 +148,26 @@ public class TeamRepository
 
     public List<Team?> FindTeamsByUser(User user)
     {
-        List<Team?> teams = new List<Team?>();
+        var teams = new List<Team?>();
         MySqlConnection connection = null;
-        
-        TeamMemberRepository teamMemberRepository = new TeamMemberRepository();
-        List<TeamMember?> teamMembers = teamMemberRepository.FindTeamMemberByUserId(user.userId);
+
+        var teamMemberRepository = new TeamMemberRepository();
+        var teamMembers = teamMemberRepository.FindTeamMemberByUserId(user.userId);
 
         try
         {
             connection = _connectionPool.GetConnection();
 
-            foreach (TeamMember? teamMember in teamMembers)
-            {
+            foreach (var teamMember in teamMembers)
                 using (var command = new MySqlCommand("SELECT * FROM team WHERE id = @id", connection))
                 {
                     if (teamMember != null)
                     {
                         command.Parameters.AddWithValue("@id", teamMember.teamId);
-                        
+
                         using (var reader = command.ExecuteReader())
                         {
                             if (reader.Read())
-                            {
                                 teams.Add(new Team
                                 {
                                     teamId = teamMember.teamId,
@@ -165,9 +176,9 @@ public class TeamRepository
                                     teamMemberCount = reader.GetInt32("team_member_count"),
                                     dateOfCreated = reader.GetDateTime("date_of_created"),
                                     teamCalendarName = reader.GetString("team_calendar_name"),
-                                    teamCalendarId = reader.GetString("team_calendar_id")
+                                    teamCalendarId = reader.GetString("team_calendar_id"),
+                                    teamDescription = reader.GetString("team_description")
                                 });
-                            }
                         }
                     }
                     else
@@ -175,7 +186,6 @@ public class TeamRepository
                         teams.Add(null);
                     }
                 }
-            }
         }
         catch (Exception e)
         {
@@ -183,10 +193,7 @@ public class TeamRepository
         }
         finally
         {
-            if (connection != null)
-            {
-                _connectionPool.ReleaseConnection(connection);
-            }
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
 
         return teams;
@@ -194,13 +201,13 @@ public class TeamRepository
 
     public List<Team?>? FindTeamByName(string teamName)
     {
-        List<Team?>? teamList = new List<Team?>();
+        var teamList = new List<Team?>();
         MySqlConnection connection = null;
 
         try
         {
             connection = _connectionPool.GetConnection();
-            
+
             using (var command = new MySqlCommand("SELECT * FROM team WHERE team_name = @name", connection))
             {
                 command.Parameters.AddWithValue("@name", teamName);
@@ -208,7 +215,6 @@ public class TeamRepository
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
-                    {
                         teamList?.Add(new Team
                         {
                             teamId = reader.GetInt32("id"),
@@ -219,7 +225,6 @@ public class TeamRepository
                             teamCalendarName = reader.GetString("team_calendar_name"),
                             teamCalendarId = reader.GetString("team_calendar_id")
                         });
-                    }
                 }
             }
         }
@@ -229,14 +234,12 @@ public class TeamRepository
         }
         finally
         {
-            if (connection != null)
-            {
-                _connectionPool.ReleaseConnection(connection);
-            }
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
 
         return teamList;
     }
+
     public Team? FindTeamByUuid(string uuid)
     {
         Team? team = null;
@@ -245,7 +248,7 @@ public class TeamRepository
         try
         {
             connection = _connectionPool.GetConnection();
-            
+
             using (var command = new MySqlCommand("SELECT * FROM team WHERE uuid = @uuid", connection))
             {
                 command.Parameters.AddWithValue("@uuid", uuid);
@@ -253,7 +256,6 @@ public class TeamRepository
                 using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())
-                    {
                         team = new Team
                         {
                             teamId = reader.GetInt32("id"),
@@ -264,7 +266,6 @@ public class TeamRepository
                             teamCalendarName = reader.GetString("team_calendar_name"),
                             teamCalendarId = reader.GetString("team_calendar_id")
                         };
-                    }
                 }
             }
         }
@@ -274,10 +275,7 @@ public class TeamRepository
         }
         finally
         {
-            if (connection != null)
-            {
-                _connectionPool.ReleaseConnection(connection);
-            }
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
 
         return team;

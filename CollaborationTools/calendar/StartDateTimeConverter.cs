@@ -13,8 +13,8 @@ public class StartDateTimeConverter : IMultiValueConverter
             return "";
 
         var dayOfWeek = DayOfWeekKor[(int)dateTime.DayOfWeek];
-        return isAllDayEvent ? 
-            $"{dateTime.Month}월 {dateTime.Day}일 ({dayOfWeek})"
+        return isAllDayEvent
+            ? $"{dateTime.Month}월 {dateTime.Day}일 ({dayOfWeek})"
             : $"{dateTime.Month}월 {dateTime.Day}일 ({dayOfWeek}) {dateTime.Hour:D2}:{dateTime.Minute:D2}";
     }
 

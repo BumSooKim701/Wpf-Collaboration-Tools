@@ -4,104 +4,99 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:global="clr-namespace:"
         xmlns:calendar="clr-namespace:CollaborationTools.calendar"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         Title="ScheduleDetailsDialog" Height="450" Width="400"
-        WindowStyle="None" ResizeMode="NoResize" 
+        WindowStyle="None" ResizeMode="NoResize"
         AllowsTransparency="True" Background="Transparent">
-    
+
     <Window.Resources>
-        <calendar:TermDateTimeConverter x:Key="TermDateTimeConverter"/>
+        <calendar:TermDateTimeConverter x:Key="TermDateTimeConverter" />
     </Window.Resources>
-    
+
     <materialDesign:Card Margin="20" Padding="20">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            
+
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Click="EditButton_DoubleClick" 
-                    VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
+                <Button Click="EditButton_DoubleClick"
+                        VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
                         IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                         Style="{StaticResource MaterialDesignIconForegroundButton}"
                         Height="30" Width="30"
-                        ToolTip="편집"
-                >
+                        ToolTip="편집">
                     <materialDesign:PackIcon
                         Width="15"
                         Height="15"
-                        Kind="Pencil"
-                    />
+                        Kind="Pencil" />
                 </Button>
-                <Button Click="DeleteButton_DoubleClick" 
-                    VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
+                <Button Click="DeleteButton_DoubleClick"
+                        VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
                         IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                         Style="{StaticResource MaterialDesignIconForegroundButton}"
                         Height="30" Width="30"
-                        ToolTip="삭제"
-                >
+                        ToolTip="삭제">
                     <materialDesign:PackIcon
                         Width="15"
                         Height="15"
-                        Kind="Delete"
-                    />
+                        Kind="Delete" />
                 </Button>
             </StackPanel>
-            <TextBlock Grid.Row="1" Text="{Binding Title}" 
+            <TextBlock Grid.Row="1" Text="{Binding Title}"
                        TextWrapping="Wrap"
                        Margin="0, 5"
-                       Style="{StaticResource MaterialDesignHeadline5TextBlock}"/>
-            <TextBlock Grid.Row="2"  
+                       Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
+            <TextBlock Grid.Row="2"
                        TextWrapping="Wrap"
                        Margin="0, 5"
                        Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
                 <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource TermDateTimeConverter}">
-                        <Binding Path="StartDateTime"/>
-                        <Binding Path="EndDateTime"/>
-                        <Binding Path="IsAllDayEventStart"/>
-                        <Binding Path="IsAllDayEventEnd"/>
-                        <Binding Path="IsOneDayEvent"/>
+                        <Binding Path="StartDateTime" />
+                        <Binding Path="EndDateTime" />
+                        <Binding Path="IsAllDayEventStart" />
+                        <Binding Path="IsAllDayEventEnd" />
+                        <Binding Path="IsOneDayEvent" />
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-            
+
             <Grid Grid.Row="3">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                
-                <Label Grid.Row="0" Grid.Column="0" Content="장소 : "/>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="장소 : " />
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Location}"
                            TextWrapping="Wrap"
                            Margin="0,5"
-                           Style="{StaticResource MaterialDesignBodyMediumTextBlock}"/>
-                
-                <Label Grid.Row="1" Grid.Column="0" Content="메모 : "/>
+                           Style="{StaticResource MaterialDesignBodyMediumTextBlock}" />
+
+                <Label Grid.Row="1" Grid.Column="0" Content="메모 : " />
                 <TextBox Grid.Row="1" Grid.Column="1"
-                           Text="{Binding Description}"
-                           IsReadOnly="True"
-                           TextWrapping="Wrap"
-                           Margin="0,5"
-                           VerticalScrollBarVisibility="Auto"
-                           VerticalContentAlignment="Top"
-                           Style="{StaticResource MaterialDesignFilledTextBox}" />
+                         Text="{Binding Description}"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap"
+                         Margin="0,5"
+                         VerticalScrollBarVisibility="Auto"
+                         VerticalContentAlignment="Top"
+                         Style="{StaticResource MaterialDesignFilledTextBox}" />
             </Grid>
-            <Button Grid.Row="4" Content="Close" 
+            <Button Grid.Row="4" Content="Close"
                     Style="{StaticResource MaterialDesignFlatButton}"
-                    Click="CloseButton_Click"/>
+                    Click="CloseButton_Click" />
         </Grid>
     </materialDesign:Card>
 </Window>

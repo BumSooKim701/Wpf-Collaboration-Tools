@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using CollaborationTools.user;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
@@ -17,20 +18,21 @@ public class GoogleAuthentication
         "https://www.googleapis.com/auth/userinfo.profile",
         "https://www.googleapis.com/auth/userinfo.email"
     ];
+
     private static readonly string ApplicationName = "CollaborationTools App";
     public static CalendarService CalendarService;
     private UserCredential _credential;
     private User? user;
-    
+
     public async Task<User> AuthenticateGoogleAsync()
     {
         try
         {
-            string credentialPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "credential/client_secret.json");
+            var credentialPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "credential/client_secret.json");
             using (var stream = new FileStream(credentialPath, FileMode.Open, FileAccess.Read))
             {
-                string tokenPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "credential/");
-                    
+                var tokenPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "credential/");
+
                 _credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     Scopes,
@@ -40,18 +42,18 @@ public class GoogleAuthentication
             }
 
             // Calendar 서비스 초기화
-            CalendarService = new CalendarService(new BaseClientService.Initializer()
+            CalendarService = new CalendarService(new BaseClientService.Initializer
             {
                 HttpClientInitializer = _credential,
-                ApplicationName = ApplicationName,
+                ApplicationName = ApplicationName
             });
-                
+
             // 사용자 정보 가져오기
             user = await GetUserInfoAsync();
-        
+
             // 리프레시 토큰 저장 (중요: 첫 인증시에만 제공됨)
             user.RefreshToken = _credential.Token.RefreshToken;
-        
+
             return user;
         }
         catch (FileNotFoundException)
@@ -63,19 +65,19 @@ public class GoogleAuthentication
             throw new Exception($"인증 실패: {ex.Message}");
         }
     }
-    
+
     private async Task<User> GetUserInfoAsync()
     {
         using (var httpClient = new HttpClient())
         {
             var accessToken = await _credential.GetAccessTokenForRequestAsync();
-                
-            httpClient.DefaultRequestHeaders.Authorization = 
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
-            
+
+            httpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", accessToken);
+
             var response = await httpClient.GetAsync(
                 $"https://www.googleapis.com/oauth2/v3/userinfo?access_token={accessToken}");
-            
+
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();

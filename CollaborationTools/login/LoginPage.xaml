@@ -3,31 +3,30 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:CollaborationTools.login"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d"
       Title="Login" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
         <!-- 로고 및 타이틀 -->
-        <StackPanel Grid.Row="0" 
-                    VerticalAlignment="Center" 
+        <StackPanel Grid.Row="0"
+                    VerticalAlignment="Center"
                     HorizontalAlignment="Center">
             <TextBlock Text="로그인"
                        FontSize="32"
                        FontWeight="Bold"
-                       Margin="0,20,0,0"/>
+                       Margin="0,20,0,0" />
         </StackPanel>
 
         <!-- 로그인 폼 -->
-        <StackPanel Grid.Row="1" 
+        <StackPanel Grid.Row="1"
                     Margin="40,0">
-            
+
             <Button
                 x:Name="LoginButton"
                 Click="LoginButton_Click"
@@ -51,7 +50,7 @@
         <!-- 하단 상태바 -->
         <StatusBar Grid.Row="2">
             <StatusBarItem>
-                <TextBlock x:Name="txtStatus"/>
+                <TextBlock x:Name="txtStatus" />
             </StatusBarItem>
         </StatusBar>
     </Grid>

@@ -7,27 +7,33 @@ namespace CollaborationTools.team;
 
 public class TeamService
 {
-    private TeamRepository _teamRepository =  new TeamRepository();
-    private TeamMemberRepository _teamMemberRepository = new TeamMemberRepository();
+    private readonly TeamMemberRepository _teamMemberRepository = new();
+    private readonly TeamRepository _teamRepository = new();
 
     public bool CreateTeam(Team team)
     {
-        bool result = _teamRepository.AddTeam(
+        var result = _teamRepository.AddTeam(
             team.teamName,
             team.uuid,
             team.teamMemberCount,
             team.dateOfCreated,
             team.teamCalendarName,
-            team.teamCalendarId,
             team.teamDescription);
-            
+
         return result;
     }
 
-    public bool RemoveTeam(int teamId)
+    public bool RemoveTeam(Team team)
     {
-        bool result = _teamRepository.RemoveTeam(teamId);
-        
+        var result = _teamRepository.RemoveTeam(team.teamId);
+
+        return result;
+    }
+
+    public bool RemoveAllTeamMember(Team team)
+    {
+        var result = _teamMemberRepository.RemoveAllTeamMember(team.teamId);
+
         return result;
     }
 
@@ -40,32 +46,48 @@ public class TeamService
     {
         return _teamRepository.FindTeamByUuid(uuid);
     }
-    
+
+    public List<TeamMember?>? FindTeamMembersByTeamId(int teamId)
+    {
+        return _teamMemberRepository.FindTeamMembersByTeamId(teamId);
+    }
+
     public bool IsValidEmail(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
             return false;
-            
-        string pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]";
+
+        var pattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]";
         return Regex.IsMatch(email, pattern);
     }
-    
+
     public bool AddTeamMemberByEmail(Team team, string userEmail, byte authority)
     {
-        bool result = _teamMemberRepository.AddTeamMember(team.uuid, userEmail, authority);
-        
+        var result = _teamMemberRepository.AddTeamMember(team.uuid, userEmail, authority);
+
         return result;
     }
 
     public bool AddTeamMembersByEmail(Team team, ObservableCollection<string> userEmailList, byte authority)
     {
-        bool result = true;
-        
+        var result = true;
+
         foreach (var userEmail in userEmailList)
-        {
             result = _teamMemberRepository.AddTeamMember(team.uuid, userEmail, authority);
-        }
 
         return result;
+    }
+
+    public bool UpdateTeamCalendarId(Team team, string calendarId)
+    {
+        bool result = _teamRepository.UpdateTeamCalendarId(team.teamId, calendarId);
+
+        return result;
+    }
+    
+    public byte FindAuthority(Team team, User user)
+    {
+        
+        return _teamMemberRepository.FindTeamMemberAuthority(team.teamId, user.userId);;
     }
 }
