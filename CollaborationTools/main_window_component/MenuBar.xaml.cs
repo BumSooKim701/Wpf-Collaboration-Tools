@@ -5,39 +5,40 @@ namespace CollaborationTools;
 
 public partial class MenuBar : UserControl
 {
-    private List<MenuItem> MenuList { get; set; }
     public MenuBar()
     {
         InitializeComponent();
         DataContext = this;
-        
-        MenuList = new()
+
+        MenuList = new List<MenuItem>
         {
-            new MenuItem
+            new()
             {
                 Title = "홈",
                 SelectedIcon = PackIconKind.Home,
-                UnselectedIcon = PackIconKind.HomeOutline,
+                UnselectedIcon = PackIconKind.HomeOutline
             },
-            new MenuItem
+            new()
             {
                 Title = "캘린더",
                 SelectedIcon = PackIconKind.Calendar,
-                UnselectedIcon = PackIconKind.CalendarOutline,
+                UnselectedIcon = PackIconKind.CalendarOutline
             },
-            new MenuItem
+            new()
             {
                 Title = "파일",
                 SelectedIcon = PackIconKind.Folder,
-                UnselectedIcon = PackIconKind.FolderOutline,
+                UnselectedIcon = PackIconKind.FolderOutline
             },
-            new MenuItem
+            new()
             {
                 Title = "메모",
                 SelectedIcon = PackIconKind.Note,
-                UnselectedIcon = PackIconKind.NoteOutline,
-            },
+                UnselectedIcon = PackIconKind.NoteOutline
+            }
         };
         NavigationBar.ItemsSource = MenuList;
     }
+
+    private List<MenuItem> MenuList { get; }
 }

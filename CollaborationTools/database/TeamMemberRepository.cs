@@ -1,5 +1,4 @@
-﻿using System.Data;
-using CollaborationTools.team;
+﻿using CollaborationTools.team;
 using CollaborationTools.user;
 using MySqlConnector;
 
@@ -7,31 +6,31 @@ namespace CollaborationTools.database;
 
 public class TeamMemberRepository
 {
-    private ConnectionPool _connectionPool = ConnectionPool.GetInstance();
-    private UserRepository _userRepository = new UserRepository();
-    private TeamRepository _teamRepository = new TeamRepository();
+    private readonly ConnectionPool _connectionPool = ConnectionPool.GetInstance();
+    private readonly TeamRepository _teamRepository = new();
+    private readonly UserRepository _userRepository = new();
 
     public bool AddTeamMember(int teamId, int userId, byte authority)
     {
         MySqlConnection connection = null;
-        bool result = true;
-        
+        var result = true;
+
         try
         {
             connection = _connectionPool.GetConnection();
-            
-            using (var command = new MySqlCommand("INSERT INTO team_member (user_id, team_id, authority) VALUES (@userId, @teamId, @authority)", connection))
+
+            using (var command =
+                   new MySqlCommand(
+                       "INSERT INTO team_member (user_id, team_id, authority) VALUES (@userId, @teamId, @authority)",
+                       connection))
             {
                 command.Parameters.AddWithValue("@userId", userId);
                 command.Parameters.AddWithValue("@teamId", teamId);
                 command.Parameters.AddWithValue("@authority", authority);
 
-                int executeResult = command.ExecuteNonQuery();
-                
-                if (executeResult == 0)
-                {
-                    result = false;
-                }
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult == 0) result = false;
             }
         }
         catch (Exception e)
@@ -40,30 +39,30 @@ public class TeamMemberRepository
         }
         finally
         {
-            if (connection != null)
-            {
-                _connectionPool.ReleaseConnection(connection);
-            }
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
 
         return result;
     }
-    
+
     public bool AddTeamMember(string uuid, string userEmail, byte authority)
     {
         MySqlConnection connection = null;
         User? user = null;
         Team? team = null;
-        bool result = true;
-        
+        var result = true;
+
         try
         {
             connection = _connectionPool.GetConnection();
             user = _userRepository.FindUserByEmail(userEmail);
             team = _teamRepository.FindTeamByUuid(uuid);
             Console.WriteLine(uuid + " " + userEmail + " " + authority);
-            
-            using (var command = new MySqlCommand("INSERT INTO team_member (user_id, team_id, authority) VALUES (@userId, @teamId, @authority)", connection))
+
+            using (var command =
+                   new MySqlCommand(
+                       "INSERT INTO team_member (user_id, team_id, authority) VALUES (@userId, @teamId, @authority)",
+                       connection))
             {
                 if (user != null && team != null)
                 {
@@ -71,12 +70,9 @@ public class TeamMemberRepository
                     command.Parameters.AddWithValue("@teamId", team.teamId);
                     command.Parameters.AddWithValue("@authority", authority);
 
-                    int executeResult = command.ExecuteNonQuery();
-                
-                    if (executeResult == 0)
-                    {
-                        result = false;
-                    }
+                    var executeResult = command.ExecuteNonQuery();
+
+                    if (executeResult == 0) result = false;
                 }
                 else
                 {
@@ -90,34 +86,28 @@ public class TeamMemberRepository
         }
         finally
         {
-            if (connection != null)
-            {
-                _connectionPool.ReleaseConnection(connection);
-            }
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
 
         return result;
     }
 
-    public bool RemoveTeamMember(TeamMember teamMember)
+    public bool RemoveAllTeamMember(int teamId)
     {
         MySqlConnection connection = null;
-        bool result = true;
-        
+        var result = true;
+
         try
         {
             connection = _connectionPool.GetConnection();
 
-            using (var command = new MySqlCommand("DELETE FROM teammember WHERE id = @memberId", connection))
+            using (var command = new MySqlCommand("DELETE FROM team_member WHERE team_id = @teamId", connection))
             {
-                command.Parameters.AddWithValue("@memberId", teamMember.memberId);
+                command.Parameters.AddWithValue("@teamId", teamId);
 
-                int executeResult = command.ExecuteNonQuery();
-                
-                if (executeResult == 0)
-                {
-                    result = false;
-                }
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult == 0) result = false;
             }
         }
         catch (Exception e)
@@ -126,10 +116,7 @@ public class TeamMemberRepository
         }
         finally
         {
-            if (connection != null)
-            {
-                _connectionPool.ReleaseConnection(connection);
-            }
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
 
         return result;
@@ -137,7 +124,7 @@ public class TeamMemberRepository
 
     public List<TeamMember?> FindTeamMemberByUserId(int userId)
     {
-        List<TeamMember?> teamMemberList =  new List<TeamMember?>();
+        var teamMemberList = new List<TeamMember?>();
         MySqlConnection? connection = null;
 
         try
@@ -149,16 +136,15 @@ public class TeamMemberRepository
                 command.Parameters.AddWithValue("@id", userId);
 
                 using (var reader = command.ExecuteReader())
-                { 
+                {
                     while (reader.Read())
-                    {
                         teamMemberList.Add(new TeamMember
                         {
-                            memberId = reader.GetInt32("member_id"),
+                            memberId = reader.GetInt32("id"),
+                            userId = reader.GetInt32("user_id"),
                             teamId = reader.GetInt32("team_id"),
-                            authority = reader.GetInt32("authority")
+                            authority = reader.GetByte("authority")
                         });
-                    }
                 }
             }
         }
@@ -168,12 +154,80 @@ public class TeamMemberRepository
         }
         finally
         {
-            if (connection != null)
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return teamMemberList;
+    }
+
+    public List<TeamMember?>? FindTeamMembersByTeamId(int teamId)
+    {
+        List<TeamMember?>? teamMemberList = new List<TeamMember?>();
+        MySqlConnection connection = null;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+
+            using (var command = new MySqlCommand("SELECT * FROM team_member WHERE team_id = @id", connection))
             {
-                _connectionPool.ReleaseConnection(connection);
+                command.Parameters.AddWithValue("@id", teamId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                        teamMemberList?.Add(new TeamMember
+                        {
+                            memberId = reader.GetInt32("id"),
+                            userId = reader.GetInt32("user_id"),
+                            teamId = reader.GetInt32("team_id"),
+                            authority = reader.GetByte("authority")
+                        });
+                }
             }
         }
-        
+        catch (Exception e)
+        {
+            Console.WriteLine($"find team members by team id error: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
         return teamMemberList;
+    }
+    
+    public byte FindTeamMemberAuthority(int teamId, int userId)
+    {
+        byte authority = 0;
+        MySqlConnection? connection = null;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+
+            using (var command = new MySqlCommand("SELECT authority from team_member where team_id = @teamId and user_id = @userId", connection))
+            {
+                command.Parameters.AddWithValue("@teamId", teamId);
+                command.Parameters.AddWithValue("@userId", userId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                        authority = reader.GetByte("authority");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"find team member by id error: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return authority;
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace CollaborationTools.calendar;
+﻿namespace CollaborationTools.calendar;
 
 public class ScheduleItem
 {
@@ -13,5 +11,4 @@ public class ScheduleItem
     public bool IsOneDayEvent { get; set; }
     public string Location { get; set; }
     public string Description { get; set; }
-    
 }

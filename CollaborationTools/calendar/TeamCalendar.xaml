@@ -4,14 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:global="clr-namespace:"
              xmlns:calendar="clr-namespace:CollaborationTools.calendar"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
-    
+
     <UserControl.Resources>
-        <calendar:StartDateTimeConverter x:Key="StartDateTimeConverter"/>
-        
+        <calendar:StartDateTimeConverter x:Key="StartDateTimeConverter" />
+
         <Style x:Key="StretchListViewItemStyle" TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
@@ -46,12 +45,11 @@
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
                         Margin="10"
-                        Style="{StaticResource MaterialDesignBody2TextBlock}"
-                        >
+                        Style="{StaticResource MaterialDesignBody2TextBlock}">
                         <TextBlock.Text>
                             <MultiBinding Converter="{StaticResource StartDateTimeConverter}">
-                                <Binding Path="StartDateTime"/>
-                                <Binding Path="IsAllDayEventStart"/>
+                                <Binding Path="StartDateTime" />
+                                <Binding Path="IsAllDayEventStart" />
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
@@ -76,7 +74,7 @@
         </Style>
     </UserControl.Resources>
 
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -91,20 +89,18 @@
 
             <Calendar Grid.Row="0" Language="ko-KR"
                       x:Name="Calendar"
-                      SelectedDatesChanged="CalendarDateChanged"/>
-            <Button Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" 
+                      SelectedDatesChanged="CalendarDateChanged" />
+            <Button Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
-                    ToolTip="일정 추가"
-            >
+                    ToolTip="일정 추가">
                 <materialDesign:PackIcon
                     Width="15"
                     Height="15"
-                    Kind="CalendarAdd"
-                />
+                    Kind="CalendarAdd" />
             </Button>
 
-            <TextBlock Grid.Row="1" x:Name="NoScheduleMsgCalendar" Text="예정된 일정이 없습니다" FontWeight="Medium" 
+            <TextBlock Grid.Row="1" x:Name="NoScheduleMsgCalendar" Text="예정된 일정이 없습니다" FontWeight="Medium"
                        Style="{StaticResource NoScheduleMsgStyle}" />
             <ListView Grid.Row="1" x:Name="CardListViewCalendar"
                       Width="300"
@@ -129,7 +125,7 @@
             <TextBlock Grid.Row="0" Text="다가오는 일정" FontSize="25" FontWeight="Bold" Margin="10" />
 
             <TextBlock Grid.Row="1" x:Name="NoScheduleMsg" Text="예정된 일정이 없습니다"
-                       FontWeight="SemiBold" Style="{StaticResource NoScheduleMsgStyle}"/>
+                       FontWeight="SemiBold" Style="{StaticResource NoScheduleMsgStyle}" />
             <ListView Grid.Row="1" x:Name="CardListView"
                       MouseDoubleClick="ListView_MouseDoubleClick"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"

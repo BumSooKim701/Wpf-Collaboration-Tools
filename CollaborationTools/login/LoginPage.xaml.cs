@@ -9,8 +9,8 @@ namespace CollaborationTools.login;
 
 public partial class LoginPage : Page
 {
-    private GoogleAuthentication _googleAuthentication = new GoogleAuthentication();
-    private UserRepository _userRepository = new UserRepository();
+    private readonly GoogleAuthentication _googleAuthentication = new();
+    private readonly UserRepository _userRepository = new();
 
     public LoginPage()
     {
@@ -27,20 +27,16 @@ public partial class LoginPage : Page
             // OAuth 인증 및 사용자 정보 수집
             var googleUser = await _googleAuthentication.AuthenticateGoogleAsync();
 
-            User? dbUser = _userRepository.FindUserByEmail(googleUser.Email);
+            var dbUser = _userRepository.FindUserByEmail(googleUser.Email);
 
             if (dbUser == null)
             {
-                bool result = _userRepository.AddUser(googleUser);
+                var result = _userRepository.AddUser(googleUser);
 
                 if (!result)
-                {
                     txtStatus.Text = "회원 등록 실패";
-                }
                 else
-                {
                     NavigatePage(_userRepository.FindUserByEmail(googleUser.Email));
-                }
             }
             else
             {
@@ -61,12 +57,12 @@ public partial class LoginPage : Page
             LoginButton.IsEnabled = true;
         }
     }
-    
+
     private void NavigatePage(User user)
     {
         UserSession.Login(user);
-        
+
         Page mainPage = new MainPage();
         NavigationService.Navigate(mainPage);
-    }   
+    }
 }

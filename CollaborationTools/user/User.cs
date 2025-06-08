@@ -10,4 +10,4 @@ public class User
     public string RefreshToken { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime LastLoginAt { get; set; }
-}   
+}
