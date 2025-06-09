@@ -1,19 +1,124 @@
 ﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Google.Apis.Calendar.v3.Data;
 using MySqlConnector;
 
 namespace CollaborationTools.calendar;
 
-public class ScheduleItem
+public class ScheduleItem: INotifyPropertyChanged
 {
-    public string Title { get; set; }
-    public DateTime StartDateTime { get; set; }
-    public DateTime EndDateTime { get; set; }
-    public bool IsAllDayEvent { get; set; }
-    public bool IsOneDayEvent { get; set; }
-    public string Location { get; set; }
-    public string Description { get; set; }
-    public string CalendarId { get; set; }
+    private string _title;
+    public string Title
+    {
+        get => _title;
+        set
+        {
+            if(_title != value)
+            {
+                _title = value; 
+                OnPropertyChanged();
+                
+            }
+        }
+    }
+
+    private DateTime _startDateTime;
+    public DateTime StartDateTime
+    {
+        get => _startDateTime;
+        set
+        {
+            if (_startDateTime != value)
+            {
+                _startDateTime = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+    
+    private DateTime _endDateTime;
+    public DateTime EndDateTime
+    {
+        get => _endDateTime;
+        set
+        {
+            if (_endDateTime != value)
+            {
+                _endDateTime = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    private bool _isAllDayEvent;
+    public bool IsAllDayEvent
+    {
+        get => _isAllDayEvent;
+        set
+        {
+            if (_isAllDayEvent != value)
+            {
+                _isAllDayEvent = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    private bool _isOneDayEvent;
+    public bool IsOneDayEvent
+    {
+        get => _isOneDayEvent;
+        set
+        {
+            if (_isOneDayEvent != value)
+            {
+                _isOneDayEvent = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    private string _location;
+    public string Location
+    {
+        get => _location;
+        set
+        {
+            if (_location != value)
+            {
+                _location = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+    
+    private string _description;
+    public string Description
+    {
+        get => _description;
+        set
+        {
+            if (_description != value)
+            {
+                _description = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    private string _calendarId;
+    public string CalendarId
+    {
+        get => _calendarId;
+        set
+        {
+            if (_calendarId != value)
+            {
+                _calendarId = value;
+                OnPropertyChanged();
+            }
+        }
+    }
     
     private Event _event;
     public Event Event
@@ -73,4 +178,12 @@ public class ScheduleItem
 
         return clone;
     }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
 }

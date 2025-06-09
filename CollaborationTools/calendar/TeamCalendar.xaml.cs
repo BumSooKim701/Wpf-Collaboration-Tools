@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -7,8 +8,8 @@ namespace CollaborationTools.calendar;
 public partial class TeamCalendar : UserControl
 {
     private readonly string _calendarId;
-    private List<ScheduleItem> _oneDaySchedules;
-    private List<ScheduleItem> _schedules;
+    private ObservableCollection<ScheduleItem> _oneDaySchedules;
+    private ObservableCollection<ScheduleItem> _schedules;
 
     public TeamCalendar() : this("primary")
     {
@@ -18,8 +19,8 @@ public partial class TeamCalendar : UserControl
     {
         InitializeComponent();
         _calendarId = calendarId;
-        _schedules = new List<ScheduleItem>();
-        _oneDaySchedules = new List<ScheduleItem>();
+        _schedules = new ObservableCollection<ScheduleItem>();
+        _oneDaySchedules = new ObservableCollection<ScheduleItem>();
         _ = LoadScheduleItems();
     }
 

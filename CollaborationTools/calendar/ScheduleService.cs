@@ -1,12 +1,13 @@
-﻿using CollaborationTools.authentication;
+﻿using System.Collections.ObjectModel;
+using CollaborationTools.authentication;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
 
 namespace CollaborationTools.calendar;
 
-public class ScheduleService
+public static class ScheduleService
 {
-    public static async Task<List<ScheduleItem>> GetScheduleItems(string calendarId)
+    public static async Task<ObservableCollection<ScheduleItem>> GetScheduleItems(string calendarId)
     {
         var calendarService = GoogleAuthentication.CalendarService;
         
@@ -30,7 +31,7 @@ public class ScheduleService
         return GetScheduleItems(events, calendarId);
     }
 
-    public static async Task<List<ScheduleItem>> GetOneDayScheduleItems(string calendarId, DateTime selectedDate)
+    public static async Task<ObservableCollection<ScheduleItem>> GetOneDayScheduleItems(string calendarId, DateTime selectedDate)
     {
         var calendarService = GoogleAuthentication.CalendarService;
         
@@ -54,9 +55,9 @@ public class ScheduleService
         return GetScheduleItems(events, calendarId);
     }
 
-    private static List<ScheduleItem> GetScheduleItems(Events events, string calendarId)
+    private static ObservableCollection<ScheduleItem> GetScheduleItems(Events events, string calendarId)
     {
-        var schedules = new List<ScheduleItem>();
+        var schedules = new ObservableCollection<ScheduleItem>();
         // 일정이 없는 경우 함수 종료
         if (events?.Items == null || events.Items.Count == 0)
             return schedules;

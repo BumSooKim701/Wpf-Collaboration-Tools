@@ -17,19 +17,19 @@ public partial class ScheduleDetailsWindow : Window
         
         var scheduleEditWindow = new ScheduleEditWindow
         {
-            // DataContext = clonedScheduleItem
-            DataContext = scheduleItem
+            DataContext = clonedScheduleItem
+            // DataContext = scheduleItem
         };
         
-        // scheduleEditWindow.ScheduleSaved += (s, args) => {
-        //     // ScheduleEditWindow에서 SaveButton_Click시 수행됨
-        //     scheduleItem.Event = clonedScheduleItem.Event;
-        //     scheduleItem.Title = clonedScheduleItem.Title;
-        //     scheduleItem.StartDateTime = clonedScheduleItem.StartDateTime;
-        //     scheduleItem.EndDateTime = clonedScheduleItem.EndDateTime;
-        //     scheduleItem.Location = clonedScheduleItem.Location;
-        //     scheduleItem.Description = clonedScheduleItem.Description;
-        // };
+        scheduleEditWindow.ScheduleSaved += (s, args) => {
+            // ScheduleEditWindow에서 SaveButton_Click시 수행됨
+            scheduleItem.Event = clonedScheduleItem.Event;
+            scheduleItem.Title = clonedScheduleItem.Title;
+            scheduleItem.StartDateTime = clonedScheduleItem.StartDateTime;
+            scheduleItem.EndDateTime = clonedScheduleItem.EndDateTime;
+            scheduleItem.Location = clonedScheduleItem.Location;
+            scheduleItem.Description = clonedScheduleItem.Description;
+        };
         
         ShowDialog(scheduleEditWindow);
     }

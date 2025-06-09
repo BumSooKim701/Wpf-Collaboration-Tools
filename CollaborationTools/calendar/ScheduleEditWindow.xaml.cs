@@ -18,7 +18,7 @@ public partial class ScheduleEditWindow : Window
         if (this.DataContext is ScheduleItem scheduleItem)
         {
             await ScheduleService.UpdateScheduleItem(scheduleItem.Event, scheduleItem.CalendarId);
-            // ScheduleSaved?.Invoke(this, EventArgs.Empty);
+            ScheduleSaved?.Invoke(this, EventArgs.Empty);
             this.Close();
         }
     }
