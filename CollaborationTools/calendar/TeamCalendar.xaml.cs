@@ -36,15 +36,16 @@ public partial class TeamCalendar : UserControl
     private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         if (sender is ListView listView)
+        {
             if (listView.SelectedItem is ScheduleItem scheduleItem)
             {
                 var scheduleDetailsWindow = new ScheduleDetailsWindow
                 {
                     DataContext = scheduleItem
-                    
                 };
                 ShowDialog(scheduleDetailsWindow);
             }
+        }
     }
 
     private void ShowDialog(Window window)

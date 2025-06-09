@@ -1,9 +1,12 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace CollaborationTools.calendar;
 
 public partial class ScheduleEditWindow : Window
 {
+    public event EventHandler ScheduleSaved;
+    
     public ScheduleEditWindow()
     {
         InitializeComponent();
@@ -15,6 +18,8 @@ public partial class ScheduleEditWindow : Window
         if (this.DataContext is ScheduleItem scheduleItem)
         {
             await ScheduleService.UpdateScheduleItem(scheduleItem.Event, scheduleItem.CalendarId);
+            // ScheduleSaved?.Invoke(this, EventArgs.Empty);
+            this.Close();
         }
     }
     private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -28,7 +33,7 @@ public partial class ScheduleEditWindow : Window
         EndTimePicker.IsEnabled = false;
         if (this.DataContext is ScheduleItem scheduleItem)
         {
-            scheduleItem.IsAllDayEventEnd = true;
+            scheduleItem.IsAllDayEvent = true;
         }
     }
     private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
@@ -37,7 +42,15 @@ public partial class ScheduleEditWindow : Window
         EndTimePicker.IsEnabled = true;
         if (this.DataContext is ScheduleItem scheduleItem)
         {
-            scheduleItem.IsAllDayEventEnd = false;
+            scheduleItem.IsAllDayEvent = false;
+        }
+    }
+    
+    private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Left)
+        {
+            this.DragMove();
         }
     }
 }

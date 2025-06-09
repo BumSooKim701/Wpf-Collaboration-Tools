@@ -49,7 +49,7 @@
                         <TextBlock.Text>
                             <MultiBinding Converter="{StaticResource StartDateTimeConverter}">
                                 <Binding Path="StartDateTime" />
-                                <Binding Path="IsAllDayEventStart" />
+                                <Binding Path="IsAllDayEvent" />
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>

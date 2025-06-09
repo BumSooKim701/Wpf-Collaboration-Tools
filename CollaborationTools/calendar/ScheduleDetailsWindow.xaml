@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         Title="ScheduleDetailsDialog" Height="450" Width="400"
-        WindowStyle="None" ResizeMode="NoResize"
+        WindowStyle="None" ResizeMode="NoResize" MouseDown="Window_MouseDown"
         AllowsTransparency="True" Background="Transparent">
 
     <Window.Resources>
@@ -49,6 +49,7 @@
                         Kind="Delete" />
                 </Button>
             </StackPanel>
+            
             <TextBlock Grid.Row="1" Text="{Binding Title}"
                        TextWrapping="Wrap"
                        Margin="0, 5"
@@ -61,8 +62,7 @@
                     <MultiBinding Converter="{StaticResource TermDateTimeConverter}">
                         <Binding Path="StartDateTime" />
                         <Binding Path="EndDateTime" />
-                        <Binding Path="IsAllDayEventStart" />
-                        <Binding Path="IsAllDayEventEnd" />
+                        <Binding Path="IsAllDayEvent" />
                         <Binding Path="IsOneDayEvent" />
                     </MultiBinding>
                 </TextBlock.Text>

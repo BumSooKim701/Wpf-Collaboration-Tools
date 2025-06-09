@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         Title="ScheduleDetailsDialog" Height="450" Width="450"
-        WindowStyle="None" ResizeMode="NoResize"
+        WindowStyle="None" ResizeMode="NoResize" MouseDown="Window_MouseDown"
         AllowsTransparency="True" Background="Transparent">
     <Window.Resources>
         <Style x:Key="TextBlockStyle" TargetType="TextBlock">
@@ -68,7 +68,7 @@
                     <CheckBox VerticalAlignment="Bottom"
                               Content="종일"
                               Margin="5,0"
-                              IsChecked="{Binding IsAllDayEventStart}"
+                              IsChecked="{Binding IsAllDayEvent}"
                               Checked="CheckBox_Checked"
                               Unchecked="CheckBox_Unchecked" />
                 </StackPanel>

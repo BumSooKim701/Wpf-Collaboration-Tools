@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace CollaborationTools.calendar;
 
@@ -11,12 +12,26 @@ public partial class ScheduleDetailsWindow : Window
 
     private void EditButton_DoubleClick(object sender, RoutedEventArgs e)
     {
+        var scheduleItem = DataContext as ScheduleItem;
+        var clonedScheduleItem = scheduleItem.Clone();
+        
         var scheduleEditWindow = new ScheduleEditWindow
         {
-            DataContext = DataContext as ScheduleItem
+            // DataContext = clonedScheduleItem
+            DataContext = scheduleItem
         };
+        
+        // scheduleEditWindow.ScheduleSaved += (s, args) => {
+        //     // ScheduleEditWindow에서 SaveButton_Click시 수행됨
+        //     scheduleItem.Event = clonedScheduleItem.Event;
+        //     scheduleItem.Title = clonedScheduleItem.Title;
+        //     scheduleItem.StartDateTime = clonedScheduleItem.StartDateTime;
+        //     scheduleItem.EndDateTime = clonedScheduleItem.EndDateTime;
+        //     scheduleItem.Location = clonedScheduleItem.Location;
+        //     scheduleItem.Description = clonedScheduleItem.Description;
+        // };
+        
         ShowDialog(scheduleEditWindow);
-        Close();
     }
 
     private void ShowDialog(Window window)
@@ -33,5 +48,13 @@ public partial class ScheduleDetailsWindow : Window
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
         Close();
+    }
+    
+    private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ChangedButton == MouseButton.Left)
+        {
+            this.DragMove();
+        }
     }
 }

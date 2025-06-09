@@ -57,51 +57,51 @@ public class ScheduleService
     private static List<ScheduleItem> GetScheduleItems(Events events, string calendarId)
     {
         var schedules = new List<ScheduleItem>();
-        
-        if (events.Items != null && events.Items.Count > 0)
-        {
-            foreach (var eventItem in events.Items)
-            {
-                bool isAllDayEventStart = false;
-                string start = eventItem.Start.DateTimeRaw;
-                if (start == null)
-                {
-                    isAllDayEventStart = true;
-                    start = eventItem.Start.Date;
-                }
-                
-                bool isAllDayEventEnd = false;
-                string end = eventItem.End.DateTimeRaw;
-                if (end == null)
-                {
-                    isAllDayEventEnd = true;
-                    end = eventItem.End.Date;
-                }
-                
-                var startDateTime = DateTime.Parse(start);
-                var endDateTime = DateTime.Parse(end);
-                
-                bool isOneDayEvent = (startDateTime.Date == endDateTime.Date);
-                var schedule = new ScheduleItem
-                {
-                    Event = eventItem,
-                    Title = eventItem.Summary,
-                    StartDateTime = startDateTime,
-                    EndDateTime = endDateTime,
-                    IsAllDayEventStart = isAllDayEventStart,
-                    IsAllDayEventEnd = isAllDayEventEnd,
-                    IsOneDayEvent = isOneDayEvent,
-                    Location = eventItem.Location,
-                    Description = eventItem.Description,
-                    CalendarId = calendarId,
-                };
-                schedules.Add(schedule);
-            }
+        // 일정이 없는 경우 함수 종료
+        if (events?.Items == null || events.Items.Count == 0)
             return schedules;
+
+        foreach (var eventItem in events.Items)
+        {
+            var (startDateTime, isAllDayEvent) = ParseEventDateTime(eventItem.Start, isEnd: false);
+            var (endDateTime, _) = ParseEventDateTime(eventItem.End, isEnd: true);
+
+            bool isOneDayEvent = startDateTime.Date == endDateTime.Date;
+
+            var schedule = new ScheduleItem
+            {
+                Event = eventItem,
+                Title = eventItem.Summary,
+                StartDateTime = startDateTime,
+                EndDateTime = endDateTime,
+                IsAllDayEvent = isAllDayEvent,
+                IsOneDayEvent = isOneDayEvent,
+                Location = eventItem.Location,
+                Description = eventItem.Description,
+                CalendarId = calendarId,
+            };
+            schedules.Add(schedule);
         }
-        
-        return null;
+        return schedules;
     }
+    
+    private static (DateTime dateTime, bool isAllDayEvent) ParseEventDateTime(EventDateTime eventDateTime, bool isEnd)
+    {
+        // 종일 이벤트인 경우
+        if (string.IsNullOrEmpty(eventDateTime.DateTimeRaw))
+        {
+            var date = DateTime.Parse(eventDateTime.Date).Date;
+            
+            if (isEnd) 
+            { date = date.AddDays(-1);}
+            
+            return (date, true);
+        }
+
+        // 시간 지정 이벤트인 경우
+        return (DateTime.Parse(eventDateTime.DateTimeRaw), false);
+    }
+
 
     public static async Task UpdateScheduleItem(Event eventItem, string calendarId)
     {
@@ -113,7 +113,15 @@ public class ScheduleService
         }
         
         EventsResource.UpdateRequest request = new EventsResource.UpdateRequest(calendarService, eventItem, calendarId, eventItem.Id);
+
+        try
+        {
+            _ = await request.ExecuteAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.StackTrace); 
+        }
         
-        _ = await request.ExecuteAsync();
     }
 }
