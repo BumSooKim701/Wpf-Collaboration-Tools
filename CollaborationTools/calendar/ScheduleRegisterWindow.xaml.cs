@@ -8,38 +8,35 @@ namespace CollaborationTools.calendar;
 public partial class ScheduleRegisterWindow : Window
 {
     private ScheduleItem _scheduleItem;
-    private string _calendarId;
     public event EventHandler ScheduleSaved;
     
-    public ScheduleRegisterWindow(string calendarId)
+    public ScheduleRegisterWindow(ScheduleItem scheduleItem)
     {
         InitializeComponent();
         
-        _scheduleItem = new ScheduleItem()
-        {
-            StartDateTime = DateTime.Now,
-            EndDateTime = DateTime.Now.AddHours(1),
-        };
-        _calendarId = calendarId;
+        _scheduleItem = scheduleItem;
+        _scheduleItem.EndDateTime = _scheduleItem.StartDateTime.AddHours(1);
         
         DataContext = _scheduleItem;
     }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
-        if (this.DataContext is ScheduleItem scheduleItem)
+        if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
         {
-            Console.WriteLine($"입력된 일정: {scheduleItem.Title} - {scheduleItem.StartDateTime}~{scheduleItem.EndDateTime} - location:{scheduleItem.Location} - description:{scheduleItem.Description}");
-            await ScheduleService.RegisterScheduleItem(scheduleItem, _calendarId);
+            MessageBox.Show($"일정명을 입력해주세요.");
+        } 
+        else if (this.DataContext is ScheduleItem scheduleItem)
+        {
+            await ScheduleService.RegisterScheduleItem(scheduleItem);
+            
             ScheduleSaved?.Invoke(this, EventArgs.Empty);
+            
             this.Close();
         }
     }
-    private void CloseButton_Click(object sender, RoutedEventArgs e)
-    {
-        this.Close();
-    }
 
+    // 종일 이벤트 체크박스 처리
     private void CheckBox_Checked(object sender, RoutedEventArgs e)
     {
         StartTimePicker.IsEnabled = false;
@@ -106,5 +103,10 @@ public partial class ScheduleRegisterWindow : Window
         {
             this.DragMove();
         }
+    }
+    
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
     }
 }

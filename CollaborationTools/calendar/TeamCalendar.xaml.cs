@@ -24,6 +24,7 @@ public partial class TeamCalendar : UserControl
         _ = LoadScheduleItems();
     }
 
+    // 다가오는 일정 화면에 불러오기
     private async Task LoadScheduleItems()
     {
         _schedules = await ScheduleService.GetScheduleItems(_calendarId);
@@ -34,6 +35,7 @@ public partial class TeamCalendar : UserControl
             NoScheduleMsg.Visibility = Visibility.Visible;
     }
 
+    // 일정 상세보기
     private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         if (sender is ListView listView)
@@ -55,9 +57,18 @@ public partial class TeamCalendar : UserControl
         }
     }
     
+    // 일정 생성
     private void RegisterButtonClicked(object sender, RoutedEventArgs e)
     {
-        var scheduleRegisterWindow = new ScheduleRegisterWindow(_calendarId);
+        DateTime startDateTime = Calendar.SelectedDate.HasValue 
+            ? Calendar.SelectedDate.Value 
+            : DateTime.Now;
+        var scheduleRegisterWindow = new ScheduleRegisterWindow(
+            new ScheduleItem()
+            {
+                StartDateTime = startDateTime, 
+                CalendarId = _calendarId
+            });
         
         scheduleRegisterWindow.ScheduleSaved += (s,args) =>
         {

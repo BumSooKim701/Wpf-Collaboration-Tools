@@ -135,6 +135,11 @@ public class ScheduleItem: INotifyPropertyChanged
         }
     }
 
+    public ScheduleItem()
+    {
+        _event = new Event();
+    }
+    
     private void UpdateEvent()
     {
         if (IsAllDayEvent == null) throw new NullReferenceException("ScheduleItem IsAllDayEvent property is not null");

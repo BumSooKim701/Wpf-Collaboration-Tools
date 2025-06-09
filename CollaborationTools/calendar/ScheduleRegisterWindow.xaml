@@ -46,6 +46,7 @@
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="일정명" Style="{StaticResource TextBlockStyle}" />
                 <TextBox Grid.Row="0" Grid.Column="1" Margin="0,5" Text="{Binding Title}"
+                         x:Name="TitleTextBox"
                          Style="{StaticResource TextBoxStyle}" />
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="시작 날짜" Style="{StaticResource TextBlockStyle}" />
                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,5" Orientation="Horizontal">

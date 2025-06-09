@@ -133,7 +133,7 @@ public static class ScheduleService
     }
 
     // 일정 등록 요청
-    public static async Task RegisterScheduleItem(ScheduleItem scheduleItem, string calendarId)
+    public static async Task RegisterScheduleItem(ScheduleItem scheduleItem)
     {
         var calendarService = GoogleAuthentication.CalendarService;
         
@@ -141,32 +141,10 @@ public static class ScheduleService
         {
             throw new InvalidOperationException("먼저 Google에 로그인하세요.");
         }
-
-        var eventItem = GetEventItem(scheduleItem);
-        var request = calendarService.Events.Insert(eventItem, calendarId);
-        Event createdEvent = await request.ExecuteAsync();
         
-        Console.WriteLine($"Event created: {createdEvent.Summary} - {createdEvent.Start.DateTimeRaw}~{createdEvent.End.DateTimeRaw} - location:{createdEvent.Location} - description:{createdEvent.Description}");
+        var eventItem = scheduleItem.Event;
+        var request = calendarService.Events.Insert(eventItem, scheduleItem.CalendarId);
+        _ = await request.ExecuteAsync();
     }
 
-    private static Event GetEventItem(ScheduleItem scheduleItem)
-    {
-        var eventItem = new Event();
-        
-        eventItem.Summary = scheduleItem.Title;
-        eventItem.Location = scheduleItem.Location;
-        eventItem.Description = scheduleItem.Description;
-        eventItem.Start = new EventDateTime
-        {
-            DateTimeRaw = scheduleItem.StartDateTime.ToString("yyyy-MM-ddTHH:mm:ss"),
-            TimeZone = "Asia/Seoul"
-        };
-        eventItem.End = new EventDateTime
-        {
-            DateTimeRaw = scheduleItem.EndDateTime.ToString("yyyy-MM-ddTHH:mm:ss"),
-            TimeZone = "Asia/Seoul"
-        };
-        
-        return eventItem;
-    }
 }
