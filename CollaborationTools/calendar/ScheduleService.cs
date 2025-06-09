@@ -121,7 +121,7 @@ public static class ScheduleService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.StackTrace); 
+            Console.WriteLine(ex.Message); 
         }
         
     }

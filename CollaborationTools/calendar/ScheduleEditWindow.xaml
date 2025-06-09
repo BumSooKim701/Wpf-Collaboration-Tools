@@ -50,11 +50,13 @@
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="시작 날짜" Style="{StaticResource TextBlockStyle}" />
                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,5" Orientation="Horizontal">
                     <DatePicker
+                        x:Name="StartDatePicker"
                         HorizontalAlignment="Left"
                         Width="100"
                         Margin="10,0"
                         materialDesign:HintAssist.Hint="시작 날짜"
                         SelectedDate="{Binding StartDateTime}"
+                        SelectedDateChanged="StartDatePickerChanged"
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
                     <materialDesign:TimePicker
@@ -63,6 +65,7 @@
                         Margin="10,0"
                         materialDesign:HintAssist.Hint="시작 시간"
                         SelectedTime="{Binding StartDateTime}"
+                        SelectedTimeChanged="StartTimePickerChanged"
                         IsEnabled="True"
                         Style="{StaticResource MaterialDesignFloatingHintTimePicker}" />
                     <CheckBox VerticalAlignment="Bottom"
@@ -76,12 +79,14 @@
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="종료 날짜" Style="{StaticResource TextBlockStyle}" />
                 <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,5" Orientation="Horizontal">
                     <DatePicker
+                        x:Name="EndDatePicker"
                         HorizontalAlignment="Left"
                         Width="100"
                         Margin="10,0"
                         materialDesign:HintAssist.Hint="종료 날짜"
                         SelectedDate="{Binding EndDateTime}"
                         materialDesign:TextFieldAssist.HasClearButton="True"
+                        IsManipulationEnabled="False"
                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
                     <materialDesign:TimePicker
                         x:Name="EndTimePicker"
@@ -89,6 +94,7 @@
                         Margin="10,0"
                         materialDesign:HintAssist.Hint="종료 시간"
                         SelectedTime="{Binding EndDateTime}"
+                        SelectedTimeChanged="EndTimePickerChanged"
                         IsEnabled="True"
                         Style="{StaticResource MaterialDesignFloatingHintTimePicker}" />
                 </StackPanel>

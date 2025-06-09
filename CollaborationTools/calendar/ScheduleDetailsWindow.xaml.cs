@@ -5,6 +5,8 @@ namespace CollaborationTools.calendar;
 
 public partial class ScheduleDetailsWindow : Window
 {
+    public event EventHandler ScheduleSaved;
+    
     public ScheduleDetailsWindow()
     {
         InitializeComponent();
@@ -29,6 +31,10 @@ public partial class ScheduleDetailsWindow : Window
             scheduleItem.EndDateTime = clonedScheduleItem.EndDateTime;
             scheduleItem.Location = clonedScheduleItem.Location;
             scheduleItem.Description = clonedScheduleItem.Description;
+            scheduleItem.IsAllDayEvent = clonedScheduleItem.IsAllDayEvent;
+            scheduleItem.IsOneDayEvent = clonedScheduleItem.IsOneDayEvent;
+            
+            ScheduleSaved?.Invoke(this, EventArgs.Empty);
         };
         
         ShowDialog(scheduleEditWindow);

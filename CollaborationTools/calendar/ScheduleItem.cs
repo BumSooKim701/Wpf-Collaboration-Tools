@@ -120,6 +120,7 @@ public class ScheduleItem: INotifyPropertyChanged
         }
     }
     
+    // calendar api로 일정을 생성,수정할 때 Event 타입으로 보내야 함
     private Event _event;
     public Event Event
     {
@@ -143,19 +144,20 @@ public class ScheduleItem: INotifyPropertyChanged
         _event.End   = CreateEventDateTime(EndDateTime, IsAllDayEvent, true);
     }
     
+    // google calendar api의 event에 저장하기 위해 EventDateTime 형식으로 저장
     private EventDateTime CreateEventDateTime(DateTime dateTime, bool isAllDayEvent, bool isEnd)
     {
-        var adjustedDateTime = isEnd ? dateTime.AddDays(1) : dateTime;
-
+        // 종일 이벤트의 종료날짜는 1일을 더해야 함
         return isAllDayEvent
             ? new EventDateTime
             {
-                Date = adjustedDateTime.Date.ToString("yyyy-MM-dd"),
+                Date = isEnd? dateTime.AddDays(1).Date.ToString("yyyy-MM-dd")
+                : dateTime.Date.ToString("yyyy-MM-dd"),
                 TimeZone = "Asia/Seoul"
             }
             : new EventDateTime
             {
-                DateTimeDateTimeOffset = isEnd ? dateTime.AddDays(1) : dateTime,
+                DateTimeDateTimeOffset = dateTime,
                 TimeZone = "Asia/Seoul"
             };
     }

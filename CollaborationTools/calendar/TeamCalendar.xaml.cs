@@ -44,6 +44,12 @@ public partial class TeamCalendar : UserControl
                 {
                     DataContext = scheduleItem
                 };
+                
+                scheduleDetailsWindow.ScheduleSaved += (s,args) =>
+                {
+                    LoadScheduleItems();
+                };
+                
                 ShowDialog(scheduleDetailsWindow);
             }
         }
@@ -70,7 +76,7 @@ public partial class TeamCalendar : UserControl
     {
         _oneDaySchedules = await ScheduleService.GetOneDayScheduleItems(_calendarId, selectedDate);
 
-        if (_oneDaySchedules != null)
+        if (_oneDaySchedules.Count > 0)
             CardListViewCalendar.ItemsSource = _oneDaySchedules;
         else
             NoScheduleMsgCalendar.Visibility = Visibility.Visible;
