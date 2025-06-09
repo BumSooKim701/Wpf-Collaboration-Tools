@@ -54,6 +54,17 @@ public partial class TeamCalendar : UserControl
             }
         }
     }
+    
+    private void RegisterButtonClicked(object sender, RoutedEventArgs e)
+    {
+        var scheduleRegisterWindow = new ScheduleRegisterWindow(_calendarId);
+        
+        scheduleRegisterWindow.ScheduleSaved += (s,args) =>
+        {
+            LoadScheduleItems();
+        };
+        ShowDialog(scheduleRegisterWindow);
+    }
 
     private void ShowDialog(Window window)
     {
@@ -81,4 +92,5 @@ public partial class TeamCalendar : UserControl
         else
             NoScheduleMsgCalendar.Visibility = Visibility.Visible;
     }
+    
 }

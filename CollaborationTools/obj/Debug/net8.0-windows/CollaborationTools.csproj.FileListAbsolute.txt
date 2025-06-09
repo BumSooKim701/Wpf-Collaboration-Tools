@@ -184,3 +184,5 @@ C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\D
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\team\TeamInfoWindow.g.cs
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\team\TeamMemberRegistrationWindow.g.cs
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\ScheduleDetailsWindow.baml
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\ScheduleRegisterWindow.baml
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\calendar\ScheduleRegisterWindow.g.cs

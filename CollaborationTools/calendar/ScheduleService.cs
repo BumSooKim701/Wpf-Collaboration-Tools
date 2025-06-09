@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Documents;
 using CollaborationTools.authentication;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
@@ -7,6 +8,7 @@ namespace CollaborationTools.calendar;
 
 public static class ScheduleService
 {
+    // 다가오는 일정 불러오기
     public static async Task<ObservableCollection<ScheduleItem>> GetScheduleItems(string calendarId)
     {
         var calendarService = GoogleAuthentication.CalendarService;
@@ -31,6 +33,7 @@ public static class ScheduleService
         return GetScheduleItems(events, calendarId);
     }
 
+    // 캘린더로 선택한 날짜의 일정 불러오기
     public static async Task<ObservableCollection<ScheduleItem>> GetOneDayScheduleItems(string calendarId, DateTime selectedDate)
     {
         var calendarService = GoogleAuthentication.CalendarService;
@@ -55,6 +58,7 @@ public static class ScheduleService
         return GetScheduleItems(events, calendarId);
     }
 
+    // Events 객체로 부터 ScheduleItem 리스트 생성하여 반환
     private static ObservableCollection<ScheduleItem> GetScheduleItems(Events events, string calendarId)
     {
         var schedules = new ObservableCollection<ScheduleItem>();
@@ -86,6 +90,7 @@ public static class ScheduleService
         return schedules;
     }
     
+    // 종일 이벤트 고려하여 날짜 시간 포매팅하여 반환
     private static (DateTime dateTime, bool isAllDayEvent) ParseEventDateTime(EventDateTime eventDateTime, bool isEnd)
     {
         // 종일 이벤트인 경우
@@ -104,6 +109,7 @@ public static class ScheduleService
     }
 
 
+    // 일정 수정 요청
     public static async Task UpdateScheduleItem(Event eventItem, string calendarId)
     {
         var calendarService = GoogleAuthentication.CalendarService;
@@ -124,5 +130,43 @@ public static class ScheduleService
             Console.WriteLine(ex.Message); 
         }
         
+    }
+
+    // 일정 등록 요청
+    public static async Task RegisterScheduleItem(ScheduleItem scheduleItem, string calendarId)
+    {
+        var calendarService = GoogleAuthentication.CalendarService;
+        
+        if (calendarService == null)
+        {
+            throw new InvalidOperationException("먼저 Google에 로그인하세요.");
+        }
+
+        var eventItem = GetEventItem(scheduleItem);
+        var request = calendarService.Events.Insert(eventItem, calendarId);
+        Event createdEvent = await request.ExecuteAsync();
+        
+        Console.WriteLine($"Event created: {createdEvent.Summary} - {createdEvent.Start.DateTimeRaw}~{createdEvent.End.DateTimeRaw} - location:{createdEvent.Location} - description:{createdEvent.Description}");
+    }
+
+    private static Event GetEventItem(ScheduleItem scheduleItem)
+    {
+        var eventItem = new Event();
+        
+        eventItem.Summary = scheduleItem.Title;
+        eventItem.Location = scheduleItem.Location;
+        eventItem.Description = scheduleItem.Description;
+        eventItem.Start = new EventDateTime
+        {
+            DateTimeRaw = scheduleItem.StartDateTime.ToString("yyyy-MM-ddTHH:mm:ss"),
+            TimeZone = "Asia/Seoul"
+        };
+        eventItem.End = new EventDateTime
+        {
+            DateTimeRaw = scheduleItem.EndDateTime.ToString("yyyy-MM-ddTHH:mm:ss"),
+            TimeZone = "Asia/Seoul"
+        };
+        
+        return eventItem;
     }
 }
