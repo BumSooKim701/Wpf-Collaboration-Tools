@@ -13,6 +13,7 @@ public class TeamRepository
         MySqlConnection connection = null;
         var result = true;
 
+        if (teamDescription == null) teamDescription = " ";
         try
         {
             connection = _connectionPool.GetConnection();

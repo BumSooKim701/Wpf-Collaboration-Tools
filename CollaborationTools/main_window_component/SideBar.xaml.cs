@@ -117,7 +117,7 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
                 new()
                 {
                     Title = "내 프로필",
-                    MenuType = "Personal",
+                    MenuType = MenuType.Personal,
                     Action = "Profile"
                 }
             }
@@ -152,19 +152,19 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
                 new()
                 {
                     Title = "팀 정보",
-                    MenuType = "Team",
+                    MenuType = MenuType.Team,
                     Action = "TeamInfo"
                 },
                 new()
                 {
                     Title = "팀 삭제",
-                    MenuType = "Team",
+                    MenuType = MenuType.Team,
                     Action = "TeamDelete"
                 },
                 new()
                 {
                     Title = "팀 맴버 등록",
-                    MenuType = "Team",
+                    MenuType = MenuType.Team,
                     Action = "MemberRegistration"
                 }
             }
@@ -177,7 +177,7 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
     public void DeleteTeam(Team team)
     {
         bool result1 = _teamService.RemoveAllTeamMember(team);
-        
+        _ = _calendarService.DeleteCalendarAsync(team.teamCalendarId);
         bool result2 = _teamService.RemoveTeam(team);
         
         if (result1 && result2)

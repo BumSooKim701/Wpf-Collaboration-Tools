@@ -10,7 +10,8 @@
 
     <Grid Height="Auto" Background="{DynamicResource MaterialDesignDarkSeparatorBackground}">
         <ListBox Height="Auto" x:Name="NavigationBar"
-                 SelectedIndex="0" Style="{StaticResource MaterialDesign3.NavigationBarListBox}">
+                 SelectedIndex="0" SelectionChanged="OnMenuChanged"
+                 Style="{StaticResource MaterialDesign3.NavigationBarListBox}">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource MaterialDesign3.NavigationBarListBoxItem}">
                     <Setter Property="materialDesign:NavigationBarAssist.IsTextVisible"
