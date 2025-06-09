@@ -28,7 +28,7 @@ public partial class ScheduleRegisterWindow : Window
         } 
         else if (this.DataContext is ScheduleItem scheduleItem)
         {
-            await ScheduleService.RegisterScheduleItem(scheduleItem);
+            await ScheduleService.RegisterSchedule(scheduleItem);
             
             ScheduleSaved?.Invoke(this, EventArgs.Empty);
             

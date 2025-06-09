@@ -12,11 +12,6 @@ public static class ScheduleService
     public static async Task<ObservableCollection<ScheduleItem>> GetScheduleItems(string calendarId)
     {
         var calendarService = GoogleAuthentication.CalendarService;
-        
-        if (calendarService == null)
-        {
-            throw new InvalidOperationException("먼저 Google에 로그인하세요.");
-        }
 
         // 이벤트 요청 설정
         EventsResource.ListRequest request = calendarService.Events.List(calendarId);
@@ -110,14 +105,9 @@ public static class ScheduleService
 
 
     // 일정 수정 요청
-    public static async Task UpdateScheduleItem(Event eventItem, string calendarId)
+    public static async Task UpdateSchedule(Event eventItem, string calendarId)
     {
         var calendarService = GoogleAuthentication.CalendarService;
-        
-        if (calendarService == null)
-        {
-            throw new InvalidOperationException("먼저 Google에 로그인하세요.");
-        }
         
         EventsResource.UpdateRequest request = new EventsResource.UpdateRequest(calendarService, eventItem, calendarId, eventItem.Id);
 
@@ -133,17 +123,20 @@ public static class ScheduleService
     }
 
     // 일정 등록 요청
-    public static async Task RegisterScheduleItem(ScheduleItem scheduleItem)
+    public static async Task RegisterSchedule(ScheduleItem scheduleItem)
     {
         var calendarService = GoogleAuthentication.CalendarService;
         
-        if (calendarService == null)
-        {
-            throw new InvalidOperationException("먼저 Google에 로그인하세요.");
-        }
-        
-        var eventItem = scheduleItem.Event;
-        var request = calendarService.Events.Insert(eventItem, scheduleItem.CalendarId);
+        var request = calendarService.Events.Insert(scheduleItem.Event, scheduleItem.CalendarId);
+        _ = await request.ExecuteAsync();
+    }
+    
+    // 일정 삭제 요청
+    public static async Task DeleteSchedule(ScheduleItem scheduleItem)
+    {
+        var calendarService = GoogleAuthentication.CalendarService;
+
+        var request = calendarService.Events.Delete(scheduleItem.CalendarId, scheduleItem.Event.Id);
         _ = await request.ExecuteAsync();
     }
 

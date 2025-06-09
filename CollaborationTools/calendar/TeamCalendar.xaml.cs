@@ -42,10 +42,7 @@ public partial class TeamCalendar : UserControl
         {
             if (listView.SelectedItem is ScheduleItem scheduleItem)
             {
-                var scheduleDetailsWindow = new ScheduleDetailsWindow
-                {
-                    DataContext = scheduleItem
-                };
+                var scheduleDetailsWindow = new ScheduleDetailsWindow(scheduleItem);
                 
                 scheduleDetailsWindow.ScheduleSaved += (s,args) =>
                 {

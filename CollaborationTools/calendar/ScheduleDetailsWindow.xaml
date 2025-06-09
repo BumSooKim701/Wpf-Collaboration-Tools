@@ -26,7 +26,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Click="EditButton_DoubleClick"
+                <Button Click="EditButtonClicked"
                         VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
                         IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                         Style="{StaticResource MaterialDesignIconForegroundButton}"
@@ -37,7 +37,7 @@
                         Height="15"
                         Kind="Pencil" />
                 </Button>
-                <Button Click="DeleteButton_DoubleClick"
+                <Button Click="DeleteButtonClicked"
                         VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
                         IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                         Style="{StaticResource MaterialDesignIconForegroundButton}"

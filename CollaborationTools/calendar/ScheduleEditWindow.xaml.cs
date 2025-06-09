@@ -8,9 +8,10 @@ public partial class ScheduleEditWindow : Window
 {
     public event EventHandler ScheduleSaved;
     
-    public ScheduleEditWindow()
+    public ScheduleEditWindow(ScheduleItem scheduleItem)
     {
         InitializeComponent();
+        DataContext = scheduleItem;
     }
 
 
@@ -18,7 +19,7 @@ public partial class ScheduleEditWindow : Window
     {
         if (this.DataContext is ScheduleItem scheduleItem)
         {
-            await ScheduleService.UpdateScheduleItem(scheduleItem.Event, scheduleItem.CalendarId);
+            await ScheduleService.UpdateSchedule(scheduleItem.Event, scheduleItem.CalendarId);
             ScheduleSaved?.Invoke(this, EventArgs.Empty);
             this.Close();
         }

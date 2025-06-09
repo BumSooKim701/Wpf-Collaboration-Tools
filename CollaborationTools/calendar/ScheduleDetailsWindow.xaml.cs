@@ -7,21 +7,18 @@ public partial class ScheduleDetailsWindow : Window
 {
     public event EventHandler ScheduleSaved;
     
-    public ScheduleDetailsWindow()
+    public ScheduleDetailsWindow(ScheduleItem scheduleItem)
     {
         InitializeComponent();
+        DataContext = scheduleItem;
     }
 
-    private void EditButton_DoubleClick(object sender, RoutedEventArgs e)
+    private void EditButtonClicked(object sender, RoutedEventArgs e)
     {
         var scheduleItem = DataContext as ScheduleItem;
         var clonedScheduleItem = scheduleItem.Clone();
         
-        var scheduleEditWindow = new ScheduleEditWindow
-        {
-            DataContext = clonedScheduleItem
-            // DataContext = scheduleItem
-        };
+        var scheduleEditWindow = new ScheduleEditWindow(clonedScheduleItem);
         
         scheduleEditWindow.ScheduleSaved += (s, args) => {
             // ScheduleEditWindow에서 SaveButton_Click시 수행됨
@@ -47,8 +44,15 @@ public partial class ScheduleDetailsWindow : Window
         window.ShowDialog();
     }
 
-    private void DeleteButton_DoubleClick(object sender, RoutedEventArgs e)
+    private async void DeleteButtonClicked(object sender, RoutedEventArgs e)
     {
+        var scheduleItem = DataContext as ScheduleItem;
+
+        await ScheduleService.DeleteSchedule(scheduleItem);
+        
+        ScheduleSaved?.Invoke(this, EventArgs.Empty);
+        MessageBox.Show("일정이 삭제되었습니다.");
+        Close();
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)
