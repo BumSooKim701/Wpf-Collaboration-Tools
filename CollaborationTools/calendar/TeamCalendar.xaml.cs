@@ -70,6 +70,13 @@ public partial class TeamCalendar : UserControl
         scheduleRegisterWindow.ScheduleSaved += (s,args) =>
         {
             LoadScheduleItems();
+            
+            if (Calendar.SelectedDate.HasValue)
+            {
+                var selectedDate = Calendar.SelectedDate.Value;
+                _oneDaySchedules.Clear();
+                _ = DisplayCalendarSchedule(selectedDate);
+            }
         };
         ShowDialog(scheduleRegisterWindow);
     }

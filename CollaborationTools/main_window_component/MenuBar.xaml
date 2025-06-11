@@ -10,6 +10,7 @@
 
     <Grid Height="Auto" Background="{DynamicResource MaterialDesignDarkSeparatorBackground}">
         <ListBox Height="Auto" x:Name="NavigationBar"
+                 ItemsSource="{Binding MenuList}"
                  SelectedIndex="0" SelectionChanged="OnMenuChanged"
                  Style="{StaticResource MaterialDesign3.NavigationBarListBox}">
             <ListBox.ItemContainerStyle>

@@ -1,18 +1,20 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using CollaborationTools.memo;
 using MaterialDesignThemes.Wpf;
 
 namespace CollaborationTools;
 
 public partial class MenuBar : UserControl
 {
-    private List<MenuItem> MenuList { get; }
+    public event EventHandler<MenuType>? MenuChanged;
+    public List<MenuItem> MenuList { get; }
     
     public MenuBar()
     {
         InitializeComponent();
         DataContext = this;
-
+        
         MenuList = new List<MenuItem>
         {
             new()
@@ -44,7 +46,6 @@ public partial class MenuBar : UserControl
                 UnselectedIcon = PackIconKind.NoteOutline
             }
         };
-        NavigationBar.ItemsSource = MenuList;
     }
 
     private void OnMenuChanged(object sender, SelectionChangedEventArgs e)
@@ -54,8 +55,7 @@ public partial class MenuBar : UserControl
         
         if (selectedMenu is MenuItem menuItem)
         {
-            // menuItem.Title 등 원하는 속성 사용 가능
-            MessageBox.Show($"선택된 메뉴: {menuItem.Title}");
+            MenuChanged?.Invoke(this, menuItem.MenuType);
         }
     }
 }
