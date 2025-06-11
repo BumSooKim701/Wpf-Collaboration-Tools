@@ -7,6 +7,7 @@ using System.Windows.Input;
 using CollaborationTools.calendar;
 using CollaborationTools.Common;
 using CollaborationTools.database;
+using CollaborationTools.file;
 using CollaborationTools.team;
 using CollaborationTools.user;
 
@@ -16,7 +17,8 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
 {
     private readonly TeamService _teamService = new();
     private readonly CalendarService _calendarService = new();
-    private readonly TeamRepository _teamRepository = new();
+    private readonly FileService _fileService = new();
+    private readonly FolderService _folderService = new();
     private ObservableCollection<TabItem> _tabItems;
     private Team _selectedTeam;
     private List<Team> _curUserTeams;
@@ -176,8 +178,18 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
 
     public void DeleteTeam(Team team)
     {
+        Console.WriteLine($"teamId: {team.teamCalendarId}" + " " + team.teamFolderId);
+        
         bool result1 = _teamService.RemoveAllTeamMember(team);
-        _ = _calendarService.DeleteCalendarAsync(team.teamCalendarId);
+        
+        _calendarService.DeleteCalendarAsync(team.teamCalendarId);
+
+        if (!string.IsNullOrEmpty(team.teamFolderId))
+        {
+            Console.WriteLine($"teamFolderId: {team.teamFolderId}");
+            _folderService.DeleteFolderWithContentsAsync(team.teamFolderId);
+        }
+        
         bool result2 = _teamService.RemoveTeam(team);
         
         if (result1 && result2)
@@ -289,15 +301,30 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
         {
             var calendar = await _calendarService.CreateCalendarAsync(teamCreateWindow.TeamName, teamCreateWindow.TeamDescription);
             
-            if (calendar != null)
+            var sharedFolder = await _folderService.CreateTeamFolderAsync(teamCreateWindow.TeamName);
+            
+            if (calendar != null && sharedFolder != null)
             {
                 string calendarId = calendar.Id;
                 
-                Team newTeam = _teamService.FindTeamByUuid(teamCreateWindow.Uuid);
+                string sharedDriveId = sharedFolder.Id;
                 
-                // _teamRepository.UpdateTeamCalendarId(newTeam.teamId, calendarId);
+                Team newTeam = _teamService.FindTeamByUuid(teamCreateWindow.Uuid);
 
                 _teamService.UpdateTeamCalendarId(newTeam, calendarId);
+                
+                _teamService.UpdateTeamDriveId(newTeam, sharedDriveId);
+                
+                foreach (string memberEmail in teamCreateWindow.TeamMembers)
+                {
+                    await _calendarService.AddCalendarMemberAsync(calendarId, memberEmail);
+                    
+                    await _folderService.ShareFolderWithMemberAsync(sharedDriveId, memberEmail);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Calendar or Shared Drive is null");
             }
             
             RefreshTeamList();

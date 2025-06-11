@@ -84,6 +84,13 @@ public class TeamService
 
         return result;
     }
+
+    public bool UpdateTeamDriveId(Team team, string driveId)
+    {
+        bool result = _teamRepository.UpdateTeamDriveId(team.teamId, driveId);
+
+        return result;
+    }
     
     public byte FindAuthority(Team team, User user)
     {

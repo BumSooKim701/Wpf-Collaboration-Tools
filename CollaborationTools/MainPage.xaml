@@ -4,18 +4,102 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:CollaborationTools"
+      xmlns:file="clr-namespace:CollaborationTools.file"
+      xmlns:calendar="clr-namespace:CollaborationTools.calendar"
       mc:Ignorable="d"
       Title="MainPage" Height="Auto" Width="Auto">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
         <DockPanel>
-            <local:SideBar DockPanel.Dock="Left" />
-
-            <local:MenuBar DockPanel.Dock="Top" />
-
-            <Frame Source="/CollaborationTools;component/calendar/TeamCalendar.xaml" />
+            <!-- SideBar -->
+            <local:SideBar x:Name="SideBarControl" 
+                          DockPanel.Dock="Left"/>
+            
+            <!-- MenuBar -->
+            <local:MenuBar x:Name="MenuBarControl" 
+                          DockPanel.Dock="Top"/>
+            
+            <!-- Main Content Area -->
+            <Grid x:Name="MainContentArea">
+                <!-- Home View -->
+                <Grid x:Name="HomeView" Visibility="Visible">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <!-- Recent Calendar Events -->
+                    <Border Grid.Row="0" Grid.Column="0" 
+                            Background="White" 
+                            Margin="10" 
+                            CornerRadius="8"
+                            BorderBrush="#E0E0E0" 
+                            BorderThickness="1">
+                        <StackPanel Margin="15">
+                            <TextBlock Text="최근 일정" 
+                                     FontSize="16" 
+                                     FontWeight="Bold" 
+                                     Margin="0,0,0,10"/>
+                            <calendar:TeamCalendar x:Name="HomeCalendarView" 
+                                                 Height="200"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Recent Files -->
+                    <Border Grid.Row="0" Grid.Column="1" 
+                            Background="White" 
+                            Margin="10" 
+                            CornerRadius="8"
+                            BorderBrush="#E0E0E0" 
+                            BorderThickness="1">
+                        <StackPanel Margin="15">
+                            <TextBlock Text="최근 파일" 
+                                     FontSize="16" 
+                                     FontWeight="Bold" 
+                                     Margin="0,0,0,10"/>
+                            <file:FileManagerWindow x:Name="HomeFileView" 
+                                                   Height="200"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <!-- Team Info -->
+                    <Border Grid.Row="1" Grid.ColumnSpan="2" 
+                            Background="White" 
+                            Margin="10" 
+                            CornerRadius="8"
+                            BorderBrush="#E0E0E0" 
+                            BorderThickness="1">
+                        <StackPanel Margin="15">
+                            <TextBlock Text="팀 정보" 
+                                     FontSize="16" 
+                                     FontWeight="Bold" 
+                                     Margin="0,0,0,10"/>
+                            <TextBlock x:Name="TeamInfoText" 
+                                     Text="팀을 선택해주세요" 
+                                     FontSize="14"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+                
+                <!-- Calendar View -->
+                <calendar:TeamCalendar x:Name="CalendarView" 
+                                     Visibility="Collapsed"/>
+                
+                <!-- File View -->
+                <file:FileManagerWindow x:Name="FileView" 
+                                       Visibility="Collapsed"/>
+                
+                <!-- Memo View -->
+                <Grid x:Name="MemoView" Visibility="Collapsed">
+                    <TextBlock Text="메모 기능은 준비 중입니다" 
+                             HorizontalAlignment="Center" 
+                             VerticalAlignment="Center" 
+                             FontSize="18"/>
+                </Grid>
+            </Grid>
         </DockPanel>
     </Grid>
 </Page>

@@ -6,8 +6,10 @@ namespace CollaborationTools;
 
 public partial class MenuBar : UserControl
 {
-    private List<MenuItem> MenuList { get; }
+    private List<MenuItem> MenuList { get; set; }
     
+    public event System.EventHandler<MainPage.MenuChangedEventArgs> MenuChanged;
+
     public MenuBar()
     {
         InitializeComponent();
@@ -51,11 +53,10 @@ public partial class MenuBar : UserControl
     {
         var menuBarListBox = sender as ListBox;
         var selectedMenu = menuBarListBox.SelectedItem;
-        
+
         if (selectedMenu is MenuItem menuItem)
         {
-            // menuItem.Title 등 원하는 속성 사용 가능
-            MessageBox.Show($"선택된 메뉴: {menuItem.Title}");
+            MenuChanged?.Invoke(this, new MainPage.MenuChangedEventArgs(menuItem.MenuType));
         }
     }
 }

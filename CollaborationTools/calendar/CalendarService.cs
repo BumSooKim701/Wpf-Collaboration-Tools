@@ -65,5 +65,31 @@ public class CalendarService
             return false;
         }
     }
-
+    
+    // 캘린더에 멤버 추가
+    public async Task<bool> AddCalendarMemberAsync(string calendarId, string email, string role = "writer")
+    {
+        try
+        {
+            var calendarService = GoogleAuthentication.CalendarService;
+        
+            var rule = new AclRule()
+            {
+                Scope = new AclRule.ScopeData()
+                {
+                    Type = "user",
+                    Value = email
+                },
+                Role = role // "reader", "writer", "owner"
+            };
+        
+            await calendarService.Acl.Insert(rule, calendarId).ExecuteAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Add Member in Calendar Error: {ex.Message}");
+            return false;
+        }
+    }
 }
