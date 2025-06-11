@@ -3,8 +3,12 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
+using CollaborationTools.calendar;
 using CollaborationTools.Common;
+using CollaborationTools.file;
 using CollaborationTools.user;
+using Google.Apis.Calendar.v3;
+using CalendarService = CollaborationTools.calendar.CalendarService;
 
 namespace CollaborationTools.team;
 
@@ -12,6 +16,8 @@ public partial class TeamMemberRegistrationWindow : Window, INotifyPropertyChang
 {
     private readonly TeamService _teamService = new();
     private readonly UserService _userService = new();
+    private readonly CalendarService _calendarService = new();
+    private readonly FolderService _folderService = new();
     private Team _team;
     private string _newMemberEmail;
     private ObservableCollection<string> _teamMembers;
@@ -110,6 +116,10 @@ public partial class TeamMemberRegistrationWindow : Window, INotifyPropertyChang
 
         if (success)
         {
+            _calendarService.CreateCalendarAsync(Team.teamCalendarId, Team.teamName);
+
+            _folderService.ShareFolderWithMemberAsync(Team.teamCalendarId, Team.teamName);
+            
             MessageBox.Show($"'{Team.teamName}' 팀에 {TeamMembers.Count}명의 팀원이 등록되었습니다.", 
                 "팀원 등록 완료", MessageBoxButton.OK, MessageBoxImage.Information);
             

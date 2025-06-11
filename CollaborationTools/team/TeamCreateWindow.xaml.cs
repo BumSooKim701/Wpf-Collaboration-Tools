@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using CollaborationTools.Common;
 using CollaborationTools.user;
+using CollaborationTools.file;
 
 namespace CollaborationTools.team;
 

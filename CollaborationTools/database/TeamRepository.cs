@@ -66,7 +66,37 @@ public class TeamRepository
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error adding team: {e.Message}");
+            Console.WriteLine($"Error updating team calendar id: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
+    }
+    
+    public bool UpdateTeamDriveId(int teamId, string teamDriveId)
+    {
+        MySqlConnection connection = null;
+        var result = true;
+        
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            using (var command = new MySqlCommand("UPDATE team SET shared_drive_id = @teamDriveId WHERE id = @teamId", connection))
+            {
+                command.Parameters.AddWithValue("@teamDriveId", teamDriveId);
+                command.Parameters.AddWithValue("@teamId", teamId);
+
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult == 0) result = false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error updating team drive id: {e.Message}");
         }
         finally
         {
@@ -130,7 +160,9 @@ public class TeamRepository
                             teamMemberCount = reader.GetInt32("team_member_count"),
                             dateOfCreated = reader.GetDateTime("date_of_created"),
                             teamCalendarName = reader.GetString("team_calendar_name"),
-                            teamCalendarId = reader.GetString("team_calendar_id")
+                            teamCalendarId = reader.GetString("team_calendar_id"),
+                            teamDescription = reader.GetString("team_description"),
+                            teamFolderId = reader.GetString("shared_drive_id"),
                         };
                 }
             }
@@ -178,7 +210,8 @@ public class TeamRepository
                                     dateOfCreated = reader.GetDateTime("date_of_created"),
                                     teamCalendarName = reader.GetString("team_calendar_name"),
                                     teamCalendarId = reader.GetString("team_calendar_id"),
-                                    teamDescription = reader.GetString("team_description")
+                                    teamDescription = reader.GetString("team_description"),
+                                    teamFolderId = reader.GetString("shared_drive_id")
                                 });
                         }
                     }
@@ -224,7 +257,9 @@ public class TeamRepository
                             teamMemberCount = reader.GetInt32("team_member_count"),
                             dateOfCreated = reader.GetDateTime("date_of_created"),
                             teamCalendarName = reader.GetString("team_calendar_name"),
-                            teamCalendarId = reader.GetString("team_calendar_id")
+                            teamCalendarId = reader.GetString("team_calendar_id"),
+                            teamDescription = reader.GetString("team_description"),
+                            teamFolderId = reader.GetString("shared_drive_id")
                         });
                 }
             }
@@ -265,7 +300,9 @@ public class TeamRepository
                             teamMemberCount = reader.GetInt32("team_member_count"),
                             dateOfCreated = reader.GetDateTime("date_of_created"),
                             teamCalendarName = reader.GetString("team_calendar_name"),
-                            teamCalendarId = reader.GetString("team_calendar_id")
+                            teamCalendarId = reader.GetString("team_calendar_id"),
+                            teamDescription = reader.GetString("team_description"),
+                            teamFolderId = reader.GetString("shared_drive_id")
                         };
                 }
             }

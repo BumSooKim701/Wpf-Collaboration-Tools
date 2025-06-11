@@ -1,20 +1,20 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using CollaborationTools.memo;
 using MaterialDesignThemes.Wpf;
 
 namespace CollaborationTools;
 
 public partial class MenuBar : UserControl
 {
-    public event EventHandler<MenuType>? MenuChanged;
-    public List<MenuItem> MenuList { get; }
+    private List<MenuItem> MenuList { get; set; }
     
+    public event System.EventHandler<MainPage.MenuChangedEventArgs> MenuChanged;
+
     public MenuBar()
     {
         InitializeComponent();
         DataContext = this;
-        
+
         MenuList = new List<MenuItem>
         {
             new()
@@ -46,16 +46,17 @@ public partial class MenuBar : UserControl
                 UnselectedIcon = PackIconKind.NoteOutline
             }
         };
+        NavigationBar.ItemsSource = MenuList;
     }
 
     private void OnMenuChanged(object sender, SelectionChangedEventArgs e)
     {
         var menuBarListBox = sender as ListBox;
         var selectedMenu = menuBarListBox.SelectedItem;
-        
+
         if (selectedMenu is MenuItem menuItem)
         {
-            MenuChanged?.Invoke(this, menuItem.MenuType);
+            MenuChanged?.Invoke(this, new MainPage.MenuChangedEventArgs(menuItem.MenuType));
         }
     }
 }

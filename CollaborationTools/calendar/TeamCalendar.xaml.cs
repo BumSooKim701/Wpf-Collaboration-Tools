@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CollaborationTools.team;
 
 namespace CollaborationTools.calendar;
 
@@ -10,6 +11,13 @@ public partial class TeamCalendar : UserControl
     private readonly string _calendarId;
     private ObservableCollection<ScheduleItem> _oneDaySchedules;
     private ObservableCollection<ScheduleItem> _schedules;
+    
+    public static readonly DependencyProperty CurrentTeamProperty =
+        DependencyProperty.Register(
+            nameof(CurrentTeam),
+            typeof(Team),
+            typeof(TeamCalendar),
+            new PropertyMetadata(null, OnCurrentTeamChanged));
 
     public TeamCalendar() : this("primary")
     {
@@ -23,16 +31,58 @@ public partial class TeamCalendar : UserControl
         _oneDaySchedules = new ObservableCollection<ScheduleItem>();
         _ = LoadScheduleItems();
     }
+    
+    public Team CurrentTeam
+    {
+        get => (Team)GetValue(CurrentTeamProperty);
+        set => SetValue(CurrentTeamProperty, value);
+    }
+    
+    private static void OnCurrentTeamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is TeamCalendar control)
+        {
+            control.LoadScheduleItems();
+        }
+    }
 
     // 다가오는 일정 화면에 불러오기
     private async Task LoadScheduleItems()
     {
-        _schedules = await ScheduleService.GetScheduleItems(_calendarId);
-
-        if (_schedules != null)
-            CardListView.ItemsSource = _schedules;
-        else
+        if (CurrentTeam?.teamCalendarId == null) 
+        {
             NoScheduleMsg.Visibility = Visibility.Visible;
+            CardListView.ItemsSource = null;
+            return;
+        }
+
+        try
+        {
+            _schedules = await ScheduleService.GetScheduleItems(CurrentTeam.teamCalendarId);
+            if (_schedules != null && _schedules.Count > 0)
+            {
+                CardListView.ItemsSource = _schedules;
+                NoScheduleMsg.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                NoScheduleMsg.Visibility = Visibility.Visible;
+                CardListView.ItemsSource = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"스케줄 로드 오류: {ex.Message}");
+            NoScheduleMsg.Visibility = Visibility.Visible;
+            CardListView.ItemsSource = null;
+        }
+        
+        // _schedules = await ScheduleService.GetScheduleItems(_calendarId);
+        //
+        // if (_schedules != null)
+        //     CardListView.ItemsSource = _schedules;
+        // else
+        //     NoScheduleMsg.Visibility = Visibility.Visible;
     }
 
     // 일정 상세보기
@@ -100,12 +150,39 @@ public partial class TeamCalendar : UserControl
 
     private async Task DisplayCalendarSchedule(DateTime selectedDate) // 캘린더에서 선택된 날짜 일정
     {
-        _oneDaySchedules = await ScheduleService.GetOneDayScheduleItems(_calendarId, selectedDate);
-
-        if (_oneDaySchedules.Count > 0)
-            CardListViewCalendar.ItemsSource = _oneDaySchedules;
-        else
+        if (CurrentTeam?.teamCalendarId == null) 
+        {
             NoScheduleMsgCalendar.Visibility = Visibility.Visible;
+            CardListViewCalendar.ItemsSource = null;
+            return;
+        }
+
+        try
+        {
+            _oneDaySchedules = await ScheduleService.GetOneDayScheduleItems(CurrentTeam.teamCalendarId, selectedDate);
+            if (_oneDaySchedules.Count > 0)
+            {
+                CardListViewCalendar.ItemsSource = _oneDaySchedules;
+                NoScheduleMsgCalendar.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                NoScheduleMsgCalendar.Visibility = Visibility.Visible;
+                CardListViewCalendar.ItemsSource = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"일별 스케줄 로드 오류: {ex.Message}");
+            NoScheduleMsgCalendar.Visibility = Visibility.Visible;
+            CardListViewCalendar.ItemsSource = null;
+        }
+        // _oneDaySchedules = await ScheduleService.GetOneDayScheduleItems(_calendarId, selectedDate);
+        //
+        // if (_oneDaySchedules.Count > 0)
+        //     CardListViewCalendar.ItemsSource = _oneDaySchedules;
+        // else
+        //     NoScheduleMsgCalendar.Visibility = Visibility.Visible;
     }
     
 }

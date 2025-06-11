@@ -40,8 +40,8 @@ public partial class LoginPage : Page
             }
             else
             {
-                Debug.WriteLine("로그인 성공!");
-                Debug.WriteLine("email: " + googleUser.Email + ". name: " + googleUser.Name);
+                Console.WriteLine("Login Success");
+                Console.WriteLine("email: " + googleUser.Email + ". name: " + googleUser.Name);
 
                 NavigatePage(dbUser);
             }

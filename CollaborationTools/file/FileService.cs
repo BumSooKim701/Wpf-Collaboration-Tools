@@ -1,0 +1,237 @@
+﻿using System.Windows;
+using System.IO;
+using CollaborationTools.authentication;
+using Google;
+using GoogleFile = Google.Apis.Drive.v3.Data.File;
+
+namespace CollaborationTools.file
+{
+    public class FileService
+    {
+        // 파일 업로드 (등록)
+        public async Task<GoogleFile> UploadFileAsync(string folderId, string filePath)
+        {
+            var driveService = GoogleAuthentication.DriveService;
+            if (driveService == null)
+            {
+                throw new InvalidOperationException("Google Drive 서비스가 초기화되지 않았습니다.");
+            }
+
+            try
+            {
+                // 파일 존재 확인
+                if (!System.IO.File.Exists(filePath))
+                {
+                    throw new FileNotFoundException($"파일을 찾을 수 없습니다: {filePath}");
+                }
+
+                var fileName = System.IO.Path.GetFileName(filePath);
+                var mimeType = GetMimeType(filePath);
+
+                var fileMetadata = new Google.Apis.Drive.v3.Data.File()
+                {
+                    Name = fileName,
+                    Parents = new List<string> { folderId }
+                };
+
+                using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                var request = driveService.Files.Create(fileMetadata, stream, mimeType);
+                request.Fields = "id,name,size,modifiedTime,mimeType,version";
+
+                var uploadedFile = await request.UploadAsync();
+                if (uploadedFile.Status == Google.Apis.Upload.UploadStatus.Completed)
+                {
+                    return request.ResponseBody;
+                }
+                else
+                {
+                    throw new Exception($"파일 업로드 실패: {uploadedFile.Exception?.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"파일 업로드 중 오류가 발생했습니다: {ex.Message}");
+            }
+        }
+
+        public async Task DownloadFileAsync(string fileId, string savePath)
+        {
+            var driveService = GoogleAuthentication.DriveService;
+            if (driveService == null)
+            {
+                throw new InvalidOperationException("Google Drive 서비스가 초기화되지 않았습니다.");
+            }
+
+            try
+            {
+                // 저장할 디렉토리 확인 및 생성
+                string directory = Path.GetDirectoryName(savePath);
+                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                var request = driveService.Files.Get(fileId);
+                using var stream = new FileStream(savePath, FileMode.Create, FileAccess.Write);
+
+                var downloadProgress = await request.DownloadAsync(stream);
+
+                if (downloadProgress.Status == Google.Apis.Download.DownloadStatus.Failed)
+                {
+                    throw new Exception($"파일 다운로드 실패: {downloadProgress.Exception?.Message}");
+                }
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                throw new Exception($"저장 경로를 찾을 수 없습니다: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"파일 다운로드 중 오류가 발생했습니다: {ex.Message}");
+            }
+        }
+
+        public async Task<IList<GoogleFile>> GetFileVersionsAsync(string fileId)
+        {
+            var driveService = GoogleAuthentication.DriveService;
+            if (driveService == null)
+            {
+                throw new InvalidOperationException("Google Drive 서비스가 초기화되지 않았습니다.");
+            }
+
+            try
+            {
+                var request = driveService.Revisions.List(fileId);
+                request.Fields = "revisions(id,modifiedTime,size)";
+
+                var result = await request.ExecuteAsync();
+
+                // Google Drive API의 Revision을 File 객체로 변환
+                var versions = new List<GoogleFile>();
+                if (result.Revisions != null)
+                {
+                    for (int i = 0; i < result.Revisions.Count; i++)
+                    {
+                        var revision = result.Revisions[i];
+                        versions.Add(new GoogleFile
+                        {
+                            Id = revision.Id,
+                            ModifiedTime = revision.ModifiedTime,
+                            Size = revision.Size,
+                            Version = (long?)(i + 1) // 순서대로 버전 번호 할당
+                        });
+                    }
+                }
+
+                return versions;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"파일 버전 목록을 가져오는 중 오류가 발생했습니다: {ex.Message}");
+            }
+        }
+
+        public async Task<bool> SafeDeleteFileAsync(string fileId)
+        {
+            var driveService = GoogleAuthentication.DriveService;
+
+            try
+            {
+                // 먼저 파일이 존재하는지 확인
+                var getRequest = driveService.Files.Get(fileId);
+                getRequest.Fields = "id, name, trashed";
+                var file = await getRequest.ExecuteAsync();
+
+                if (file.Trashed == true)
+                {
+                    Console.WriteLine("파일이 이미 휴지통에 있습니다.");
+                    return true;
+                }
+
+                // 파일 삭제 실행
+                await driveService.Files.Delete(fileId).ExecuteAsync();
+                return true;
+            }
+            catch (GoogleApiException ex) when (ex.HttpStatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                Console.WriteLine("파일을 찾을 수 없습니다. 이미 삭제되었을 수 있습니다.");
+                return true; // 이미 삭제된 것으로 간주
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"파일 삭제 중 오류 발생: {ex.Message}", "오류",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+        }
+
+        private string GetMimeType(string filePath)
+        {
+            string extension = System.IO.Path.GetExtension(filePath).ToLower();
+
+            // 확장자별 MIME 타입 매핑
+            return extension switch
+            {
+                // 문서 파일
+                ".pdf" => "application/pdf",
+                ".doc" => "application/msword",
+                ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                ".xls" => "application/vnd.ms-excel",
+                ".xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                ".ppt" => "application/vnd.ms-powerpoint",
+                ".pptx" => "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+
+                // 이미지 파일
+                ".jpg" or ".jpeg" => "image/jpeg",
+                ".png" => "image/png",
+                ".gif" => "image/gif",
+                ".bmp" => "image/bmp",
+                ".svg" => "image/svg+xml",
+                ".webp" => "image/webp",
+                ".ico" => "image/x-icon",
+
+                // 비디오 파일
+                ".mp4" => "video/mp4",
+                ".avi" => "video/x-msvideo",
+                ".mov" => "video/quicktime",
+                ".wmv" => "video/x-ms-wmv",
+                ".flv" => "video/x-flv",
+                ".webm" => "video/webm",
+                ".mkv" => "video/x-matroska",
+
+                // 오디오 파일
+                ".mp3" => "audio/mpeg",
+                ".wav" => "audio/wav",
+                ".wma" => "audio/x-ms-wma",
+                ".aac" => "audio/aac",
+                ".ogg" => "audio/ogg",
+                ".flac" => "audio/flac",
+
+                // 텍스트 파일
+                ".txt" => "text/plain",
+                ".html" or ".htm" => "text/html",
+                ".css" => "text/css",
+                ".js" => "application/javascript",
+                ".json" => "application/json",
+                ".xml" => "application/xml",
+                ".csv" => "text/csv",
+
+                // 압축 파일
+                ".zip" => "application/zip",
+                ".rar" => "application/x-rar-compressed",
+                ".7z" => "application/x-7z-compressed",
+                ".tar" => "application/x-tar",
+                ".gz" => "application/gzip",
+
+                // 기타
+                ".exe" => "application/x-msdownload",
+                ".msi" => "application/x-msi",
+                ".apk" => "application/vnd.android.package-archive",
+                ".dmg" => "application/x-apple-diskimage",
+
+                // 기본값
+                _ => "application/octet-stream"
+            };
+        }
+    }
+}

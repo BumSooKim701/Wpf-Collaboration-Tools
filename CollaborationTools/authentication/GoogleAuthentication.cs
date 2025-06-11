@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using CollaborationTools.user;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
+using Google.Apis.Drive.v3;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Newtonsoft.Json.Linq;
@@ -15,12 +16,15 @@ public class GoogleAuthentication
     private static readonly string[] Scopes =
     [
         CalendarService.Scope.Calendar,
+        DriveService.Scope.Drive,
         "https://www.googleapis.com/auth/userinfo.profile",
-        "https://www.googleapis.com/auth/userinfo.email"
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/drive.file"
     ];
 
     private static readonly string ApplicationName = "CollaborationTools App";
     public static CalendarService CalendarService;
+    public static DriveService DriveService;
     private UserCredential _credential;
     private User? user;
 
@@ -43,6 +47,13 @@ public class GoogleAuthentication
 
             // Calendar 서비스 초기화
             CalendarService = new CalendarService(new BaseClientService.Initializer
+            {
+                HttpClientInitializer = _credential,
+                ApplicationName = ApplicationName
+            });
+            
+            // Drive 서비스 초기화
+            DriveService = new DriveService(new BaseClientService.Initializer
             {
                 HttpClientInitializer = _credential,
                 ApplicationName = ApplicationName
