@@ -16,10 +16,11 @@
         
         
         <Button Grid.Row="0" Width="40" Height="40" Margin="0,0,0,8"
-                HorizontalAlignment="Left"
+                Padding="0" HorizontalAlignment="Left"
                 materialDesign:ButtonAssist.CornerRadius="20"
                 ToolTip="메모 추가">
-            <materialDesign:PackIcon Kind="Plus" Width="24" Height="24"/>
+            <materialDesign:PackIcon Kind="Plus" Width="24" Height="24"
+                                     HorizontalAlignment="Center"/>
         </Button>
         
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
@@ -33,7 +34,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <!-- 정사각형 카드 -->
-                        <Border Width="160" Height="160" Margin="8"
+                        <Border Width="200" Height="200" Margin="8"
                                 Background="{DynamicResource MaterialDesignPaper}"
                                 CornerRadius="12"
                                 Padding="12"
@@ -45,6 +46,10 @@
                                            TextTrimming="CharacterEllipsis"
                                            Margin="0,0,0,4"/>
                                 <TextBlock Text="{Binding LastModifiedDate, StringFormat='yyyy-MM-dd HH:mm'}"
+                                           FontSize="12"
+                                           Foreground="Gray"
+                                           Margin="0,0,0,8"/>
+                                <TextBlock Text="{Binding LastEditorName}"
                                            FontSize="12"
                                            Foreground="Gray"
                                            Margin="0,0,0,8"/>

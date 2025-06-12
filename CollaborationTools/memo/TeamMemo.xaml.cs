@@ -14,7 +14,7 @@ public partial class TeamMemo : UserControl
         DependencyProperty.Register(
             nameof(CurrentTeam),
             typeof(Team),
-            typeof(TeamCalendar),
+            typeof(TeamMemo),
             new PropertyMetadata(null, OnCurrentTeamChanged));
     public Team CurrentTeam
     {
@@ -22,14 +22,18 @@ public partial class TeamMemo : UserControl
         set => SetValue(CurrentTeamProperty, value);
     }
     
-    public TeamMemo(int teamId)
+    public TeamMemo()
     {
         InitializeComponent();
         _memoService = new();
 
         DataContext = _memoItems;
         ItemsControl.ItemsSource = _memoItems;
-        LoadMemoItems();
+        // SideBar.PropertyChanged += (s, args) =>
+        // {
+        //     _memoItems = _memoService.GetMemoItems(CurrentTeam.teamId);
+        // };
+        // LoadMemoItems();
     }
 
     private static void OnCurrentTeamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -42,5 +46,6 @@ public partial class TeamMemo : UserControl
     private void LoadMemoItems()
     {
         _memoItems = _memoService.GetMemoItems(CurrentTeam.teamId);
+        ItemsControl.ItemsSource = _memoItems;
     }
 }

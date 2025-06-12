@@ -166,7 +166,7 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
                 },
                 new()
                 {
-                    Title = "팀 맴버 등록",
+                    Title = "팀 멤버 등록",
                     MenuType = MenuType.Team,
                     Action = "MemberRegistration"
                 }

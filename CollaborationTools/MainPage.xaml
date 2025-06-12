@@ -95,13 +95,13 @@
                                        Visibility="Collapsed"/>
                 
                 <!-- Memo View -->
-                <!-- <memo:TeamMemo x:Name="MemoView" Visibility="Collapsed"/> -->
-                <Grid x:Name="MemoView" Visibility="Collapsed">
-                    <TextBlock Text="메모 기능은 준비 중입니다"
-                             HorizontalAlignment="Center"
-                             VerticalAlignment="Center"
-                             FontSize="18"/>
-                </Grid>
+                <memo:TeamMemo x:Name="MemoView" Visibility="Collapsed"/>
+                <!-- <Grid x:Name="MemoView" Visibility="Collapsed"> -->
+                <!--     <TextBlock Text="메모 기능은 준비 중입니다" -->
+                <!--              HorizontalAlignment="Center" -->
+                <!--              VerticalAlignment="Center" -->
+                <!--              FontSize="18"/> -->
+                <!-- </Grid> -->
             </Grid>
         </DockPanel>
     </Grid>

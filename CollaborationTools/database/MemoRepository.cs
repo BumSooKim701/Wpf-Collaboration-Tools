@@ -32,13 +32,13 @@ public class MemoRepository
 
                 using (var reader = command.ExecuteReader())
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                         memoItems.Add(new MemoItem
                         {
                             MemoId = reader.GetInt32("id"),
                             Title = reader.GetString("memo_title"),
                             Content = reader.GetString("memo_content"),
-                            LastModifiedDate = reader.GetDateTime("last_modified_date"),
+                            LastModifiedDate = reader.GetDateTime("date_of_modified"),
                             TeamId = reader.GetInt32("team_id"),
                             LastEditorName = reader.GetString("last_editor_name"),
                         });

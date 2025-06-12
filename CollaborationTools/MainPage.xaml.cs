@@ -106,6 +106,11 @@ namespace CollaborationTools
             {
                 FileView.CurrentTeam = currentTeam;
             }
+            
+            if (MemoView != null)
+            {
+                MemoView.CurrentTeam = currentTeam;
+            }
         }
 
         private void UpdateTeamInfo()
