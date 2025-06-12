@@ -264,3 +264,5 @@ C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\D
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\TeamMemo.baml
 C:\my_codes\wpf\WpfCollaborationTools\CollaborationTools\obj\Debug\net8.0-windows\memo\TeamMemo.g.cs
 C:\my_codes\wpf\WpfCollaborationTools\CollaborationTools\obj\Debug\net8.0-windows\memo\TeamMemo.baml
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\MemoDetailsWindow.g.cs
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\MemoDetailsWindow.baml
