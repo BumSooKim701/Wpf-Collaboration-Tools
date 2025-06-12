@@ -41,7 +41,6 @@ namespace CollaborationTools
                     ShowHomeView();
                     break;
                 case MenuType.Calendar:
-                    Console.WriteLine("CurTeam: " + currentTeam.teamName);
                     ShowCalendarView();
                     break;
                 case MenuType.File:
