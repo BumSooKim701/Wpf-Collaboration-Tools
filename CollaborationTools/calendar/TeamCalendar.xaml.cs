@@ -8,7 +8,6 @@ namespace CollaborationTools.calendar;
 
 public partial class TeamCalendar : UserControl
 {
-    private readonly string _calendarId;
     private ObservableCollection<ScheduleItem> _oneDaySchedules;
     private ObservableCollection<ScheduleItem> _schedules;
     
@@ -19,14 +18,9 @@ public partial class TeamCalendar : UserControl
             typeof(TeamCalendar),
             new PropertyMetadata(null, OnCurrentTeamChanged));
 
-    public TeamCalendar() : this("primary")
-    {
-    }
-
-    public TeamCalendar(string calendarId)
+    public TeamCalendar()
     {
         InitializeComponent();
-        _calendarId = calendarId;
         _schedules = new ObservableCollection<ScheduleItem>();
         _oneDaySchedules = new ObservableCollection<ScheduleItem>();
         _ = LoadScheduleItems();
