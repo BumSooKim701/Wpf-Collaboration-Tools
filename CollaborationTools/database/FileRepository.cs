@@ -81,5 +81,71 @@ namespace CollaborationTools.database
             
             return files;
         }
+        
+        public File GetFileByFileId(string fileId)
+        {
+            MySqlConnection connection = null;
+            try
+            {
+                connection = connectionPool.GetConnection();
+                using var command = new MySqlCommand("SELECT * FROM file WHERE fileid = @fileId", connection);
+                command.Parameters.AddWithValue("@fileId", fileId);
+        
+                using var reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    return new File
+                    {
+                        fileId = reader.GetString("fileid"),
+                        fileName = reader.GetString("filename"),
+                        dateOfCreated = reader.GetDateTime("dateofcreated"),
+                        lastFileVersion = reader.GetInt32("lastfileversion"),
+                        userId = reader.GetInt32("userid"),
+                        teamId = reader.GetInt32("teamid"),
+                        folderId = reader.GetString("folderid")
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"파일 조회 중 오류: {e.Message}");
+            }
+            finally
+            {
+                if (connection != null)
+                    connectionPool.ReleaseConnection(connection);
+            }
+            return null;
+        }
+        
+        public bool UpdateFile(File file)
+        {
+            MySqlConnection connection = null;
+            var result = true;
+            try
+            {
+                connection = connectionPool.GetConnection();
+                using var command = new MySqlCommand(
+                    "UPDATE file SET lastfileversion = @lastFileVersion WHERE fileid = @fileId", 
+                    connection);
+                command.Parameters.AddWithValue("@lastFileVersion", file.lastFileVersion);
+                command.Parameters.AddWithValue("@fileId", file.fileId);
+        
+                var executeResult = command.ExecuteNonQuery();
+                if (executeResult <= 0)
+                    result = false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"파일 업데이트 중 오류: {e.Message}");
+                result = false;
+            }
+            finally
+            {
+                if (connection != null)
+                    connectionPool.ReleaseConnection(connection);
+            }
+            return result;
+        }
     }
 }
