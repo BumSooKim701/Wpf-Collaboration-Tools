@@ -7,15 +7,11 @@
         xmlns:calendar="clr-namespace:CollaborationTools.calendar"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
-        Title="ScheduleDetailsDialog" Height="450" Width="450"
-        WindowStyle="None" ResizeMode="NoResize" MouseDown="Window_MouseDown"
+        Title="ScheduleDetailsDialog" Height="450" Width="450" MinHeight="300" MinWidth="400"
+        WindowStyle="None" ResizeMode="CanResizeWithGrip" MouseDown="Window_MouseDown"
         AllowsTransparency="True" Background="Transparent">
 
-    <Window.Resources>
-        <calendar:TermDateTimeConverter x:Key="TermDateTimeConverter" />
-    </Window.Resources>
-
-    <materialDesign:Card Margin="20" Padding="20">
+    <materialDesign:Card Margin="0" Padding="20">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

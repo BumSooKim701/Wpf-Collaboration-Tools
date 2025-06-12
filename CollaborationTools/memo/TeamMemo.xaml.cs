@@ -11,12 +11,14 @@ public partial class TeamMemo : UserControl
 {
     private ObservableCollection<MemoItem> _memoItems;
     private MemoService _memoService;
+    
     public static readonly DependencyProperty CurrentTeamProperty =
         DependencyProperty.Register(
             nameof(CurrentTeam),
             typeof(Team),
             typeof(TeamMemo),
             new PropertyMetadata(null, OnCurrentTeamChanged));
+    
     public Team CurrentTeam
     {
         get => (Team)GetValue(CurrentTeamProperty);
@@ -34,7 +36,7 @@ public partial class TeamMemo : UserControl
     
     private void MemoDoubleClicked(object sender, MouseButtonEventArgs e)
     {
-        if (e.ClickCount == 2) 
+        if (e.ClickCount == 1) 
         {
             var frameworkElement = sender as FrameworkElement;
             if (frameworkElement?.DataContext is MemoItem memoItem)
@@ -50,6 +52,18 @@ public partial class TeamMemo : UserControl
         window.Owner = Application.Current.MainWindow;
         window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         window.Show();
+    }
+    
+    private void CreateButtonClicked(object sender, RoutedEventArgs e)
+    {
+        var memoCreateWindow = new MemoCreateWindow();
+        
+        memoCreateWindow.MemoCreated += (s,memoItem) =>
+        {
+            _memoItems.Add(memoItem);
+        };
+        
+        Show(memoCreateWindow);
     }
     
     private static void OnCurrentTeamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

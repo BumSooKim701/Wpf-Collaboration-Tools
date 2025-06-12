@@ -18,7 +18,8 @@
         <Button Grid.Row="0" Width="40" Height="40" Margin="0,0,0,8"
                 Padding="0" HorizontalAlignment="Left"
                 materialDesign:ButtonAssist.CornerRadius="20"
-                ToolTip="메모 추가">
+                ToolTip="메모 추가"
+                Click="CreateButtonClicked">
             <materialDesign:PackIcon Kind="Plus" Width="24" Height="24"
                                      HorizontalAlignment="Center"/>
         </Button>
@@ -33,7 +34,6 @@
                 
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <!-- 정사각형 카드 -->
                         <Border Width="200" Height="200" Margin="8"
                                 Background="{DynamicResource MaterialDesignPaper}"
                                 CornerRadius="12"
