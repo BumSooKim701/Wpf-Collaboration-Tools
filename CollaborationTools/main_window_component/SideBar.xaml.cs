@@ -23,6 +23,7 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
     private Team _selectedTeam;
     private List<Team> _curUserTeams;
     private byte _curUserAuthority;
+    public event EventHandler<Team>? SideBarChanged;
 
     public SideBar()
     {
@@ -165,7 +166,7 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
                 },
                 new()
                 {
-                    Title = "팀 맴버 등록",
+                    Title = "팀 멤버 등록",
                     MenuType = MenuType.Team,
                     Action = "MemberRegistration"
                 }
@@ -269,6 +270,7 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
                 case "Team":
                     SelectedTeam = tabItem.CurTeam;
                     CurUserAuthority = _teamService.FindAuthority(SelectedTeam, UserSession.CurrentUser);
+                    SideBarChanged?.Invoke(this, SelectedTeam);
                     break;
                 case "Plus":
                     OpenTeamCreateWindow();

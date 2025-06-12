@@ -16,7 +16,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         CenterWindowOnScreen();
-        Title = "CollaborationTools";
+        Title = "통합관리 협업 솔루션";
     }
 
     private void CenterWindowOnScreen()
