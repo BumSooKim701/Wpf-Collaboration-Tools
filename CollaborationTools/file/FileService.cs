@@ -34,7 +34,7 @@ namespace CollaborationTools.file
                 var fileName = System.IO.Path.GetFileName(filePath);
                 var mimeType = GetMimeType(filePath);
 
-                var fileMetadata = new Google.Apis.Drive.v3.Data.File()
+                var fileMetadata = new GoogleFile()
                 {
                     Name = fileName,
                     Parents = new List<string> { folderId }
@@ -72,6 +72,132 @@ namespace CollaborationTools.file
             catch (Exception ex)
             {
                 throw new Exception($"파일 업로드 중 오류가 발생했습니다: {ex.Message}");
+            }
+        }
+        
+        // 새 파일 업로드 (최초 업로드)
+        public async Task<GoogleFile> UploadNewFileAsync(string folderId, string filePath)
+        {
+            var driveService = GoogleAuthentication.DriveService;
+            if (driveService == null)
+                throw new InvalidOperationException("Google Drive 서비스에 연결할 수 없습니다.");
+
+            try
+            {
+                if (!System.IO.File.Exists(filePath))
+                    throw new FileNotFoundException($"파일을 찾을 수 없습니다: {filePath}");
+
+                var fileName = System.IO.Path.GetFileName(filePath);
+                var mimeType = GetMimeType(filePath);
+
+                var fileMetadata = new GoogleFile()
+                {
+                    Name = fileName,
+                    Parents = new List<string> { folderId }
+                };
+
+                using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                var request = driveService.Files.Create(fileMetadata, stream, mimeType);
+                request.Fields = "id,name,size,modifiedTime,mimeType,version";
+
+                var uploadedFile = await request.UploadAsync();
+                if (uploadedFile.Status == Google.Apis.Upload.UploadStatus.Completed)
+                {
+                    // 데이터베이스에 파일 정보 저장
+                    int resultTeamId = _teamRepository.FindTeamIdFromFolderId(folderId);
+                    var dBfileMetadata = new File
+                    {
+                        fileId = request.ResponseBody.Id,
+                        fileName = request.ResponseBody.Name,
+                        dateOfCreated = DateTime.Now,
+                        lastFileVersion = 1,
+                        userId = UserSession.CurrentUser.userId,
+                        teamId = resultTeamId,
+                        folderId = folderId
+                    };
+                    _fileRepository.AddFile(dBfileMetadata);
+
+                    return request.ResponseBody;
+                }
+                else
+                {
+                    throw new Exception($"업로드 실패: {uploadedFile.Exception?.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"파일 업로드 중 오류 발생: {ex.Message}");
+            }
+        }
+        
+        // 기존 파일 버전 업데이트 (핵심 기능)
+        public async Task<GoogleFile> UpdateFileVersionAsync(string fileId, string filePath)
+        {
+            var driveService = GoogleAuthentication.DriveService;
+            if (driveService == null)
+                throw new InvalidOperationException("Google Drive 서비스에 연결할 수 없습니다.");
+
+            try
+            {
+                if (!System.IO.File.Exists(filePath))
+                    throw new FileNotFoundException($"파일을 찾을 수 없습니다: {filePath}");
+
+                var fileName = System.IO.Path.GetFileName(filePath);
+                var mimeType = GetMimeType(filePath);
+
+                // 기존 파일의 메타데이터 유지 (이름은 변경하지 않음)
+                var fileMetadata = new GoogleFile()
+                {
+                    Name = fileName
+                };
+
+                using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                var request = driveService.Files.Update(fileMetadata, fileId, stream, mimeType);
+                request.Fields = "id,name,size,modifiedTime,mimeType,version";
+
+                var uploadResult = await request.UploadAsync();
+                if (uploadResult.Status == Google.Apis.Upload.UploadStatus.Completed)
+                {
+                    // 데이터베이스의 버전 정보 업데이트
+                    var dbFile = _fileRepository.GetFileByFileId(fileId);
+                    if (dbFile != null)
+                    {
+                        dbFile.lastFileVersion++;
+                        _fileRepository.UpdateFile(dbFile);
+                    }
+
+                    return request.ResponseBody;
+                }
+                else
+                {
+                    throw new Exception($"파일 업데이트 실패: {uploadResult.Exception?.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"파일 버전 업데이트 중 오류 발생: {ex.Message}");
+            }
+        }
+
+        // 파일이 이미 존재하는지 확인
+        public async Task<string> FindExistingFileAsync(string folderId, string fileName)
+        {
+            var driveService = GoogleAuthentication.DriveService;
+            if (driveService == null)
+                throw new InvalidOperationException("Google Drive 서비스에 연결할 수 없습니다.");
+
+            try
+            {
+                var request = driveService.Files.List();
+                request.Q = $"'{folderId}' in parents and name='{fileName}' and trashed=false";
+                request.Fields = "files(id,name)";
+
+                var result = await request.ExecuteAsync();
+                return result.Files?.FirstOrDefault()?.Id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"파일 검색 중 오류 발생: {ex.Message}");
             }
         }
 
