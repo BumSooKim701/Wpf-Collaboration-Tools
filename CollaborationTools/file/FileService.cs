@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.IO;
 using CollaborationTools.authentication;
+using CollaborationTools.database;
+using CollaborationTools.user;
 using Google;
 using GoogleFile = Google.Apis.Drive.v3.Data.File;
 
@@ -8,10 +10,14 @@ namespace CollaborationTools.file
 {
     public class FileService
     {
+        private readonly FileRepository _fileRepository = new();
+        private readonly TeamRepository _teamRepository = new();
+        
         // 파일 업로드 (등록)
         public async Task<GoogleFile> UploadFileAsync(string folderId, string filePath)
         {
             var driveService = GoogleAuthentication.DriveService;
+            
             if (driveService == null)
             {
                 throw new InvalidOperationException("Google Drive 서비스가 초기화되지 않았습니다.");
@@ -41,6 +47,21 @@ namespace CollaborationTools.file
                 var uploadedFile = await request.UploadAsync();
                 if (uploadedFile.Status == Google.Apis.Upload.UploadStatus.Completed)
                 {
+                    int resultTeamId = _teamRepository.FindTeamIdFromFolderId(folderId);
+                    Console.WriteLine(resultTeamId);
+                    
+                    var dBfileMetadata = new File
+                    {
+                        fileId = request.ResponseBody.Id,
+                        fileName = request.ResponseBody.Name,
+                        dateOfCreated = DateTime.Now,
+                        lastFileVersion = 1,
+                        userId = UserSession.CurrentUser.userId, // 현재 사용자 ID
+                        teamId = resultTeamId,
+                        folderId = folderId
+                    };
+            
+                    _fileRepository.AddFile(dBfileMetadata);
                     return request.ResponseBody;
                 }
                 else

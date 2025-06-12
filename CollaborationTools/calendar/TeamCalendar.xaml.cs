@@ -114,7 +114,7 @@ public partial class TeamCalendar : UserControl
             new ScheduleItem()
             {
                 StartDateTime = startDateTime, 
-                CalendarId = _calendarId
+                CalendarId = CurrentTeam.teamCalendarId
             });
         
         scheduleRegisterWindow.ScheduleSaved += (s,args) =>

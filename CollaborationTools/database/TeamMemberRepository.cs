@@ -230,4 +230,43 @@ public class TeamMemberRepository
 
         return authority;
     }
+    
+    public TeamMember FindTeamMemberId(int userId, int teamId)
+    {
+        var teamMember = new TeamMember();
+        MySqlConnection? connection = null;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+
+            using (var command = new MySqlCommand("SELECT id FROM team_member WHERE user_id = @userId and team_id = @teamId", connection))
+            {
+                command.Parameters.AddWithValue("@userId", userId);
+                command.Parameters.AddWithValue("@teamId", teamId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                        teamMember = new TeamMember
+                        {
+                            memberId = reader.GetInt32("id"),
+                            userId = reader.GetInt32("user_id"),
+                            teamId = reader.GetInt32("team_id"),
+                            authority = reader.GetByte("authority")
+                        };
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"find team member by id error: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return teamMember;
+    }
 }
