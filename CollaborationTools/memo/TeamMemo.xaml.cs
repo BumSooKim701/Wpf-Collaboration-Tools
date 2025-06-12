@@ -8,6 +8,8 @@ public partial class TeamMemo : UserControl
     private ObservableCollection<MemoItem> _memoItems;
     private int _teamId;
     private MemoService _memoService;
+
+    
     public TeamMemo(int teamId)
     {
         InitializeComponent();

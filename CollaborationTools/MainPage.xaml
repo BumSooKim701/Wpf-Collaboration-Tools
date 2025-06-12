@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:CollaborationTools"
       xmlns:file="clr-namespace:CollaborationTools.file"
       xmlns:calendar="clr-namespace:CollaborationTools.calendar"
+      xmlns:memo="clr-namespace:CollaborationTools.memo"
       mc:Ignorable="d"
       Title="MainPage" Height="Auto" Width="Auto">
     <Grid>
@@ -86,17 +87,19 @@
                 
                 <!-- Calendar View -->
                 <calendar:TeamCalendar x:Name="CalendarView" 
-                                     Visibility="Collapsed"/>
+                                     Visibility="Collapsed"
+                                     />
                 
                 <!-- File View -->
                 <file:FileManagerWindow x:Name="FileView" 
                                        Visibility="Collapsed"/>
                 
                 <!-- Memo View -->
+                <!-- <memo:TeamMemo x:Name="MemoView" Visibility="Collapsed"/> -->
                 <Grid x:Name="MemoView" Visibility="Collapsed">
-                    <TextBlock Text="메모 기능은 준비 중입니다" 
-                             HorizontalAlignment="Center" 
-                             VerticalAlignment="Center" 
+                    <TextBlock Text="메모 기능은 준비 중입니다"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
                              FontSize="18"/>
                 </Grid>
             </Grid>

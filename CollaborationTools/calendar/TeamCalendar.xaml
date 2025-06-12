@@ -24,6 +24,16 @@
             <Calendar Grid.Row="0" Language="ko-KR"
                       x:Name="Calendar"
                       SelectedDatesChanged="CalendarDateChanged"/>
+            <Button Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                    IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    ToolTip="일정 추가"
+                    Click="RegisterButtonClicked">
+                <materialDesign:PackIcon
+                    Width="15"
+                    Height="15"
+                    Kind="CalendarAdd" />
+            </Button>
 
             <TextBlock Grid.Row="1" x:Name="NoScheduleMsgCalendar" Text="예정된 일정이 없습니다" Visibility="Hidden"
                        FontSize="20" FontWeight="Medium" Margin="10" HorizontalAlignment="Center" />

@@ -23,7 +23,7 @@ public partial class TeamCalendar : UserControl
     {
     }
 
-    public TeamCalendar(string calendarId = "primary")
+    public TeamCalendar(string calendarId)
     {
         InitializeComponent();
         _calendarId = calendarId;
@@ -114,7 +114,7 @@ public partial class TeamCalendar : UserControl
             new ScheduleItem()
             {
                 StartDateTime = startDateTime, 
-                CalendarId = _calendarId
+                CalendarId = CurrentTeam.teamCalendarId,
             });
         
         scheduleRegisterWindow.ScheduleSaved += (s,args) =>

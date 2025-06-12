@@ -257,3 +257,8 @@ C:\my_codes\wpf\WpfCollaborationTools\CollaborationTools\obj\Debug\net8.0-window
 C:\my_codes\wpf\WpfCollaborationTools\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.pdb
 C:\my_codes\wpf\WpfCollaborationTools\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools.genruntimeconfig.cache
 C:\my_codes\wpf\WpfCollaborationTools\CollaborationTools\obj\Debug\net8.0-windows\ref\CollaborationTools.dll
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-windows\Google.Apis.Drive.v3.dll
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\file\FileManagerWindow.baml
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\file\FileManagerWindow.g.cs
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\TeamMemo.g.cs
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\TeamMemo.baml
