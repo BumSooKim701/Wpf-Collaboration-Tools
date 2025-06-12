@@ -2,10 +2,11 @@
 
 public class File
 {
-    private string _fileId { get; set;}
-    private string _fileName { get; set;}
-    private DateTime _dateOfCreated { get; set;}
-    private int _lastFileVersion { get; set;}
-    private int _teamMemberId { get; set;}
-    private int _teamId { get; set;}
+    public string fileId { get; set;}
+    public string fileName { get; set;}
+    public DateTime dateOfCreated { get; set;}
+    public int lastFileVersion { get; set;}
+    public int userId { get; set;}
+    public int teamId { get; set;}
+    public string folderId { get; set;}
 }

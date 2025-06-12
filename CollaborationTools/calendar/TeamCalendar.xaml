@@ -6,8 +6,76 @@
              xmlns:local="clr-namespace:CollaborationTools"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:smtx="clr-namespace:ShowMeTheXAML;assembly=ShowMeTheXAML"
+             xmlns:calendar="clr-namespace:CollaborationTools.calendar"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <calendar:StartDateTimeConverter x:Key="StartDateTimeConverter" />
+
+        <Style x:Key="StretchListViewItemStyle" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+
+        <!-- 일정 타이틀만 -->
+        <DataTemplate x:Key="CardTitleTemplate">
+            <materialDesign:Card Height="50"
+                                 Background="{DynamicResource MaterialDesign.Brush.Primary}"
+                                 Foreground="{DynamicResource MaterialDesign.Brush.Primary.Foreground}">
+                <DockPanel>
+                    <TextBlock
+                        x:Name="title"
+                        DockPanel.Dock="Left"
+                        VerticalAlignment="Center"
+                        Margin="10"
+                        Style="{StaticResource MaterialDesignBody1TextBlock}"
+                        Text="{Binding Title}"
+                        TextTrimming="CharacterEllipsis" />
+                </DockPanel>
+            </materialDesign:Card>
+        </DataTemplate>
+
+        <!-- 일정 타이틀 + 날짜 -->
+        <DataTemplate x:Key="CardTitleDateTemplate">
+            <materialDesign:Card Height="50"
+                                 Background="{DynamicResource MaterialDesign.Brush.Primary}"
+                                 Foreground="{DynamicResource MaterialDesign.Brush.Primary.Foreground}">
+                <DockPanel>
+                    <TextBlock
+                        x:Name="date"
+                        DockPanel.Dock="Right"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Margin="10"
+                        Style="{StaticResource MaterialDesignBody2TextBlock}">
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource StartDateTimeConverter}">
+                                <Binding Path="StartDateTime" />
+                                <Binding Path="IsAllDayEvent" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock
+                        x:Name="title"
+                        DockPanel.Dock="Left"
+                        VerticalAlignment="Center"
+                        Margin="10"
+                        Style="{StaticResource MaterialDesignBody1TextBlock}"
+                        Text="{Binding Title}"
+                        TextTrimming="CharacterEllipsis" />
+                </DockPanel>
+            </materialDesign:Card>
+        </DataTemplate>
+
+        <!-- NoScheduleMsg TextBlock Style -->
+        <Style x:Key="NoScheduleMsgStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Visibility" Value="Hidden" />
+        </Style>
+    </UserControl.Resources>
+
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -23,7 +91,7 @@
 
             <Calendar Grid.Row="0" Language="ko-KR"
                       x:Name="Calendar"
-                      SelectedDatesChanged="CalendarDateChanged"/>
+                      SelectedDatesChanged="CalendarDateChanged" />
             <Button Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
@@ -35,38 +103,14 @@
                     Kind="CalendarAdd" />
             </Button>
 
-            <TextBlock Grid.Row="1" x:Name="NoScheduleMsgCalendar" Text="예정된 일정이 없습니다" Visibility="Hidden"
-                       FontSize="20" FontWeight="Medium" Margin="10" HorizontalAlignment="Center" />
+            <TextBlock Grid.Row="1" x:Name="NoScheduleMsgCalendar" Text="예정된 일정이 없습니다" FontWeight="Medium"
+                       Style="{StaticResource NoScheduleMsgStyle}" />
             <ListView Grid.Row="1" x:Name="CardListViewCalendar"
                       Width="300"
                       MouseDoubleClick="ListView_MouseDoubleClick"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <materialDesign:Card
-                            Height="50"
-                            Background="{DynamicResource MaterialDesign.Brush.Primary}"
-                            Foreground="{DynamicResource MaterialDesign.Brush.Primary.Foreground}">
-                            <DockPanel>
-                                <TextBlock
-                                    x:Name="title"
-                                    DockPanel.Dock="Left"
-                                    VerticalAlignment="Center"
-                                    Margin="10"
-                                    Style="{StaticResource MaterialDesignBody1TextBlock}"
-                                    Text="{Binding Title}" 
-                                    TextTrimming="CharacterEllipsis"/>
-                            </DockPanel>
-                        </materialDesign:Card>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ItemContainerStyle="{StaticResource StretchListViewItemStyle}"
+                      ItemTemplate="{StaticResource CardTitleTemplate}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel />
@@ -83,47 +127,13 @@
 
             <TextBlock Grid.Row="0" Text="다가오는 일정" FontSize="25" FontWeight="Bold" Margin="10" />
 
-            <TextBlock Grid.Row="1" x:Name="NoScheduleMsg" Text="예정된 일정이 없습니다" Visibility="Hidden" FontSize="20"
-                       FontWeight="SemiBold" Margin="10" HorizontalAlignment="Center" />
-
+            <TextBlock Grid.Row="1" x:Name="NoScheduleMsg" Text="예정된 일정이 없습니다"
+                       FontWeight="SemiBold" Style="{StaticResource NoScheduleMsgStyle}" />
             <ListView Grid.Row="1" x:Name="CardListView"
                       MouseDoubleClick="ListView_MouseDoubleClick"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <materialDesign:Card
-                            Height="50"
-                            Background="{DynamicResource MaterialDesign.Brush.Primary}"
-                            Foreground="{DynamicResource MaterialDesign.Brush.Primary.Foreground}">
-                            <DockPanel>
-                                <TextBlock
-                                    x:Name="date"
-                                    DockPanel.Dock="Right"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Right"
-                                    Margin="10"
-                                    Style="{StaticResource MaterialDesignBody2TextBlock}"
-                                    Text="{Binding Date}" />
-                                
-                                <TextBlock
-                                    x:Name="title"
-                                    DockPanel.Dock="Left"
-                                    VerticalAlignment="Center"
-                                    Margin="10"
-                                    Style="{StaticResource MaterialDesignBody1TextBlock}"
-                                    Text="{Binding Title}" 
-                                    TextTrimming="CharacterEllipsis"/>
-                            </DockPanel>
-                        </materialDesign:Card>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      ItemContainerStyle="{StaticResource StretchListViewItemStyle}"
+                      ItemTemplate="{StaticResource CardTitleDateTemplate}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel />

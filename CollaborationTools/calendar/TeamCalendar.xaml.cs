@@ -8,6 +8,7 @@ namespace CollaborationTools.calendar;
 
 public partial class TeamCalendar : UserControl
 {
+    private readonly string _calendarId;
     private ObservableCollection<ScheduleItem> _oneDaySchedules;
     private ObservableCollection<ScheduleItem> _schedules;
     
@@ -18,9 +19,14 @@ public partial class TeamCalendar : UserControl
             typeof(TeamCalendar),
             new PropertyMetadata(null, OnCurrentTeamChanged));
 
-    public TeamCalendar()
+    public TeamCalendar() : this("primary")
+    {
+    }
+
+    public TeamCalendar(string calendarId = "primary")
     {
         InitializeComponent();
+        _calendarId = calendarId;
         _schedules = new ObservableCollection<ScheduleItem>();
         _oneDaySchedules = new ObservableCollection<ScheduleItem>();
         _ = LoadScheduleItems();
@@ -108,19 +114,12 @@ public partial class TeamCalendar : UserControl
             new ScheduleItem()
             {
                 StartDateTime = startDateTime, 
-                CalendarId = CurrentTeam.teamCalendarId,
+                CalendarId = CurrentTeam.teamCalendarId
             });
         
         scheduleRegisterWindow.ScheduleSaved += (s,args) =>
         {
             LoadScheduleItems();
-            
-            if (Calendar.SelectedDate.HasValue)
-            {
-                var selectedDate = Calendar.SelectedDate.Value;
-                _oneDaySchedules.Clear();
-                _ = DisplayCalendarSchedule(selectedDate);
-            }
         };
         ShowDialog(scheduleRegisterWindow);
     }

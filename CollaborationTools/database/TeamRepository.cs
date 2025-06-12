@@ -318,4 +318,34 @@ public class TeamRepository
 
         return team;
     }
+    
+    public int FindTeamIdFromFolderId(string folderId)
+    {
+        int result = -1;
+        MySqlConnection connection = null;
+            
+        try
+        {
+            connection = _connectionPool.GetConnection();
+                
+            using var command = new MySqlCommand("SELECT id FROM team WHERE shared_drive_id = @folder_id", connection);
+            command.Parameters.AddWithValue("@folder_id", folderId);
+                
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                result = reader.GetInt32("id");
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error getting teamId: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+            
+        return result;
+    }
 }
