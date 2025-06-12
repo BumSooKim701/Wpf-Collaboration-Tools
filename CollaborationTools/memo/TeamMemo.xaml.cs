@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using CollaborationTools.calendar;
 using CollaborationTools.team;
 
@@ -29,13 +30,28 @@ public partial class TeamMemo : UserControl
 
         DataContext = _memoItems;
         ItemsControl.ItemsSource = _memoItems;
-        // SideBar.PropertyChanged += (s, args) =>
-        // {
-        //     _memoItems = _memoService.GetMemoItems(CurrentTeam.teamId);
-        // };
-        // LoadMemoItems();
     }
-
+    
+    private void MemoDoubleClicked(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ClickCount == 2) 
+        {
+            var frameworkElement = sender as FrameworkElement;
+            if (frameworkElement?.DataContext is MemoItem memoItem)
+            {
+                var memoDetailsWindow = new MemoDetailsWindow(memoItem);
+                Show(memoDetailsWindow);
+            }
+        }
+    }
+    
+    private void Show(Window window)
+    {
+        window.Owner = Application.Current.MainWindow;
+        window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        window.Show();
+    }
+    
     private static void OnCurrentTeamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is TeamMemo control)

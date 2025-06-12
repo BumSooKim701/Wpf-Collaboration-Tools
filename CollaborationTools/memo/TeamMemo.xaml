@@ -38,7 +38,8 @@
                                 Background="{DynamicResource MaterialDesignPaper}"
                                 CornerRadius="12"
                                 Padding="12"
-                                Effect="{DynamicResource MaterialDesignElevationShadow2}">
+                                Effect="{DynamicResource MaterialDesignElevationShadow2}"
+                                MouseLeftButtonDown="MemoDoubleClicked">
                             <StackPanel>
                                 <TextBlock Text="{Binding Title}"
                                            FontWeight="Bold"

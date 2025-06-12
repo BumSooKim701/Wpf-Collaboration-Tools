@@ -83,6 +83,21 @@ public class MemoItem : INotifyPropertyChanged
         }
     }
 
+    private int _editorUserId;
+
+    public int EditorUserId
+    {
+        get => _editorUserId;
+        set
+        {
+            if (_editorUserId != value)
+            {
+                _editorUserId = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+    
     private string _lastEditorName;
 
     public string LastEditorName

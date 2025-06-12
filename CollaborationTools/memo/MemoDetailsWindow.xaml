@@ -1,0 +1,81 @@
+﻿<Window x:Class="CollaborationTools.memo.MemoDetailsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:calendar="clr-namespace:CollaborationTools.calendar"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="ScheduleDetailsDialog" Height="450" Width="450"
+        WindowStyle="None" ResizeMode="NoResize" MouseDown="Window_MouseDown"
+        AllowsTransparency="True" Background="Transparent">
+
+    <Window.Resources>
+        <calendar:TermDateTimeConverter x:Key="TermDateTimeConverter" />
+    </Window.Resources>
+
+    <materialDesign:Card Margin="20" Padding="20">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <DockPanel Grid.Row="0">
+                <StackPanel DockPanel.Dock="Right" 
+                    Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Click="EditButtonClicked"
+                            VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            Height="30" Width="30"
+                            ToolTip="편집">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Pencil" />
+                    </Button>
+                    <Button Click="DeleteButtonClicked"
+                            VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            Height="30" Width="30"
+                            ToolTip="삭제">
+                        <materialDesign:PackIcon
+                            Width="15"
+                            Height="15"
+                            Kind="Delete" />
+                    </Button>
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                    <TextBlock Text="마지막 편집" Margin="0,0,2,0" Foreground="Gray"/>
+                    <TextBlock Text="{Binding LastModifiedDate}" Margin="2,0" Foreground="Gray"/>
+                    <TextBlock Text="{Binding LastEditorName}" Margin="2,0,0,0" Foreground="Gray"/>
+                </StackPanel>
+            </DockPanel>
+            
+            <TextBlock Grid.Row="1" Text="{Binding Title}"
+                       TextWrapping="Wrap"
+                       Margin="0, 5"
+                       Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
+
+            <TextBox Grid.Row="2"
+                     Text="{Binding Content}"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"
+                     Margin="0,5"
+                     VerticalScrollBarVisibility="Auto"
+                     VerticalContentAlignment="Top"
+                     Style="{StaticResource MaterialDesignFilledTextBox}"
+                     FontSize="15"/>
+            
+            <Button Grid.Row="3" Content="Close"
+                    Style="{StaticResource MaterialDesignFlatButton}"
+                    Click="CloseButton_Click" />
+        </Grid>
+    </materialDesign:Card>
+</Window>

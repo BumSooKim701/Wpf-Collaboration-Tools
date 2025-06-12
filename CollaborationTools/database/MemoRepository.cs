@@ -40,6 +40,7 @@ public class MemoRepository
                             Content = reader.GetString("memo_content"),
                             LastModifiedDate = reader.GetDateTime("date_of_modified"),
                             TeamId = reader.GetInt32("team_id"),
+                            EditorUserId = reader.GetInt32("editor_user_id"),
                             LastEditorName = reader.GetString("last_editor_name"),
                         });
                 }
