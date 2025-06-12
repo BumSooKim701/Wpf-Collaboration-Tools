@@ -57,4 +57,58 @@ public class MemoRepository
         
         return memoItems;
     }
+
+    public bool AddMemo(MemoItem memoItem)
+    {
+        MySqlConnection connection = null;
+        var result = false;
+        
+        try
+        {
+            connection = _connectionPool.GetConnection();
+
+            using (var command = new MySqlCommand(
+                       "INSERT INTO team_memo (memo_title, memo_content, date_of_modified, team_member_id) " +
+                       "VALUES (@memoTitle, @memoContent, @dateOfModified, " +
+                       "(SELECT id FROM team_member WHERE user_id = @userId AND team_id = @teamId)\n);" +
+                       "SELECT ROW_COUNT() AS AffectedRows, LAST_INSERT_ID() AS NewId;"
+                       ,
+                       connection))
+            {
+                command.Parameters.AddWithValue("@memoTitle", memoItem.Title);
+                command.Parameters.AddWithValue("@memoContent", memoItem.Content);
+                command.Parameters.AddWithValue("@dateOfModified", memoItem.LastModifiedDate);
+                command.Parameters.AddWithValue("@userId", memoItem.EditorUserId);
+                command.Parameters.AddWithValue("@teamId", memoItem.TeamId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        int rowsAffected = Convert.ToInt32(reader["AffectedRows"]);
+                        int newId = Convert.ToInt32(reader["NewId"]);
+                        
+                        if (rowsAffected > 0)
+                        {
+                            memoItem.MemoId = newId;
+                            return true;
+                        }
+                    }
+
+                    return false;
+                }
+
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error adding memo: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
+    }
 }

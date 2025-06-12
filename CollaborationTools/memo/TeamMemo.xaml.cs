@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using CollaborationTools.calendar;
 using CollaborationTools.team;
+using CollaborationTools.user;
 
 namespace CollaborationTools.memo;
 
@@ -24,6 +25,7 @@ public partial class TeamMemo : UserControl
         get => (Team)GetValue(CurrentTeamProperty);
         set => SetValue(CurrentTeamProperty, value);
     }
+    
     
     public TeamMemo()
     {
@@ -60,7 +62,17 @@ public partial class TeamMemo : UserControl
         
         memoCreateWindow.MemoCreated += (s,memoItem) =>
         {
-            _memoItems.Add(memoItem);
+            memoItem.TeamId = CurrentTeam.teamId;
+            memoItem.LastModifiedDate = DateTime.Now;
+            memoItem.EditorUserId = UserSession.CurrentUser.userId;
+            memoItem.LastEditorName = UserSession.CurrentUser.Name;
+            
+            bool isSucceed = _memoService.AddMemoItem(memoItem);
+
+            if (isSucceed)
+                _memoItems.Add(memoItem);
+            else
+                MessageBox.Show("메모 생성 실패!\n 다시 시도해 주세요.");
         };
         
         Show(memoCreateWindow);

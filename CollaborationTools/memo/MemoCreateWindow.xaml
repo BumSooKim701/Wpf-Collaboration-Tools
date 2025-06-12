@@ -20,7 +20,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" >
-                <Label Content="제목:"></Label>
+                <Label Content="제목"></Label>
                 <TextBox Text="{Binding Title}"
                          AcceptsReturn="False"
                          Margin="0, 5"
