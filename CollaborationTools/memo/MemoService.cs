@@ -21,4 +21,9 @@ public class MemoService
     {
         return _memoRepository.AddMemo(memoItem);
     }
+
+    public bool UpdateMemoItem(MemoItem memoItem)
+    {
+        return _memoRepository.UpdateMemo(memoItem);
+    }
 }

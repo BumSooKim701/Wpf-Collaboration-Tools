@@ -22,7 +22,8 @@ public partial class MemoDetailsWindow : Window
 
     private void EditButtonClicked(object sender, RoutedEventArgs e)
     {
-        SwitchButton(true);
+        _memoItem.ResetDirtyFlag();
+        SwitchMode(true);
     }
     
     private async void DeleteButtonClicked(object sender, RoutedEventArgs e)
@@ -35,21 +36,37 @@ public partial class MemoDetailsWindow : Window
         // _memoItem이 ui와 데이터 바인딩 돼있으므로, 변경취소 시 수정하기 이전 값으로 돌려놓기.
         _memoItem.Title = _lastSavedTitle;
         _memoItem.Content = _LastSavedContent;
-        SwitchButton(false);
+        _memoItem.ResetDirtyFlag();
+        
+        SwitchMode(false);
     }
     
     private async void SaveButtonClicked(object sender, RoutedEventArgs e)
     {
-        _memoItem.LastModifiedDate = DateTime.Now;
-        _memoItem.LastEditorName = UserSession.CurrentUser.Name;
+        if (_memoItem.IsDirty)
+        {
+            _memoItem.LastModifiedDate = DateTime.Now;
+            _memoItem.LastEditorName = UserSession.CurrentUser.Name;
+            _memoItem.EditorUserId = UserSession.CurrentUser.userId;
+            _memoItem.ResetDirtyFlag();
+            
+            _lastSavedTitle = _memoItem.Title;
+            _LastSavedContent = _memoItem.Content;
+
+            var memoService = new MemoService();
+            bool isSucceed = memoService.UpdateMemoItem(_memoItem);
+
+            MessageBox.Show(isSucceed ? "저장에 성공하였습니다" : "저장에 실패하였습니다");
+        }
+        else
+        {
+            MessageBox.Show("변경사항이 없습니다.");
+        }
         
-        _lastSavedTitle = _memoItem.Title;
-        _LastSavedContent = _memoItem.Content;
-        
-        SwitchButton(false);
+        SwitchMode(false);
     }
 
-    private void SwitchButton(bool isEditMode)
+    private void SwitchMode(bool isEditMode)
     {
         TitleBox.IsReadOnly = !isEditMode;
         ContentBox.IsReadOnly = !isEditMode;

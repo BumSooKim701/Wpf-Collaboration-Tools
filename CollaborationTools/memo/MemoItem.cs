@@ -7,37 +7,16 @@ public class MemoItem : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
     
-    private int _memoId;
-
-    public int MemoId
-    {
-        get => _memoId;
-        set
-        {
-            if (_memoId != value)
-            {
-                _memoId = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-    
-    private int _teamId;
-
-    public int TeamId
-    {
-        get => _teamId;
-        set
-        {
-            if (_teamId != value)
-            {
-                _teamId = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
     private string _title;
+    private string _content;
+    private DateTime _lastModifiedDate;
+    private int _editorUserId;
+    private string _lastEditorName;
+    private int _memoId;
+    private int _teamId;
+    private bool _isDirty = false; // 변경 추적 플래그
+    
+
 
     public string Title
     {
@@ -47,12 +26,11 @@ public class MemoItem : INotifyPropertyChanged
             if (_title != value)
             {
                 _title = value;
+                _isDirty = true;
                 OnPropertyChanged();
             }
         }
     }
-    
-    private string _content;
 
     public string Content
     {
@@ -62,13 +40,12 @@ public class MemoItem : INotifyPropertyChanged
             if (_content != value)
             {
                 _content = value;
+                _isDirty = true;
                 OnPropertyChanged();
             }
         }
     }
-
     
-    private DateTime _lastModifiedDate;
 
     public DateTime LastModifiedDate
     {
@@ -83,22 +60,11 @@ public class MemoItem : INotifyPropertyChanged
         }
     }
 
-    private int _editorUserId;
-
     public int EditorUserId
     {
         get => _editorUserId;
-        set
-        {
-            if (_editorUserId != value)
-            {
-                _editorUserId = value;
-                OnPropertyChanged();
-            }
-        }
+        set => _editorUserId = value;
     }
-    
-    private string _lastEditorName;
 
     public string LastEditorName
     {
@@ -111,6 +77,28 @@ public class MemoItem : INotifyPropertyChanged
                 OnPropertyChanged();
             }
         }
+    }
+
+    public int MemoId
+    {
+        get => _memoId;
+        set => _memoId = value;
+    }
+    
+    public int TeamId
+    {
+        get => _teamId;
+        set => _teamId = value;
+    }
+
+    public bool IsDirty
+    {
+        get => _isDirty;
+    }
+
+    public void ResetDirtyFlag()
+    {
+        _isDirty = false;
     }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

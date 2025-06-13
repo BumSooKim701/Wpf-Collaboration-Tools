@@ -33,16 +33,19 @@ public class MemoRepository
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
+                    {
                         memoItems.Add(new MemoItem
                         {
                             MemoId = reader.GetInt32("id"),
                             Title = reader.GetString("memo_title"),
                             Content = reader.GetString("memo_content"),
                             LastModifiedDate = reader.GetDateTime("date_of_modified"),
-                            TeamId = reader.GetInt32("team_id"),
                             EditorUserId = reader.GetInt32("editor_user_id"),
                             LastEditorName = reader.GetString("last_editor_name"),
+                            TeamId = teamId,
                         });
+                    }
+                        
                 }
             }
         }
@@ -103,6 +106,43 @@ public class MemoRepository
         catch (Exception e)
         {
             Console.WriteLine($"Error adding memo: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
+    }
+
+    public bool UpdateMemo(MemoItem memoItem)
+    {
+        MySqlConnection connection = null;
+        var result = true;
+        
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            using (var command = new MySqlCommand(
+                       "UPDATE team_memo SET memo_title = @memoTitle, memo_content = @memoContent, date_of_modified = @dateOfModified, " +
+                       "team_member_id = (SELECT id FROM team_member WHERE team_id = @teamId and user_id = @userId)  " +
+                       "WHERE id = @memoId", connection))
+            {
+                command.Parameters.AddWithValue("@memoTitle", memoItem.Title);
+                command.Parameters.AddWithValue("@memoContent", memoItem.Content);
+                command.Parameters.AddWithValue("@dateOfModified", memoItem.LastModifiedDate);
+                command.Parameters.AddWithValue("@teamId", memoItem.TeamId);
+                command.Parameters.AddWithValue("@userId", memoItem.EditorUserId);
+                command.Parameters.AddWithValue("@memoId", memoItem.MemoId);
+
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult == 0) result = false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error updating team calendar id: {e.Message}");
         }
         finally
         {
