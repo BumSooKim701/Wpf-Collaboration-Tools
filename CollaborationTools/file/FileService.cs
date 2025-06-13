@@ -24,7 +24,7 @@ namespace CollaborationTools.file
             try
             {
                 // 파일 존재 확인
-                if (File.Exists(filePath))
+                if (!File.Exists(filePath))
                 {
                     throw new FileNotFoundException($"파일을 찾을 수 없습니다: {filePath}");
                 }

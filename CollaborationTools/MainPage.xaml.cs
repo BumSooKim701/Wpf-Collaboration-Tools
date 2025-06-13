@@ -105,7 +105,7 @@ namespace CollaborationTools
             // }
             if (HomeView != null)
             {
-                HomeView.CurrentTeam = _currentTeam;
+                HomeView.CurrentTeam = currentTeam;
             }
             if (CalendarView != null)
             {

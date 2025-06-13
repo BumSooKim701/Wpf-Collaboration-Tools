@@ -187,93 +187,93 @@ namespace CollaborationTools.file
         }
         
         private async Task UploadOrUpdateFilesAsync(string[] filePaths)
-{
-    try
-    {
-        UploadProgressBar.Visibility = Visibility.Visible;
-
-        foreach (string filePath in filePaths)
         {
-            if (!System.IO.File.Exists(filePath))
+            try
             {
-                StatusMessage = $"파일을 찾을 수 없습니다: {System.IO.Path.GetFileName(filePath)}";
-                continue;
-            }
+                UploadProgressBar.Visibility = Visibility.Visible;
 
-            // 100MB 크기 제한 확인
-            var fileInfo = new System.IO.FileInfo(filePath);
-            if (fileInfo.Length > 100 * 1024 * 1024) // 100MB
-            {
-                StatusMessage = $"파일 크기가 100MB를 초과합니다: {fileInfo.Name}";
-                MessageBox.Show($"파일 크기가 100MB를 초과합니다: {fileInfo.Name}");
-                continue;
-            }
-
-            StatusMessage = $"처리 중: {System.IO.Path.GetFileName(filePath)}";
-
-            var fileName = System.IO.Path.GetFileName(filePath);
-            
-            // 기존 파일이 있는지 확인
-            var existingFileId = await fileService.FindExistingFileAsync(CurrentTeam.teamFolderId, fileName);
-            
-            GoogleFile processedFile;
-            
-            if (!string.IsNullOrEmpty(existingFileId))
-            {
-                // 기존 파일 버전 업데이트
-                StatusMessage = $"버전 업데이트 중: {fileName}";
-                processedFile = await fileService.UpdateFileVersionAsync(existingFileId, filePath);
-                
-                // UI에서 기존 파일 항목 업데이트
-                var existingItem = TeamFiles.FirstOrDefault(f => f.FileId == existingFileId);
-                if (existingItem != null)
+                foreach (string filePath in filePaths)
                 {
-                    existingItem.FileSize = FormatFileSize(processedFile.Size ?? 0);
-                    existingItem.ModifiedDate = processedFile.ModifiedTime?.ToString("yyyy-MM-dd HH:mm") ?? "";
-                    // 버전 정보 새로고침
-                    if (existingItem.IsExpanded)
+                    if (!System.IO.File.Exists(filePath))
                     {
-                        await LoadFileVersions(existingItem);
+                        StatusMessage = $"파일을 찾을 수 없습니다: {System.IO.Path.GetFileName(filePath)}";
+                        continue;
                     }
-                }
-            }
-            else
-            {
-                // 새 파일 업로드
-                StatusMessage = $"새 파일 업로드 중: {fileName}";
-                processedFile = await fileService.UploadNewFileAsync(CurrentTeam.teamFolderId, filePath);
-                
-                // UI에 새 파일 항목 추가
-                if (processedFile != null)
-                {
-                    var fileItem = new FileItemViewModel
+
+                    // 100MB 크기 제한 확인
+                    var fileInfo = new System.IO.FileInfo(filePath);
+                    if (fileInfo.Length > 100 * 1024 * 1024) // 100MB
                     {
-                        FileId = processedFile.Id,
-                        FileName = processedFile.Name,
-                        FileSize = FormatFileSize(processedFile.Size ?? 0),
-                        ModifiedDate = processedFile.ModifiedTime?.ToString("yyyy-MM-dd HH:mm") ?? "",
-                        FileIcon = GetFileIcon(processedFile.Name),
-                        MimeType = processedFile.MimeType
-                    };
-                    TeamFiles.Add(fileItem);
+                        StatusMessage = $"파일 크기가 100MB를 초과합니다: {fileInfo.Name}";
+                        MessageBox.Show($"파일 크기가 100MB를 초과합니다: {fileInfo.Name}");
+                        continue;
+                    }
+
+                    StatusMessage = $"처리 중: {System.IO.Path.GetFileName(filePath)}";
+
+                    var fileName = System.IO.Path.GetFileName(filePath);
+                    
+                    // 기존 파일이 있는지 확인
+                    var existingFileId = await fileService.FindExistingFileAsync(CurrentTeam.teamFolderId, fileName);
+                    
+                    GoogleFile processedFile;
+                    
+                    if (!string.IsNullOrEmpty(existingFileId))
+                    {
+                        // 기존 파일 버전 업데이트
+                        StatusMessage = $"버전 업데이트 중: {fileName}";
+                        processedFile = await fileService.UpdateFileVersionAsync(existingFileId, filePath);
+                        
+                        // UI에서 기존 파일 항목 업데이트
+                        var existingItem = TeamFiles.FirstOrDefault(f => f.FileId == existingFileId);
+                        if (existingItem != null)
+                        {
+                            existingItem.FileSize = FormatFileSize(processedFile.Size ?? 0);
+                            existingItem.ModifiedDate = processedFile.ModifiedTime?.ToString("yyyy-MM-dd HH:mm") ?? "";
+                            // 버전 정보 새로고침
+                            if (existingItem.IsExpanded)
+                            {
+                                await LoadFileVersions(existingItem);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // 새 파일 업로드
+                        StatusMessage = $"새 파일 업로드 중: {fileName}";
+                        processedFile = await fileService.UploadNewFileAsync(CurrentTeam.teamFolderId, filePath);
+                        
+                        // UI에 새 파일 항목 추가
+                        if (processedFile != null)
+                        {
+                            var fileItem = new FileItemViewModel
+                            {
+                                FileId = processedFile.Id,
+                                FileName = processedFile.Name,
+                                FileSize = FormatFileSize(processedFile.Size ?? 0),
+                                ModifiedDate = processedFile.ModifiedTime?.ToString("yyyy-MM-dd HH:mm") ?? "",
+                                FileIcon = GetFileIcon(processedFile.Name),
+                                MimeType = processedFile.MimeType
+                            };
+                            TeamFiles.Add(fileItem);
+                        }
+                    }
+
+                    NoFilesMessage.Visibility = TeamFiles.Count == 0 ? Visibility.Visible : Visibility.Hidden;
                 }
+
+                StatusMessage = $"처리 완료: {TeamFiles.Count}개 파일";
             }
-
-            NoFilesMessage.Visibility = TeamFiles.Count == 0 ? Visibility.Visible : Visibility.Hidden;
+            catch (Exception ex)
+            {
+                StatusMessage = $"파일 처리 중 오류: {ex.Message}";
+                MessageBox.Show($"파일 처리 중 오류가 발생했습니다: {ex.Message}");
+            }
+            finally
+            {
+                UploadProgressBar.Visibility = Visibility.Collapsed;
+            }
         }
-
-        StatusMessage = $"처리 완료: {TeamFiles.Count}개 파일";
-    }
-    catch (Exception ex)
-    {
-        StatusMessage = $"파일 처리 중 오류: {ex.Message}";
-        MessageBox.Show($"파일 처리 중 오류가 발생했습니다: {ex.Message}");
-    }
-    finally
-    {
-        UploadProgressBar.Visibility = Visibility.Collapsed;
-    }
-}
 
         private void OnDragOver(object sender, DragEventArgs e)
         {
