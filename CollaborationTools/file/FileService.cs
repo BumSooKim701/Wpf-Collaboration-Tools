@@ -2,7 +2,6 @@
 using System.IO;
 using CollaborationTools.authentication;
 using CollaborationTools.database;
-using CollaborationTools.user;
 using Google;
 using GoogleFile = Google.Apis.Drive.v3.Data.File;
 
@@ -10,7 +9,6 @@ namespace CollaborationTools.file
 {
     public class FileService
     {
-        private readonly FileRepository _fileRepository = new();
         private readonly TeamRepository _teamRepository = new();
         
         // 파일 업로드 (등록)
@@ -26,12 +24,12 @@ namespace CollaborationTools.file
             try
             {
                 // 파일 존재 확인
-                if (!System.IO.File.Exists(filePath))
+                if (File.Exists(filePath))
                 {
                     throw new FileNotFoundException($"파일을 찾을 수 없습니다: {filePath}");
                 }
 
-                var fileName = System.IO.Path.GetFileName(filePath);
+                var fileName = Path.GetFileName(filePath);
                 var mimeType = GetMimeType(filePath);
 
                 var fileMetadata = new GoogleFile()
@@ -47,21 +45,6 @@ namespace CollaborationTools.file
                 var uploadedFile = await request.UploadAsync();
                 if (uploadedFile.Status == Google.Apis.Upload.UploadStatus.Completed)
                 {
-                    int resultTeamId = _teamRepository.FindTeamIdFromFolderId(folderId);
-                    Console.WriteLine(resultTeamId);
-                    
-                    var dBfileMetadata = new File
-                    {
-                        fileId = request.ResponseBody.Id,
-                        fileName = request.ResponseBody.Name,
-                        dateOfCreated = DateTime.Now,
-                        lastFileVersion = 1,
-                        userId = UserSession.CurrentUser.userId, // 현재 사용자 ID
-                        teamId = resultTeamId,
-                        folderId = folderId
-                    };
-            
-                    _fileRepository.AddFile(dBfileMetadata);
                     return request.ResponseBody;
                 }
                 else
@@ -78,57 +61,9 @@ namespace CollaborationTools.file
         // 새 파일 업로드 (최초 업로드)
         public async Task<GoogleFile> UploadNewFileAsync(string folderId, string filePath)
         {
-            var driveService = GoogleAuthentication.DriveService;
-            if (driveService == null)
-                throw new InvalidOperationException("Google Drive 서비스에 연결할 수 없습니다.");
-
-            try
-            {
-                if (!System.IO.File.Exists(filePath))
-                    throw new FileNotFoundException($"파일을 찾을 수 없습니다: {filePath}");
-
-                var fileName = System.IO.Path.GetFileName(filePath);
-                var mimeType = GetMimeType(filePath);
-
-                var fileMetadata = new GoogleFile()
-                {
-                    Name = fileName,
-                    Parents = new List<string> { folderId }
-                };
-
-                using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-                var request = driveService.Files.Create(fileMetadata, stream, mimeType);
-                request.Fields = "id,name,size,modifiedTime,mimeType,version";
-
-                var uploadedFile = await request.UploadAsync();
-                if (uploadedFile.Status == Google.Apis.Upload.UploadStatus.Completed)
-                {
-                    // 데이터베이스에 파일 정보 저장
-                    int resultTeamId = _teamRepository.FindTeamIdFromFolderId(folderId);
-                    var dBfileMetadata = new File
-                    {
-                        fileId = request.ResponseBody.Id,
-                        fileName = request.ResponseBody.Name,
-                        dateOfCreated = DateTime.Now,
-                        lastFileVersion = 1,
-                        userId = UserSession.CurrentUser.userId,
-                        teamId = resultTeamId,
-                        folderId = folderId
-                    };
-                    _fileRepository.AddFile(dBfileMetadata);
-
-                    return request.ResponseBody;
-                }
-                else
-                {
-                    throw new Exception($"업로드 실패: {uploadedFile.Exception?.Message}");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"파일 업로드 중 오류 발생: {ex.Message}");
-            }
+            return await UploadFileAsync(folderId, filePath);
         }
+
         
         // 기존 파일 버전 업데이트 (핵심 기능)
         public async Task<GoogleFile> UpdateFileVersionAsync(string fileId, string filePath)
@@ -158,14 +93,6 @@ namespace CollaborationTools.file
                 var uploadResult = await request.UploadAsync();
                 if (uploadResult.Status == Google.Apis.Upload.UploadStatus.Completed)
                 {
-                    // 데이터베이스의 버전 정보 업데이트
-                    var dbFile = _fileRepository.GetFileByFileId(fileId);
-                    if (dbFile != null)
-                    {
-                        dbFile.lastFileVersion++;
-                        _fileRepository.UpdateFile(dbFile);
-                    }
-
                     return request.ResponseBody;
                 }
                 else

@@ -153,7 +153,6 @@ C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-wind
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-windows\credential\client_secret.json
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools_Content.g.cs
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-windows\ShowMeTheXAML.dll
-C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-windows\credential\client_secret.json
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-windows\ShowMeTheXAML.dll
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\CollaborationTools_Content.g.cs
 C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\login\LoginPage.g.cs
@@ -270,3 +269,9 @@ C:\my_codes\wpf\WpfCollaborationTools\CollaborationTools\obj\Debug\net8.0-window
 C:\my_codes\wpf\WpfCollaborationTools\CollaborationTools\obj\Debug\net8.0-windows\memo\MemoDetailsWindow.baml
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\MemoCreateWindow.g.cs
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\MemoCreateWindow.baml
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\MemoCreateWindow.g.cs
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\MemoDetailsWindow.g.cs
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\TeamMemo.g.cs
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\MemoCreateWindow.baml
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\MemoDetailsWindow.baml
+C:\my_codes\wpf\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\memo\TeamMemo.baml
