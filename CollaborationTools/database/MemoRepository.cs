@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using CollaborationTools.memo;
 using CollaborationTools.team;
+using CollaborationTools.user;
 using MySqlConnector;
 
 namespace CollaborationTools.database;
@@ -40,7 +41,6 @@ public class MemoRepository
                             Title = reader.GetString("memo_title"),
                             Content = reader.GetString("memo_content"),
                             LastModifiedDate = reader.GetDateTime("date_of_modified"),
-                            EditorUserId = reader.GetInt32("editor_user_id"),
                             LastEditorName = reader.GetString("last_editor_name"),
                             TeamId = teamId,
                         });
@@ -74,8 +74,7 @@ public class MemoRepository
                        "INSERT INTO team_memo (memo_title, memo_content, date_of_modified, team_member_id) " +
                        "VALUES (@memoTitle, @memoContent, @dateOfModified, " +
                        "(SELECT id FROM team_member WHERE user_id = @userId AND team_id = @teamId)\n);" +
-                       "SELECT ROW_COUNT() AS AffectedRows, LAST_INSERT_ID() AS NewId;"
-                       ,
+                       "SELECT ROW_COUNT() AS AffectedRows, LAST_INSERT_ID() AS NewId;",
                        connection))
             {
                 command.Parameters.AddWithValue("@memoTitle", memoItem.Title);
@@ -123,7 +122,7 @@ public class MemoRepository
             connection = _connectionPool.GetConnection();
             using (var command = new MySqlCommand(
                        "UPDATE team_memo SET memo_title = @memoTitle, memo_content = @memoContent, date_of_modified = @dateOfModified, " +
-                       "team_member_id = (SELECT id FROM team_member WHERE team_id = @teamId and user_id = @userId)  " +
+                       "team_member_id = (SELECT id FROM team_member WHERE team_id = @teamId and user_id = @userId)" +
                        "WHERE id = @memoId", connection))
             {
                 command.Parameters.AddWithValue("@memoTitle", memoItem.Title);

@@ -17,13 +17,12 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
 {
     private readonly TeamService _teamService = new();
     private readonly CalendarService _calendarService = new();
-    private readonly FileService _fileService = new();
     private readonly FolderService _folderService = new();
     private ObservableCollection<TabItem> _tabItems;
     private Team _selectedTeam;
     private List<Team> _curUserTeams;
     private byte _curUserAuthority;
-    public event EventHandler<Team>? SideBarChanged;
+    public event EventHandler<SideBarChangedEventArgs>? SideBarChanged;
 
     public SideBar()
     {
@@ -49,7 +48,7 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
         }
     }
 
-    public Team SelectedTeam
+    public Team? SelectedTeam
     {
         get => _selectedTeam;
         set
@@ -122,6 +121,12 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
                     Title = "내 프로필",
                     MenuType = MenuType.Personal,
                     Action = "Profile"
+                },
+                new()
+                {
+                    Title = "내 주소록",
+                    MenuType = MenuType.Personal,
+                    Action = "AddressBook"
                 }
             }
         };
@@ -280,10 +285,25 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
                 case "Team":
                     SelectedTeam = tabItem.CurTeam;
                     CurUserAuthority = _teamService.FindAuthority(SelectedTeam, UserSession.CurrentUser);
-                    SideBarChanged?.Invoke(this, SelectedTeam);
+                    SideBarChanged?.Invoke(this, new SideBarChangedEventArgs
+                    {
+                        TabType = "Team",
+                        Team = SelectedTeam,
+                        User = null
+                    });
                     break;
                 case "Plus":
                     OpenTeamCreateWindow();
+                    break;
+                case "Personal":
+                    SelectedTeam = null;
+                    CurUserAuthority = 1;
+                    SideBarChanged?.Invoke(this, new SideBarChangedEventArgs
+                    {
+                        TabType = "Personal",
+                        Team = null,
+                        User = UserSession.CurrentUser
+                    });
                     break;
             }
         }
@@ -345,6 +365,7 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
 
     private void OpenTeamMemberRegistrationWindow()
     {
+        
         var teamMemberRegistrationWindow = new TeamMemberRegistrationWindow(SelectedTeam);
         
         var result = teamMemberRegistrationWindow.ShowDialog();

@@ -16,12 +16,16 @@ namespace CollaborationTools.file
         private readonly FileService fileService = new();
         private readonly FolderService folderService = new();
         private Team _currentTeam;
+        private readonly string _folderId;
         private string statusMessage = "준비됨";
         private ObservableCollection<FileItemViewModel> teamFiles = new();
-
-        public FileManagerWindow()
+        
+        public FileManagerWindow() : this("primary") { }
+        public FileManagerWindow(string folderId = "primary")
         {
             InitializeComponent();
+            _folderId = folderId;
+            LoadTeamFiles();
             DataContext = this;
         }
 
@@ -32,7 +36,7 @@ namespace CollaborationTools.file
                 typeof(FileManagerWindow),
                 new PropertyMetadata(null, OnCurrentTeamChanged));
 
-        public Team CurrentTeam
+        public Team? CurrentTeam
         {
             get => (Team)GetValue(CurrentTeamProperty);
             set => SetValue(CurrentTeamProperty, value);
@@ -72,9 +76,38 @@ namespace CollaborationTools.file
         // LoadTeamFiles 메서드에 NoFilesMessage 처리 추가
         private async void LoadTeamFiles()
         {
-            if (CurrentTeam?.teamFolderId == null) 
+            if (_folderId == "primary" && CurrentTeam == null) 
             {
-                NoFilesMessage.Visibility = Visibility.Visible;
+                try
+                {
+                    StatusMessage = "내 드라이브 파일을 불러오는 중...";
+                    // 개인 구글 드라이브 최상위 파일 목록 불러오기
+                    var files = await folderService.GetFilesInFolderAsync("root"); // "root"는 구글 드라이브 내 드라이브 최상위 폴더
+
+                    TeamFiles.Clear();
+                    foreach (var file in files)
+                    {
+                        var fileItem = new FileItemViewModel
+                        {
+                            FileId = file.Id,
+                            FileName = file.Name,
+                            FileSize = FormatFileSize(file.Size ?? 0),
+                            ModifiedDate = file.ModifiedTime?.ToString("yyyy-MM-dd HH:mm") ?? "",
+                            FileIcon = GetFileIcon(file.Name),
+                            MimeType = file.MimeType
+                        };
+                        TeamFiles.Add(fileItem);
+                    }
+
+                    NoFilesMessage.Visibility = TeamFiles.Count == 0 ? Visibility.Visible : Visibility.Hidden;
+                    StatusMessage = TeamFiles.Count == 0 ? "파일이 없습니다" : $"{TeamFiles.Count}개의 파일";
+                }
+                catch (Exception ex)
+                {
+                    StatusMessage = $"오류: {ex.Message}";
+                    NoFilesMessage.Visibility = Visibility.Visible;
+                    MessageBox.Show($"내 드라이브 파일 목록 오류: {ex.Message}");
+                }
                 return;
             }
 

@@ -2,19 +2,20 @@
 using System.Windows;
 using System.Windows.Controls;
 using CollaborationTools.team;
+using CollaborationTools.user;
 
 namespace CollaborationTools
 {
     public partial class MainPage : Page
     {
         private Team currentTeam;
-
+        
         public MainPage()
         {
             InitializeComponent();
-
+            
             // SideBar의 PropertyChanged 이벤트 구독
-            SideBarControl.PropertyChanged += SideBarControl_PropertyChanged;
+            SideBarControl.SideBarChanged += SideBarControl_Changed;
 
             // MenuBar의 SelectionChanged 이벤트 구독
             MenuBarControl.MenuChanged += MenuBarControl_MenuChanged;
@@ -23,11 +24,16 @@ namespace CollaborationTools
             ShowHomeView();
         }
 
-        private void SideBarControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void SideBarControl_Changed(object sender, SideBarChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(SideBar.SelectedTeam))
+            if (e.Team == null)
             {
-                currentTeam = SideBarControl.SelectedTeam;
+                currentTeam = null;
+                UpdateCurrentUserInView();
+            }
+            else
+            {
+                currentTeam = e.Team;
                 UpdateCurrentTeamInViews();
                 UpdateTeamInfo();
             }
@@ -51,6 +57,7 @@ namespace CollaborationTools
                     break;
             }
         }
+        
 
         private void ShowHomeView()
         {
@@ -109,7 +116,38 @@ namespace CollaborationTools
             
             if (MemoView != null)
             {
+                Console.WriteLine("Team MemoView");
+                MemoView.IsPrimary = false;
                 MemoView.CurrentTeam = currentTeam;
+            }
+        }
+
+        private void UpdateCurrentUserInView()
+        {
+            // if (HomeCalendarView != null)
+            // {
+            //     HomeCalendarView.CurrentUser = currentUser;
+            // }
+            //
+            // if (HomeFileView != null)
+            // {
+            //     HomeFileView.CurrentUser = currentUser;
+            // }
+            if (CalendarView != null)
+            {
+                CalendarView.CurrentTeam = null;
+            }
+
+            if (FileView != null)
+            {
+                FileView.CurrentTeam = null;
+            }
+            
+            if (MemoView != null)
+            {
+                Console.WriteLine("User MemoView");
+                MemoView.IsPrimary = true;
+                MemoView.CurrentTeam = null;
             }
         }
 

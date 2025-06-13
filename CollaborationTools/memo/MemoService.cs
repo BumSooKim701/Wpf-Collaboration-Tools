@@ -16,7 +16,7 @@ public class MemoService
     {
         return _memoRepository.GetMemosByTeamId(teamId);
     }
-
+    
     public bool AddMemoItem(MemoItem memoItem)
     {
         return _memoRepository.AddMemo(memoItem);
