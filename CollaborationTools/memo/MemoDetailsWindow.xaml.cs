@@ -41,7 +41,7 @@ public partial class MemoDetailsWindow : Window
             var memoService = new MemoService();
             bool isSucceed = memoService.DeleteMemoItem(_memoItem);
 
-            MessageBox.Show(isSucceed ? "메모가 정상적으로 삭제되었습니다" : "삭제에 실패하였습니다");
+            MessageBox.Show(Application.Current.MainWindow, isSucceed ? "메모가 정상적으로 삭제되었습니다" : "삭제에 실패하였습니다");
             if (isSucceed)
                 MemoDeleted?.Invoke(this, _memoItem);
 
@@ -78,16 +78,16 @@ public partial class MemoDetailsWindow : Window
             var memoService = new MemoService();
             bool isSucceed = memoService.UpdateMemoItem(_memoItem);
 
-            MessageBox.Show(isSucceed ? "저장에 성공하였습니다" : "저장에 실패하였습니다");
+            MessageBox.Show(Application.Current.MainWindow, isSucceed ? "저장에 성공하였습니다" : "저장에 실패하였습니다");
             if (isSucceed)
                 MemoUpdated?.Invoke(this, _memoItem);
         }
         else
         {
-            MessageBox.Show("변경사항이 없습니다.");
+            MessageBox.Show(Application.Current.MainWindow, "변경사항이 없습니다.");
         }
-        
-        SwitchMode(false);
+
+        Close();
     }
 
     private void SwitchMode(bool isEditMode)

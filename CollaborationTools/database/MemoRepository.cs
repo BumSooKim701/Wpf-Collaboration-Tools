@@ -123,7 +123,8 @@ public class MemoRepository
 
             using (var command = new MySqlCommand(
                        "INSERT INTO team_memo (memo_title, memo_content, date_of_modified, team_member_id) " +
-                       "VALUES (@memoTitle, @memoContent, @dateOfModified, @memberId)",
+                       "VALUES (@memoTitle, @memoContent, @dateOfModified, @memberId);" + 
+                       "SELECT ROW_COUNT() AS AffectedRows, LAST_INSERT_ID() AS NewId;",
                        connection))
             {
                 Console.WriteLine(memoItem.Title + " " + memoItem.Content + " " + memoItem.LastModifiedDate + " " + memberId);
@@ -132,11 +133,18 @@ public class MemoRepository
                 command.Parameters.AddWithValue("@dateOfModified", memoItem.LastModifiedDate);
                 command.Parameters.AddWithValue("@memberId", memberId);
 
-                using (var reader = command.ExecuteNonQueryAsync())
+                using (var reader = command.ExecuteReader())
                 {
-                    if (reader.Result > 0)
+                    if (reader.Read())
                     {
-                        result = true;
+                        int rowsAffected = Convert.ToInt32(reader["AffectedRows"]);
+                        int newId = Convert.ToInt32(reader["NewId"]);
+                        
+                        if (rowsAffected > 0)
+                        {
+                            memoItem.MemoId = newId;
+                            result = true;
+                        }
                     }
                 }
             }

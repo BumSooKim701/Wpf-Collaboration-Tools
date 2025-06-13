@@ -101,9 +101,12 @@ public partial class TeamMemo : UserControl
                 bool isSucceed = _memoService.AddMemoItem(memoItem);
 
                 if (isSucceed)
+                {
                     _memoItems.Insert(0, memoItem);
+                }
+                
                 else
-                    MessageBox.Show("메모 생성 실패!\n 다시 시도해 주세요.");
+                    MessageBox.Show(Application.Current.MainWindow, "메모 생성 실패!\n 다시 시도해 주세요.");
             };
             
         }
@@ -124,9 +127,11 @@ public partial class TeamMemo : UserControl
                 bool isSucceed = _memoService.AddMemoItemForUser(memoItem, member.memberId);
 
                 if (isSucceed)
-                    MessageBox.Show("메모 생성 성공!");
+                {
+                    _memoItems.Insert(0, memoItem);
+                }
                 else
-                    MessageBox.Show("메모 생성 실패!\n 다시 시도해 주세요.");
+                    MessageBox.Show(Application.Current.MainWindow, "메모 생성 실패!\n 다시 시도해 주세요.");
             };
         }
         

@@ -15,8 +15,11 @@ public class MemoItem : INotifyPropertyChanged
     private int _memoId;
     private int _teamId;
     private bool _isDirty = false; // 변경 추적 플래그
-    
 
+    public MemoItem()
+    {
+        _content = "";
+    }
 
     public string Title
     {
