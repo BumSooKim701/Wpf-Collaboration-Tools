@@ -22,68 +22,69 @@
             <!-- Main Content Area -->
             <Grid x:Name="MainContentArea">
                 <!-- Home View -->
-                <Grid x:Name="HomeView" Visibility="Visible">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <!-- Recent Calendar Events -->
-                    <Border Grid.Row="0" Grid.Column="0" 
-                            Background="White" 
-                            Margin="10" 
-                            CornerRadius="8"
-                            BorderBrush="#E0E0E0" 
-                            BorderThickness="1">
-                        <StackPanel Margin="15">
-                            <TextBlock Text="최근 일정" 
-                                     FontSize="16" 
-                                     FontWeight="Bold" 
-                                     Margin="0,0,0,10"/>
-                            <calendar:TeamCalendar x:Name="HomeCalendarView" 
-                                                 Height="200"/>
-                        </StackPanel>
-                    </Border>
-                    
-                    <!-- Recent Files -->
-                    <Border Grid.Row="0" Grid.Column="1" 
-                            Background="White" 
-                            Margin="10" 
-                            CornerRadius="8"
-                            BorderBrush="#E0E0E0" 
-                            BorderThickness="1">
-                        <StackPanel Margin="15">
-                            <TextBlock Text="최근 파일" 
-                                     FontSize="16" 
-                                     FontWeight="Bold" 
-                                     Margin="0,0,0,10"/>
-                            <file:FileManagerWindow x:Name="HomeFileView" 
-                                                   Height="200"/>
-                        </StackPanel>
-                    </Border>
-                    
-                    <!-- Team Info -->
-                    <Border Grid.Row="1" Grid.ColumnSpan="2" 
-                            Background="White" 
-                            Margin="10" 
-                            CornerRadius="8"
-                            BorderBrush="#E0E0E0" 
-                            BorderThickness="1">
-                        <StackPanel Margin="15">
-                            <TextBlock Text="팀 정보" 
-                                     FontSize="16" 
-                                     FontWeight="Bold" 
-                                     Margin="0,0,0,10"/>
-                            <TextBlock x:Name="TeamInfoText" 
-                                     Text="팀을 선택해주세요" 
-                                     FontSize="14"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
+                <local:HomeView x:Name="HomeView" Visibility="Visible" />
+                <!-- <Grid x:Name="HomeView" Visibility="Visible"> -->
+                <!--     <Grid.RowDefinitions> -->
+                <!--         <RowDefinition Height="*"/> -->
+                <!--         <RowDefinition Height="*"/> -->
+                <!--     </Grid.RowDefinitions> -->
+                <!--     <Grid.ColumnDefinitions> -->
+                <!--         <ColumnDefinition Width="*"/> -->
+                <!--         <ColumnDefinition Width="*"/> -->
+                <!--     </Grid.ColumnDefinitions> -->
+                <!--      -->
+                <!--     ~1~ Recent Calendar Events @1@ -->
+                <!--     <Border Grid.Row="0" Grid.Column="0"  -->
+                <!--             Background="White"  -->
+                <!--             Margin="10"  -->
+                <!--             CornerRadius="8" -->
+                <!--             BorderBrush="#E0E0E0"  -->
+                <!--             BorderThickness="1"> -->
+                <!--         <StackPanel Margin="15"> -->
+                <!--             <TextBlock Text="최근 일정"  -->
+                <!--                      FontSize="16"  -->
+                <!--                      FontWeight="Bold"  -->
+                <!--                      Margin="0,0,0,10"/> -->
+                <!--             <calendar:TeamCalendar x:Name="HomeCalendarView"  -->
+                <!--                                  Height="200"/> -->
+                <!--         </StackPanel> -->
+                <!--     </Border> -->
+                <!--      -->
+                <!--     ~1~ Recent Files @1@ -->
+                <!--     <Border Grid.Row="0" Grid.Column="1"  -->
+                <!--             Background="White"  -->
+                <!--             Margin="10"  -->
+                <!--             CornerRadius="8" -->
+                <!--             BorderBrush="#E0E0E0"  -->
+                <!--             BorderThickness="1"> -->
+                <!--         <StackPanel Margin="15"> -->
+                <!--             <TextBlock Text="최근 파일"  -->
+                <!--                      FontSize="16"  -->
+                <!--                      FontWeight="Bold"  -->
+                <!--                      Margin="0,0,0,10"/> -->
+                <!--             <file:FileManagerWindow x:Name="HomeFileView"  -->
+                <!--                                    Height="200"/> -->
+                <!--         </StackPanel> -->
+                <!--     </Border> -->
+                <!--      -->
+                <!--     ~1~ Team Info @1@ -->
+                <!--     <Border Grid.Row="1" Grid.ColumnSpan="2"  -->
+                <!--             Background="White"  -->
+                <!--             Margin="10"  -->
+                <!--             CornerRadius="8" -->
+                <!--             BorderBrush="#E0E0E0"  -->
+                <!--             BorderThickness="1"> -->
+                <!--         <StackPanel Margin="15"> -->
+                <!--             <TextBlock Text="팀 정보"  -->
+                <!--                      FontSize="16"  -->
+                <!--                      FontWeight="Bold"  -->
+                <!--                      Margin="0,0,0,10"/> -->
+                <!--             <TextBlock x:Name="TeamInfoText"  -->
+                <!--                      Text="팀을 선택해주세요"  -->
+                <!--                      FontSize="14"/> -->
+                <!--         </StackPanel> -->
+                <!--     </Border> -->
+                <!-- </Grid> -->
                 
                 <!-- Calendar View -->
                 <calendar:TeamCalendar x:Name="CalendarView" 

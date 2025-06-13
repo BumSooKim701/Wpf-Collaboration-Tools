@@ -87,15 +87,15 @@ namespace CollaborationTools
         private void UpdateCurrentTeamInViews()
         {
             // 모든 뷰에 현재 팀 정보 전달
-            if (HomeCalendarView != null)
-            {
-                HomeCalendarView.CurrentTeam = currentTeam;
-            }
-
-            if (HomeFileView != null)
-            {
-                HomeFileView.CurrentTeam = currentTeam;
-            }
+            // if (HomeCalendarView != null)
+            // {
+            //     HomeCalendarView.CurrentTeam = currentTeam;
+            // }
+            //
+            // if (HomeFileView != null)
+            // {
+            //     HomeFileView.CurrentTeam = currentTeam;
+            // }
 
             if (CalendarView != null)
             {
@@ -115,16 +115,16 @@ namespace CollaborationTools
 
         private void UpdateTeamInfo()
         {
-            if (currentTeam != null)
-            {
-                TeamInfoText.Text = $"팀명: {currentTeam.teamName}\n" +
-                                    $"팀 설명: {currentTeam.teamDescription ?? "설명 없음"}\n" +
-                                    $"생성일: {currentTeam.dateOfCreated:yyyy-MM-dd}";
-            }
-            else
-            {
-                TeamInfoText.Text = "팀을 선택해주세요";
-            }
+            // if (currentTeam != null)
+            // {
+            //     TeamInfoText.Text = $"팀명: {currentTeam.teamName}\n" +
+            //                         $"팀 설명: {currentTeam.teamDescription ?? "설명 없음"}\n" +
+            //                         $"생성일: {currentTeam.dateOfCreated:yyyy-MM-dd}";
+            // }
+            // else
+            // {
+            //     TeamInfoText.Text = "팀을 선택해주세요";
+            // }
         }
 
         // MenuBar에서 사용할 이벤트 인자
