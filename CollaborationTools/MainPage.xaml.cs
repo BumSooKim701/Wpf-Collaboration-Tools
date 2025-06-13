@@ -103,7 +103,10 @@ namespace CollaborationTools
             // {
             //     HomeFileView.CurrentTeam = currentTeam;
             // }
-
+            if (HomeView != null)
+            {
+                HomeView.CurrentTeam = currentTeam;
+            }
             if (CalendarView != null)
             {
                 CalendarView.CurrentTeam = currentTeam;

@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "C:\\my_codes\\wpf\\clone\\Wpf-Collaboration-Tools\\CollaborationTools\\CollaborationTools.csproj": {}
+    "C:\\Users\\leegunho\\RiderProjects\\Wpf-Collaboration-Tools\\CollaborationTools\\CollaborationTools.csproj": {}
   },
   "projects": {
-    "C:\\my_codes\\wpf\\clone\\Wpf-Collaboration-Tools\\CollaborationTools\\CollaborationTools.csproj": {
+    "C:\\Users\\leegunho\\RiderProjects\\Wpf-Collaboration-Tools\\CollaborationTools\\CollaborationTools.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\my_codes\\wpf\\clone\\Wpf-Collaboration-Tools\\CollaborationTools\\CollaborationTools.csproj",
+        "projectUniqueName": "C:\\Users\\leegunho\\RiderProjects\\Wpf-Collaboration-Tools\\CollaborationTools\\CollaborationTools.csproj",
         "projectName": "CollaborationTools",
-        "projectPath": "C:\\my_codes\\wpf\\clone\\Wpf-Collaboration-Tools\\CollaborationTools\\CollaborationTools.csproj",
-        "packagesPath": "C:\\Users\\qjatn\\.nuget\\packages\\",
-        "outputPath": "C:\\my_codes\\wpf\\clone\\Wpf-Collaboration-Tools\\CollaborationTools\\obj\\",
+        "projectPath": "C:\\Users\\leegunho\\RiderProjects\\Wpf-Collaboration-Tools\\CollaborationTools\\CollaborationTools.csproj",
+        "packagesPath": "C:\\Users\\leegunho\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\leegunho\\RiderProjects\\Wpf-Collaboration-Tools\\CollaborationTools\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\qjatn\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\leegunho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0-windows"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,7 +43,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0-windows7.0": {
@@ -91,7 +98,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Users\\qjatn\\.dotnet\\sdk\\8.0.406/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

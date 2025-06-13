@@ -1,19 +1,49 @@
-﻿namespace CollaborationTools.meeting_schedule;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
-public class Meeting
+namespace CollaborationTools.meeting_schedule;
+
+public class Meeting : INotifyPropertyChanged
 {
     private string _title;
     private string _toDo;
+    private byte status;
 
     public string Title
     {
         get => _title;
-        set => _title = value;
+        set
+        {
+            _title = value;
+            OnPropertyChanged();   
+        }
     }
 
     public string ToDo
     {
         get => _toDo;
-        set => _toDo = value;
+        set
+        {
+            _toDo = value;
+            OnPropertyChanged();  
+        }
+    }
+
+    // 0: 조율중, 1: 조율완료
+    public byte Status
+    {
+        get => status;
+        set
+        {
+            status = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

@@ -365,7 +365,6 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
 
     private void OpenTeamMemberRegistrationWindow()
     {
-        
         var teamMemberRegistrationWindow = new TeamMemberRegistrationWindow(SelectedTeam);
         
         var result = teamMemberRegistrationWindow.ShowDialog();
