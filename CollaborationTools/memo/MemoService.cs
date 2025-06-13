@@ -26,4 +26,9 @@ public class MemoService
     {
         return _memoRepository.UpdateMemo(memoItem);
     }
+
+    public bool DeleteMemoItem(MemoItem memoItem)
+    {
+        return _memoRepository.DeleteMemo(memoItem.MemoId);
+    }
 }

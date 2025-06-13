@@ -36,7 +36,7 @@ public partial class TeamMemo : UserControl
         ItemsControl.ItemsSource = _memoItems;
     }
     
-    private void MemoDoubleClicked(object sender, MouseButtonEventArgs e)
+    private void MemoClicked(object sender, MouseButtonEventArgs e)
     {
         if (e.ClickCount == 1) 
         {
@@ -44,6 +44,22 @@ public partial class TeamMemo : UserControl
             if (frameworkElement?.DataContext is MemoItem memoItem)
             {
                 var memoDetailsWindow = new MemoDetailsWindow(memoItem);
+
+                memoDetailsWindow.MemoUpdated += (s, memoItem) =>
+                {
+                    int index = _memoItems.IndexOf(
+                        _memoItems.FirstOrDefault(item => item.MemoId == memoItem.MemoId));
+                
+                    if (index >= 0)
+                    {
+                        _memoItems.Move(index, 0);  // 항목을 첫 번째 위치로 이동
+                    }
+                };
+                memoDetailsWindow.MemoDeleted += (s, memoItem) =>
+                {
+                    _memoItems.Remove(memoItem);
+                };
+
                 Show(memoDetailsWindow);
             }
         }
@@ -70,7 +86,7 @@ public partial class TeamMemo : UserControl
             bool isSucceed = _memoService.AddMemoItem(memoItem);
 
             if (isSucceed)
-                _memoItems.Add(memoItem);
+                _memoItems.Insert(0, memoItem);
             else
                 MessageBox.Show("메모 생성 실패!\n 다시 시도해 주세요.");
         };

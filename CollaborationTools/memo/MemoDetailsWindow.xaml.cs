@@ -9,6 +9,8 @@ public partial class MemoDetailsWindow : Window
     private MemoItem _memoItem;
     private string _lastSavedTitle;
     private string _LastSavedContent;
+    public event EventHandler<MemoItem> MemoUpdated;
+    public event EventHandler<MemoItem> MemoDeleted;
     
     public MemoDetailsWindow(MemoItem memoItem)
     {
@@ -28,17 +30,28 @@ public partial class MemoDetailsWindow : Window
     
     private async void DeleteButtonClicked(object sender, RoutedEventArgs e)
     {
+        var memoService = new MemoService();
+        bool isSucceed = memoService.DeleteMemoItem(_memoItem);
         
+        MessageBox.Show(isSucceed ? "메모가 정상적으로 삭제되었습니다" : "삭제에 실패하였습니다");
+        if (isSucceed) 
+            MemoDeleted?.Invoke(this, _memoItem);;
+
+        Close();
     }
     
-    private async void RevertButtonClicked(object sender, RoutedEventArgs e)
+    private void RevertButtonClicked(object sender, RoutedEventArgs e)
     {
-        // _memoItem이 ui와 데이터 바인딩 돼있으므로, 변경취소 시 수정하기 이전 값으로 돌려놓기.
+        RevertChanged();
+        SwitchMode(false);
+    }
+
+    // _memoItem이 ui와 데이터 바인딩 돼있으므로, 변경취소 시 수정하기 이전 값으로 돌려놓기.
+    private void RevertChanged()
+    {
         _memoItem.Title = _lastSavedTitle;
         _memoItem.Content = _LastSavedContent;
         _memoItem.ResetDirtyFlag();
-        
-        SwitchMode(false);
     }
     
     private async void SaveButtonClicked(object sender, RoutedEventArgs e)
@@ -57,6 +70,8 @@ public partial class MemoDetailsWindow : Window
             bool isSucceed = memoService.UpdateMemoItem(_memoItem);
 
             MessageBox.Show(isSucceed ? "저장에 성공하였습니다" : "저장에 실패하였습니다");
+            if (isSucceed)
+                MemoUpdated?.Invoke(this, _memoItem);
         }
         else
         {
@@ -86,16 +101,11 @@ public partial class MemoDetailsWindow : Window
             SaveButton.Visibility = Visibility.Collapsed;
         }
     }
-    
-    private void ShowDialog(Window window)
-    {
-        window.Owner = Application.Current.MainWindow;
-        window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-        window.ShowDialog();
-    }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
+        RevertChanged();
+        
         Close();
     }
     

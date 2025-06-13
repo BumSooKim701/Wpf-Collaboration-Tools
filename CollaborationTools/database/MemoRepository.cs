@@ -94,11 +94,9 @@ public class MemoRepository
                         if (rowsAffected > 0)
                         {
                             memoItem.MemoId = newId;
-                            return true;
+                            result = true;
                         }
                     }
-
-                    return false;
                 }
 
             }
@@ -118,7 +116,7 @@ public class MemoRepository
     public bool UpdateMemo(MemoItem memoItem)
     {
         MySqlConnection connection = null;
-        var result = true;
+        var result = false;
         
         try
         {
@@ -137,12 +135,42 @@ public class MemoRepository
 
                 var executeResult = command.ExecuteNonQuery();
 
-                if (executeResult == 0) result = false;
+                if (executeResult > 0) result = true;
             }
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Error updating team calendar id: {e.Message}");
+            Console.WriteLine($"Error updating memo: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
+    }
+
+    public bool DeleteMemo(int memoId)
+    {
+        MySqlConnection connection = null;
+        var result = false;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+
+            using (var command = new MySqlCommand("DELETE FROM team_memo WHERE id = @memoId", connection))
+            {
+                command.Parameters.AddWithValue("@memoId", memoId);
+
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult > 0) result = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error deleting memo: {e.Message}");
         }
         finally
         {

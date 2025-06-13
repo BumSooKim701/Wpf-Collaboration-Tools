@@ -39,7 +39,7 @@
                                 CornerRadius="12"
                                 Padding="12"
                                 Effect="{DynamicResource MaterialDesignElevationShadow2}"
-                                MouseLeftButtonDown="MemoDoubleClicked">
+                                MouseLeftButtonDown="MemoClicked">
                             <StackPanel>
                                 <TextBlock Text="{Binding Title}"
                                            FontWeight="Bold"
