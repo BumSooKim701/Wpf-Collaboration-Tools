@@ -28,11 +28,12 @@ public partial class LoginPage : Page
 
             // OAuth 인증 및 사용자 정보 수집
             var googleUser = await _googleAuthentication.AuthenticateGoogleAsync();
-
+            
             var dbUser = _userRepository.FindUserByEmail(googleUser.Email);
-
+           
             if (dbUser == null)
             {
+                Console.WriteLine("Register User");
                 var result = _userRepository.AddUser(googleUser);
 
                 if (!result)
