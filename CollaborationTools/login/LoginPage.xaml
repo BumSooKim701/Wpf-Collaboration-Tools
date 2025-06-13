@@ -34,9 +34,10 @@
                 Height="56"
                 Margin="0,40,0,80"
                 materialDesign:ButtonAssist.CornerRadius="16"
-                Background="{DynamicResource MaterialDesign.Brush.Primary}"
+                Background="{DynamicResource MaterialDesign.Brush.Secondary}"
                 BorderThickness="0"
-                Foreground="{DynamicResource PrimaryHueMidBrushForeground}">
+                Foreground="{DynamicResource PrimaryHueMidBrushForeground}"
+                >
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon
                         Width="24"

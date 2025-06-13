@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:CollaborationTools"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="700">
     <DockPanel>
@@ -32,8 +33,11 @@
 
                     <TextBlock Grid.Column="0" Text="예정된 미팅이 없습니다." VerticalAlignment="Center"
                                FontSize="15" />
-                    <Button Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,0,0"
-                            Content="+미팅 일정잡기" />
+                    <Button Grid.Column="1" HorizontalAlignment="Center"
+                            Content="+미팅 일정잡기" 
+                            Click="MeetingArrange_ButtonClicked"
+                            Style="{StaticResource MaterialDesignRaisedSecondaryButton}"
+                            />
                 </Grid>
                 
                 <DockPanel Grid.Row="1" x:Name="ArrangingView" Visibility="Collapsed">
@@ -44,7 +48,7 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
@@ -58,7 +62,8 @@
 
                         <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,30,0"
-                                Content="+희망 날짜 제출" />
+                                Content="+희망 날짜 제출" 
+                                Style="{StaticResource MaterialDesignRaisedSecondaryButton}"/>
                     </Grid>
                 </DockPanel>
 

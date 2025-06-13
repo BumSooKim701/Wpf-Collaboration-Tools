@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using CollaborationTools.meeting_schedule;
 using CollaborationTools.team;
 
 namespace CollaborationTools;
@@ -61,4 +62,16 @@ public partial class HomeView : UserControl
         }
     }
 
+    private void MeetingArrange_ButtonClicked(object sender, RoutedEventArgs e)
+    {
+        var meetingArrangeWindow = new MeetingArrangeWindow(_viewModel.CurrentTeam.teamId);
+        Show(meetingArrangeWindow);
+    }
+    
+    private void Show(Window window)
+    {
+        window.Owner = Application.Current.MainWindow;
+        window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        window.Show();
+    }
 }

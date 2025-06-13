@@ -56,10 +56,10 @@ public class HomeViewModel : INotifyPropertyChanged
                 _viewType = MeetingViewType.NoPlan;
             else
             {
-                _viewType = MeetingViewType.Arranging;
                 Meeting.Title = meetingPlan.Title;
                 Meeting.ToDo = meetingPlan.ToDo;
                 Meeting.Status = meetingPlan.Status;
+                Meeting.TeamId = meetingPlan.TeamId;
 
                 if (Meeting.Status == 0)
                 {

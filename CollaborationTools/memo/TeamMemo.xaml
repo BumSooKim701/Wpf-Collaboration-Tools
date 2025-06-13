@@ -19,7 +19,8 @@
                 Padding="0" HorizontalAlignment="Left"
                 materialDesign:ButtonAssist.CornerRadius="20"
                 ToolTip="메모 추가"
-                Click="CreateButtonClicked">
+                Click="CreateButtonClicked"
+                Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
             <materialDesign:PackIcon Kind="Plus" Width="24" Height="24"
                                      HorizontalAlignment="Center"/>
         </Button>

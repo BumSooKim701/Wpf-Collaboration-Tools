@@ -95,7 +95,7 @@
                       SelectedDatesChanged="CalendarDateChanged" />
             <Button Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                    Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}"
                     ToolTip="일정 추가"
                     Click="RegisterButtonClicked">
                 <materialDesign:PackIcon

@@ -18,4 +18,9 @@ public class MeetingService
     {
         return _meetingRepository.GetMeeting(team.teamId);
     }
+
+    public bool CreateMeeting(Meeting meetingPlan)
+    {
+        return _meetingRepository.CreateMeeting(meetingPlan);
+    }
 }

@@ -37,6 +37,7 @@ public class MeetingRepository
                         meetingPlan.Title = reader.GetString("title");
                         meetingPlan.ToDo = reader.GetString("todo");
                         meetingPlan.Status = reader.GetByte("status");
+                        meetingPlan.TeamId = reader.GetInt32("team_id");
                     }
                 }
             }
@@ -53,5 +54,41 @@ public class MeetingRepository
         if (!hasData) return null;
         
         return meetingPlan;
+    }
+
+    public bool CreateMeeting(Meeting meetingPlan)
+    {
+        MySqlConnection connection = null;
+        var result = false;
+        
+        try
+        {
+            connection = _connectionPool.GetConnection();
+
+            using (var command = new MySqlCommand(
+                       "INSERT INTO meeting_schedule (title, todo, status, team_id) " +
+                       "VALUES (@title, @todo, @status, @teamId);",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@title", meetingPlan.Title);
+                command.Parameters.AddWithValue("@todo", meetingPlan.ToDo);
+                command.Parameters.AddWithValue("@status", meetingPlan.Status);
+                command.Parameters.AddWithValue("@teamId", meetingPlan.TeamId);
+
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult > 0) result = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error creating meeting: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
     }
 }
