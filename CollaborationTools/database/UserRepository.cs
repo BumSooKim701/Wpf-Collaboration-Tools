@@ -102,7 +102,7 @@ public class UserRepository
 
             using (var command =
                    new MySqlCommand(
-                       "INSERT INTO user (google_id, email, name, picture_uri, refresh_token, created_at, last_login_at) VALUES (@googleId, @email, @name, @pictureUri, @refreshToken, @createdAt, @lastLoginAt)",
+                       "INSERT INTO user (google_id, email, name, picture_uri, refresh_token, created_at, last_login_at, team_id) VALUES (@googleId, @email, @name, @pictureUri, @refreshToken, @createdAt, @lastLoginAt, @teamId)",
                        connection))
             {
                 command.Parameters.AddWithValue("@googleId", user.GoogleId);
@@ -112,6 +112,7 @@ public class UserRepository
                 command.Parameters.AddWithValue("@refreshToken", user.RefreshToken);
                 command.Parameters.AddWithValue("@createdAt", user.CreatedAt);
                 command.Parameters.AddWithValue("@lastLoginAt", user.LastLoginAt);
+                command.Parameters.AddWithValue("@teamId", 0);
 
                 var executeResult = command.ExecuteNonQuery();
 
