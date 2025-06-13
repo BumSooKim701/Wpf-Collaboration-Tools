@@ -145,7 +145,6 @@ namespace CollaborationTools
             
             if (MemoView != null)
             {
-                Console.WriteLine("User MemoView");
                 MemoView.IsPrimary = true;
                 MemoView.CurrentTeam = null;
             }

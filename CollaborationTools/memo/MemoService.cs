@@ -21,6 +21,11 @@ public class MemoService
     {
         return _memoRepository.AddMemo(memoItem);
     }
+    
+    public bool AddMemoItemForUser(MemoItem memoItem, int memberId)
+    {
+        return _memoRepository.AddMemoForUser(memoItem, memberId);
+    }
 
     public bool UpdateMemoItem(MemoItem memoItem)
     {

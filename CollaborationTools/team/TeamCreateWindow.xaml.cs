@@ -140,7 +140,8 @@ public partial class TeamCreateWindow : Window, INotifyPropertyChanged
                 teamMemberCount = 1,
                 teamCalendarName = _teamName,
                 teamCalendarId = _teamName,
-                teamDescription = _teamDescription
+                teamDescription = _teamDescription,
+                visibility = 1
             });
 
         if (success)

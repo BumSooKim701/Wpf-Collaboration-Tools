@@ -11,7 +11,8 @@ namespace CollaborationTools.memo;
 public partial class TeamMemo : UserControl
 {
     private ObservableCollection<MemoItem> _memoItems;
-    private MemoService _memoService;
+    private readonly MemoService _memoService;
+    private readonly TeamService _teamService = new();
     private bool isPrimary = true;
     
     public static readonly DependencyProperty CurrentTeamProperty =
@@ -41,9 +42,11 @@ public partial class TeamMemo : UserControl
     {
         InitializeComponent();
         _memoService = new();
-
-        DataContext = _memoItems;
+        _memoItems = new ObservableCollection<MemoItem>();
+        
         ItemsControl.ItemsSource = _memoItems;
+        LoadMemoItems();
+        DataContext = this;
     }
     
     private void MemoClicked(object sender, MouseButtonEventArgs e)
@@ -84,30 +87,48 @@ public partial class TeamMemo : UserControl
     
     private void CreateButtonClicked(object sender, RoutedEventArgs e)
     {
-        Console.WriteLine(isPrimary);
         var memoCreateWindow = new MemoCreateWindow();
-        int id = 0;
         
         if (CurrentTeam != null)
-            id = CurrentTeam.teamId;
-        else
-            id = 0;
-        
-        memoCreateWindow.MemoCreated += (s,memoItem) =>
         {
-            memoItem.TeamId = id;
-            memoItem.LastModifiedDate = DateTime.Now;
-            memoItem.EditorUserId = UserSession.CurrentUser.userId;
-            memoItem.LastEditorName = UserSession.CurrentUser.Name;
+            memoCreateWindow.MemoCreated += (s,memoItem) =>
+            {
+                memoItem.TeamId = CurrentTeam.teamId;
+                memoItem.LastModifiedDate = DateTime.Now;
+                memoItem.EditorUserId = UserSession.CurrentUser.userId;
+                memoItem.LastEditorName = UserSession.CurrentUser.Name;
 
-            bool isSucceed;
-                isSucceed = _memoService.AddMemoItem(memoItem);
+                bool isSucceed = _memoService.AddMemoItem(memoItem);
 
-            if (isSucceed)
-                _memoItems.Insert(0, memoItem);
-            else
-                MessageBox.Show("메모 생성 실패!\n 다시 시도해 주세요.");
-        };
+                if (isSucceed)
+                    _memoItems.Insert(0, memoItem);
+                else
+                    MessageBox.Show("메모 생성 실패!\n 다시 시도해 주세요.");
+            };
+            
+        }
+        else
+        {
+            Team primaryTeam = _teamService.FindUserPrimaryTeam(UserSession.CurrentUser);
+            TeamMember member = _teamService.FindTeamMember(primaryTeam.teamId, UserSession.CurrentUser.userId);
+            
+            Console.WriteLine(primaryTeam.teamId + " " + member.memberId + " " + UserSession.CurrentUser.userId);
+            
+            memoCreateWindow.MemoCreated += (s,memoItem) =>
+            {
+                memoItem.TeamId = primaryTeam.teamId;
+                memoItem.LastModifiedDate = DateTime.Now;
+                memoItem.EditorUserId = UserSession.CurrentUser.userId;
+                memoItem.LastEditorName = UserSession.CurrentUser.Name;
+
+                bool isSucceed = _memoService.AddMemoItemForUser(memoItem, member.memberId);
+
+                if (isSucceed)
+                    MessageBox.Show("메모 생성 성공!");
+                else
+                    MessageBox.Show("메모 생성 실패!\n 다시 시도해 주세요.");
+            };
+        }
         
         Show(memoCreateWindow);
     }
@@ -121,7 +142,23 @@ public partial class TeamMemo : UserControl
     }
     private void LoadMemoItems()
     {
-        _memoItems = _memoService.GetMemoItems(CurrentTeam.teamId);
-        ItemsControl.ItemsSource = _memoItems;
+        if (CurrentTeam == null && isPrimary)
+        {
+            var newItems = _memoService.GetMemoItems(UserSession.CurrentUser.TeamId);
+            _memoItems.Clear();
+            foreach (var item in newItems)
+            {
+                _memoItems.Add(item);
+            }
+        }
+        else
+        {
+            var newItems = _memoService.GetMemoItems(CurrentTeam.teamId);
+            _memoItems.Clear();
+            foreach (var item in newItems)
+            {
+                _memoItems.Add(item);
+            }
+        }
     }
 }

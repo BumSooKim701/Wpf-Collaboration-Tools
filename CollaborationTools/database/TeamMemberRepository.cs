@@ -198,6 +198,45 @@ public class TeamMemberRepository
         return teamMemberList;
     }
     
+    public TeamMember? FindTeamMember(int teamId, int userId)
+    {
+        TeamMember teamMember = new TeamMember();
+        MySqlConnection connection = null;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+
+            using (var command = new MySqlCommand("SELECT * FROM team_member WHERE team_id = @teamId and user_id = @userId", connection))
+            {
+                command.Parameters.AddWithValue("@teamId", teamId);
+                command.Parameters.AddWithValue("@userId", userId);;
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                        teamMember = new TeamMember
+                        {
+                            memberId = reader.GetInt32("id"),
+                            userId = reader.GetInt32("user_id"),
+                            teamId = reader.GetInt32("team_id"),
+                            authority = reader.GetByte("authority")
+                        };
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"find team members by team id error: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return teamMember;
+    }
+    
     public byte FindTeamMemberAuthority(int teamId, int userId)
     {
         byte authority = 0;
