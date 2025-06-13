@@ -48,11 +48,20 @@ public partial class ScheduleDetailsWindow : Window
     {
         var scheduleItem = DataContext as ScheduleItem;
 
-        await ScheduleService.DeleteSchedule(scheduleItem);
+        MessageBoxResult result = MessageBox.Show(
+            "메모를 삭제하시겠습니까?", 
+            "삭제 확인", 
+            MessageBoxButton.YesNo, 
+            MessageBoxImage.Question);
         
-        ScheduleSaved?.Invoke(this, EventArgs.Empty);
-        MessageBox.Show("일정이 삭제되었습니다.");
-        Close();
+        if (result == MessageBoxResult.Yes)
+        {
+            await ScheduleService.DeleteSchedule(scheduleItem);
+        
+            ScheduleSaved?.Invoke(this, EventArgs.Empty);
+            MessageBox.Show("일정이 삭제되었습니다.");
+            Close();
+        }
     }
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)

@@ -25,7 +25,7 @@ public class MemoRepository
             connection = _connectionPool.GetConnection();
 
             using (var command = new MySqlCommand(
-                       "SELECT * FROM vw_team_memo WHERE team_id=@team_id",
+                       "SELECT * FROM vw_team_memo WHERE team_id=@team_id ORDER BY date_of_modified DESC, id DESC",
                        connection))
             {
                 command.Parameters.AddWithValue("@team_id", teamId);

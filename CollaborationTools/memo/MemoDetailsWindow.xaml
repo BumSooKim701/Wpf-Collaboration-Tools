@@ -21,20 +21,27 @@
             </Grid.RowDefinitions>
 
             <DockPanel Grid.Row="0">
-                <StackPanel DockPanel.Dock="Right" 
-                    Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Click="EditButtonClicked"
+                <Grid DockPanel.Dock="Right" 
+                    HorizontalAlignment="Right">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    
+                    <Button Grid.Column="0" Click="EditButtonClicked"
+                            x:Name="EditButton"
                             VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
                             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                             Style="{StaticResource MaterialDesignIconForegroundButton}"
                             Height="30" Width="30"
                             ToolTip="편집">
                         <materialDesign:PackIcon
-                            Width="15"
-                            Height="15"
+                            Width="15" Height="15"
                             Kind="Pencil" />
                     </Button>
-                    <Button Click="DeleteButtonClicked"
+                    <Button Grid.Column="1" Click="DeleteButtonClicked"
+                            x:Name="DeleteButton"
                             VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
                             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                             Style="{StaticResource MaterialDesignIconForegroundButton}"
@@ -45,7 +52,32 @@
                             Height="15"
                             Kind="Delete" />
                     </Button>
-                </StackPanel>
+                    
+                    <Button Grid.Column="0" Click="RevertButtonClicked"
+                            x:Name="RevertButton" 
+                            Visibility="Collapsed"
+                            VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            Height="30" Width="30"
+                            ToolTip="변경취소">
+                        <materialDesign:PackIcon
+                            Width="15" Height="15"
+                            Kind="ArrowBack" />
+                    </Button>
+                    <Button Grid.Column="1" Click="SaveButtonClicked"
+                            x:Name="SaveButton" 
+                            Visibility="Collapsed"
+                            VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
+                            IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                            Style="{StaticResource MaterialDesignIconForegroundButton}"
+                            Height="30" Width="30"
+                            ToolTip="저장">
+                        <materialDesign:PackIcon
+                            Width="15" Height="15"
+                            Kind="ContentSave" />
+                    </Button>
+                </Grid>
 
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                     <TextBlock Text="마지막 편집" Margin="0,0,2,0" Foreground="Gray"/>
@@ -54,12 +86,21 @@
                 </StackPanel>
             </DockPanel>
             
-            <TextBlock Grid.Row="1" Text="{Binding Title}"
-                       TextWrapping="Wrap"
-                       Margin="0, 5"
-                       Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
+            <TextBox Grid.Row="1" Text="{Binding Title}"
+                     x:Name="TitleBox"
+                     IsReadOnly="True"
+                     AcceptsReturn="False"
+                     Margin="0, 5"
+                     Style="{StaticResource MaterialDesignTextBox}"
+                     FontSize="20" />
+            
+            <!-- <TextBlock Grid.Row="1" Text="{Binding Title}" -->
+            <!--            TextWrapping="Wrap" -->
+            <!--            Margin="0, 5" -->
+            <!--            Style="{StaticResource MaterialDesignHeadline5TextBlock}" /> -->
 
             <TextBox Grid.Row="2"
+                     x:Name="ContentBox"
                      Text="{Binding Content}"
                      IsReadOnly="True"
                      TextWrapping="Wrap"

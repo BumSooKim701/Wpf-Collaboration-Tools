@@ -76,31 +76,23 @@ public partial class TeamCalendar : UserControl
             NoScheduleMsg.Visibility = Visibility.Visible;
             CardListView.ItemsSource = null;
         }
-        
-        // _schedules = await ScheduleService.GetScheduleItems(_calendarId);
-        //
-        // if (_schedules != null)
-        //     CardListView.ItemsSource = _schedules;
-        // else
-        //     NoScheduleMsg.Visibility = Visibility.Visible;
     }
 
     // 일정 상세보기
-    private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    private void ListView_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (sender is ListView listView)
+        var scheduleItem = ((FrameworkElement)e.OriginalSource).DataContext as ScheduleItem;
+        
+        if (scheduleItem != null)
         {
-            if (listView.SelectedItem is ScheduleItem scheduleItem)
+            var scheduleDetailsWindow = new ScheduleDetailsWindow(scheduleItem);
+            
+            scheduleDetailsWindow.ScheduleSaved += (s,args) =>
             {
-                var scheduleDetailsWindow = new ScheduleDetailsWindow(scheduleItem);
-                
-                scheduleDetailsWindow.ScheduleSaved += (s,args) =>
-                {
-                    LoadScheduleItems();
-                };
-                
-                ShowDialog(scheduleDetailsWindow);
-            }
+                LoadScheduleItems();
+            };
+            
+            ShowDialog(scheduleDetailsWindow);
         }
     }
     
@@ -170,12 +162,6 @@ public partial class TeamCalendar : UserControl
             NoScheduleMsgCalendar.Visibility = Visibility.Visible;
             CardListViewCalendar.ItemsSource = null;
         }
-        // _oneDaySchedules = await ScheduleService.GetOneDayScheduleItems(_calendarId, selectedDate);
-        //
-        // if (_oneDaySchedules.Count > 0)
-        //     CardListViewCalendar.ItemsSource = _oneDaySchedules;
-        // else
-        //     NoScheduleMsgCalendar.Visibility = Visibility.Visible;
     }
     
 }
