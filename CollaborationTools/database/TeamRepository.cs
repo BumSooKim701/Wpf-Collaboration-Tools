@@ -8,7 +8,7 @@ public class TeamRepository
 {
     private readonly ConnectionPool _connectionPool = ConnectionPool.GetInstance();
 
-    public bool AddTeam(string teamName, string uuid, int teamMemberCount, DateTime dateOfCreated, string teamCalName, string teamDescription)
+    public bool AddTeam(string teamName, string uuid, int teamMemberCount, DateTime dateOfCreated, string teamCalName, string teamDescription, byte visibility)
     {
         MySqlConnection connection = null;
         var result = true;
@@ -19,7 +19,7 @@ public class TeamRepository
             connection = _connectionPool.GetConnection();
 
             using (var command = new MySqlCommand(
-                       "INSERT INTO team (uuid, team_name, team_member_count, date_of_created, team_calendar_name, team_description) VALUES (@uuid, @teamName, @teamMemberCount, @dateOfCreated, @teamCalendarName, @teamDescription)",
+                       "INSERT INTO team (uuid, team_name, team_member_count, date_of_created, team_calendar_name, team_description, visibility) VALUES (@uuid, @teamName, @teamMemberCount, @dateOfCreated, @teamCalendarName, @teamDescription, @visibility)",
                        connection))
             {
                 command.Parameters.AddWithValue("@uuid", uuid);
@@ -28,6 +28,7 @@ public class TeamRepository
                 command.Parameters.AddWithValue("@dateOfCreated", dateOfCreated);
                 command.Parameters.AddWithValue("@teamCalendarName", teamCalName);
                 command.Parameters.AddWithValue("@teamDescription", teamDescription);
+                command.Parameters.AddWithValue("@visibility", visibility);
 
                 var executeResult = command.ExecuteNonQuery();
 
@@ -211,7 +212,8 @@ public class TeamRepository
                                     teamCalendarName = reader.GetString("team_calendar_name"),
                                     teamCalendarId = reader.GetString("team_calendar_id"),
                                     teamDescription = reader.GetString("team_description"),
-                                    teamFolderId = reader.GetString("shared_drive_id")
+                                    teamFolderId = reader.GetString("shared_drive_id"),
+                                    visibility = reader.GetByte("visibility")
                                 });
                         }
                     }
@@ -233,23 +235,23 @@ public class TeamRepository
         return teams;
     }
 
-    public List<Team?>? FindTeamByName(string teamName)
+    public Team? FindPrimaryTeam(int teamId)
     {
-        var teamList = new List<Team?>();
+        Team team = new();
         MySqlConnection connection = null;
-
+        
         try
         {
             connection = _connectionPool.GetConnection();
 
-            using (var command = new MySqlCommand("SELECT * FROM team WHERE team_name = @name", connection))
+            using (var command = new MySqlCommand("SELECT * FROM team WHERE id = @teamId and visibility = 0", connection))
             {
-                command.Parameters.AddWithValue("@name", teamName);
+                command.Parameters.AddWithValue("@teamId", teamId);
 
                 using (var reader = command.ExecuteReader())
                 {
-                    while (reader.Read())
-                        teamList?.Add(new Team
+                    if (reader.Read())
+                        team = new Team
                         {
                             teamId = reader.GetInt32("id"),
                             uuid = reader.GetString("uuid"),
@@ -259,8 +261,9 @@ public class TeamRepository
                             teamCalendarName = reader.GetString("team_calendar_name"),
                             teamCalendarId = reader.GetString("team_calendar_id"),
                             teamDescription = reader.GetString("team_description"),
-                            teamFolderId = reader.GetString("shared_drive_id")
-                        });
+                            teamFolderId = reader.GetString("shared_drive_id"),
+                            visibility = reader.GetByte("visibility")
+                        };
                 }
             }
         }
@@ -273,7 +276,7 @@ public class TeamRepository
             if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
 
-        return teamList;
+        return team;
     }
 
     public Team? FindTeamByUuid(string uuid)
@@ -302,7 +305,8 @@ public class TeamRepository
                             teamCalendarName = reader.GetString("team_calendar_name"),
                             teamCalendarId = reader.GetString("team_calendar_id"),
                             teamDescription = reader.GetString("team_description"),
-                            teamFolderId = reader.GetString("shared_drive_id")
+                            teamFolderId = reader.GetString("shared_drive_id"),
+                            visibility = reader.GetByte("visibility")
                         };
                 }
             }

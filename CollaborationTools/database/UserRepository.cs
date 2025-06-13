@@ -73,7 +73,8 @@ public class UserRepository
                             Name = reader.GetString("name"),
                             PictureUri = reader.GetString("picture_uri"),
                             CreatedAt = reader.GetDateTime("created_at"),
-                            LastLoginAt = reader.GetDateTime("last_login_at")
+                            LastLoginAt = reader.GetDateTime("last_login_at"),
+                            TeamId = reader.GetInt32("team_id")
                         };
                 }
             }
@@ -111,6 +112,41 @@ public class UserRepository
                 command.Parameters.AddWithValue("@refreshToken", user.RefreshToken);
                 command.Parameters.AddWithValue("@createdAt", user.CreatedAt);
                 command.Parameters.AddWithValue("@lastLoginAt", user.LastLoginAt);
+
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult == 0) result = false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"사용자 이메일로 조회 중 오류: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
+    }
+    
+    public bool UpdatePrimaryTeamId(User user, int teamId)
+    {
+        MySqlConnection connection = null;
+        var result = true;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            
+            Console.WriteLine(user.userId + " " + teamId);
+            using (var command =
+                   new MySqlCommand(
+                       "UPDATE user SET team_id = @teamId WHERE id = @userId",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@teamId", teamId);
+                command.Parameters.AddWithValue("@userId", user.userId);
 
                 var executeResult = command.ExecuteNonQuery();
 

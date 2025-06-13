@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using CollaborationTools.authentication;
 using CollaborationTools.database;
+using CollaborationTools.team;
 using CollaborationTools.user;
 
 namespace CollaborationTools.login;
@@ -11,6 +12,7 @@ public partial class LoginPage : Page
 {
     private readonly GoogleAuthentication _googleAuthentication = new();
     private readonly UserRepository _userRepository = new();
+    private readonly TeamService _teamService = new();
 
     public LoginPage()
     {
@@ -36,13 +38,39 @@ public partial class LoginPage : Page
                 if (!result)
                     txtStatus.Text = "회원 등록 실패";
                 else
-                    NavigatePage(_userRepository.FindUserByEmail(googleUser.Email));
+                {
+                    Team newTeam = new Team
+                    {
+                        teamName = googleUser.Email,
+                        teamMemberCount = 1,
+                        dateOfCreated = DateTime.Now,
+                        teamCalendarName = googleUser.Name,
+                        teamCalendarId = string.Empty,
+                        teamDescription = " ",
+                        teamFolderId = string.Empty,
+                        visibility = 0
+                    };
+                    
+                    bool teamSuccess =_teamService.CreateTeam(newTeam);
+                    
+                    if (teamSuccess)
+                    {
+                        Team primaryTeam = _teamService.FindTeamByUuid(newTeam.uuid);
+                        User user = _userRepository.FindUserByEmail(googleUser.Email);
+                        
+                        _userRepository.UpdatePrimaryTeamId(user, primaryTeam.teamId);
+                        _teamService.AddTeamMemberByEmail(primaryTeam, googleUser.Email, 1);
+                        
+                        user = _userRepository.FindUserByEmail(googleUser.Email);
+                        NavigatePage(_userRepository.FindUserByEmail(user.Email));
+                    }
+                }
             }
             else
             {
                 Console.WriteLine("Login Success");
                 Console.WriteLine("email: " + googleUser.Email + ". name: " + googleUser.Name);
-
+                
                 NavigatePage(dbUser);
             }
         }
@@ -61,6 +89,7 @@ public partial class LoginPage : Page
     private void NavigatePage(User user)
     {
         UserSession.Login(user);
+        Console.WriteLine($"Login User is {user.TeamId}");
 
         Page mainPage = new MainPage();
         NavigationService.Navigate(mainPage);

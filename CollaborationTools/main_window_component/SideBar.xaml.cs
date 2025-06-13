@@ -89,8 +89,7 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
             OnSideTapClick(tabItem);
         }
     }
-
-
+    
     private void InitializeMenuItems()
     {
         TabItems = new ObservableCollection<TabItem>();
@@ -99,7 +98,10 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
         
         foreach (var team in CurUserTeams)
         {
-            AddTeamTab(team);
+            if (team.visibility == 1)
+            {
+                AddTeamTab(team);
+            }
         }
         
         AddPlusTab();
@@ -210,23 +212,21 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
     }
 
     private void RefreshTeamList()
-    {
-        // 현재 TabItems를 완전히 비움
+    { 
         TabItems.Clear();
         
-        // 개인 탭 다시 추가 (첫 번째 위치)
         AddPersonalTab();
         
-        // 사용자의 팀 목록 다시 가져오기
         _curUserTeams = _teamService.FindUsersTeams(UserSession.CurrentUser);
         
-        // 팀 탭들 다시 추가
         foreach (var team in _curUserTeams)
         {
-            AddTeamTab(team);
+            if (team.visibility == 1)
+            {
+                AddTeamTab(team);
+            }
         }
         
-        // 플러스 탭 다시 추가 (마지막 위치)
         AddPlusTab();
     }
     

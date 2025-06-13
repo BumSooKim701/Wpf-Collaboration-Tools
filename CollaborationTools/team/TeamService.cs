@@ -18,7 +18,8 @@ public class TeamService
             team.teamMemberCount,
             team.dateOfCreated,
             team.teamCalendarName,
-            team.teamDescription);
+            team.teamDescription,
+            team.visibility);
 
         return result;
     }
@@ -41,6 +42,11 @@ public class TeamService
     {
         return _teamRepository.FindTeamsByUser(user);
     }
+    
+    public Team? FindUserPrimaryTeam(User user)
+    {
+        return _teamRepository.FindPrimaryTeam(user.TeamId);
+    }
 
     public Team? FindTeamByUuid(string uuid)
     {
@@ -50,6 +56,11 @@ public class TeamService
     public List<TeamMember?>? FindTeamMembersByTeamId(int teamId)
     {
         return _teamMemberRepository.FindTeamMembersByTeamId(teamId);
+    }
+    
+    public TeamMember? FindTeamMember(int teamId, int userId)
+    {
+        return _teamMemberRepository.FindTeamMember(teamId, userId);
     }
 
     public bool IsValidEmail(string email)
