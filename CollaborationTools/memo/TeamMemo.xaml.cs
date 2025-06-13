@@ -12,6 +12,7 @@ public partial class TeamMemo : UserControl
 {
     private ObservableCollection<MemoItem> _memoItems;
     private MemoService _memoService;
+    private bool isPrimary = true;
     
     public static readonly DependencyProperty CurrentTeamProperty =
         DependencyProperty.Register(
@@ -20,10 +21,19 @@ public partial class TeamMemo : UserControl
             typeof(TeamMemo),
             new PropertyMetadata(null, OnCurrentTeamChanged));
     
-    public Team CurrentTeam
+    public Team? CurrentTeam
     {
         get => (Team)GetValue(CurrentTeamProperty);
         set => SetValue(CurrentTeamProperty, value);
+    }
+
+    public bool IsPrimary
+    {
+        get => isPrimary;
+        set
+        {
+            isPrimary = value;
+        }
     }
     
     
@@ -74,16 +84,24 @@ public partial class TeamMemo : UserControl
     
     private void CreateButtonClicked(object sender, RoutedEventArgs e)
     {
+        Console.WriteLine(isPrimary);
         var memoCreateWindow = new MemoCreateWindow();
+        int id = 0;
+        
+        if (CurrentTeam != null)
+            id = CurrentTeam.teamId;
+        else
+            id = 0;
         
         memoCreateWindow.MemoCreated += (s,memoItem) =>
         {
-            memoItem.TeamId = CurrentTeam.teamId;
+            memoItem.TeamId = id;
             memoItem.LastModifiedDate = DateTime.Now;
             memoItem.EditorUserId = UserSession.CurrentUser.userId;
             memoItem.LastEditorName = UserSession.CurrentUser.Name;
-            
-            bool isSucceed = _memoService.AddMemoItem(memoItem);
+
+            bool isSucceed;
+                isSucceed = _memoService.AddMemoItem(memoItem);
 
             if (isSucceed)
                 _memoItems.Insert(0, memoItem);

@@ -32,7 +32,7 @@ public partial class TeamCalendar : UserControl
         _ = LoadScheduleItems();
     }
     
-    public Team CurrentTeam
+    public Team? CurrentTeam
     {
         get => (Team)GetValue(CurrentTeamProperty);
         set => SetValue(CurrentTeamProperty, value);
@@ -49,6 +49,42 @@ public partial class TeamCalendar : UserControl
     // 다가오는 일정 화면에 불러오기
     private async Task LoadScheduleItems()
     {
+        if (_calendarId == "primary" && CurrentTeam == null)
+        {
+            Console.WriteLine("primary calendar");
+            try
+            {
+                _schedules = await ScheduleService.GetScheduleItems("primary");
+                if (_schedules != null && _schedules.Count > 0)
+                {
+                    CardListView.ItemsSource = _schedules;
+                    NoScheduleMsg.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    NoScheduleMsg.Visibility = Visibility.Visible;
+                    CardListView.ItemsSource = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"개인 캘린더 로드 오류: {ex.Message}");
+                NoScheduleMsg.Visibility = Visibility.Visible;
+                CardListView.ItemsSource = null;
+            }
+            return;
+        }
+        
+        Console.WriteLine("team calendar" + CurrentTeam?.teamCalendarId);
+
+        // 팀 캘린더 불러오기
+        if (CurrentTeam?.teamCalendarId == null)
+        {
+            NoScheduleMsg.Visibility = Visibility.Visible;
+            CardListView.ItemsSource = null;
+            return;
+        }
+        
         if (CurrentTeam?.teamCalendarId == null) 
         {
             NoScheduleMsg.Visibility = Visibility.Visible;
