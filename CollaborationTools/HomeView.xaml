@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:CollaborationTools"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="700">
-    <Grid>
-        <Border Margin="10" Padding="10" 
-                Height="150"
+    <DockPanel>
+        
+        <Border DockPanel.Dock="Top" Margin="10" Padding="10" Height="Auto"
                 VerticalAlignment="Top"
                 CornerRadius="8"
                 BorderBrush="#E0E0E0" 
@@ -32,11 +32,11 @@
 
                             <Label Grid.Row="0" Grid.Column="0" Content="회의 주제:" VerticalAlignment="Top"/>
                             <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" 
-                                       Text="{Binding Title}" FontSize="15" />
+                                       Text="{Binding Meeting.Title}" FontSize="15" />
 
                             <Label Grid.Row="1" Grid.Column="0" Content="회의 내용:" VerticalAlignment="Top" />
                             <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Top"
-                                       Text="{Binding ToDo}" TextWrapping="Wrap" FontSize="13" />
+                                       Text="{Binding Meeting.ToDo}" TextWrapping="Wrap" FontSize="13" />
 
                             <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,30,0"
@@ -46,7 +46,7 @@
                 </DockPanel>
 
 
-                <DockPanel Visibility="Hidden">
+                <DockPanel Visibility="Collapsed">
                     <TextBlock DockPanel.Dock="Top" Text="예정된 미팅 일정"
                                FontSize="20" FontWeight="Bold" Margin="0,5" />
 
@@ -63,7 +63,7 @@
                                     Content="+미팅 일정잡기" />
                         </Grid>
 
-                        <DockPanel Visibility="Hidden">
+                        <DockPanel Visibility="Collapsed">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -98,5 +98,5 @@
         </Border>
         
         
-    </Grid>
+    </DockPanel>
 </UserControl>

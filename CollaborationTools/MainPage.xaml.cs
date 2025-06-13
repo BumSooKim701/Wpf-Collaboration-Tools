@@ -7,7 +7,7 @@ namespace CollaborationTools
 {
     public partial class MainPage : Page
     {
-        private Team currentTeam;
+        private Team _currentTeam;
 
         public MainPage()
         {
@@ -27,7 +27,7 @@ namespace CollaborationTools
         {
             if (e.PropertyName == nameof(SideBar.SelectedTeam))
             {
-                currentTeam = SideBarControl.SelectedTeam;
+                _currentTeam = SideBarControl.SelectedTeam;
                 UpdateCurrentTeamInViews();
                 UpdateTeamInfo();
             }
@@ -96,20 +96,23 @@ namespace CollaborationTools
             // {
             //     HomeFileView.CurrentTeam = currentTeam;
             // }
-
+            if (HomeView != null)
+            {
+                HomeView.CurrentTeam = _currentTeam;
+            }
             if (CalendarView != null)
             {
-                CalendarView.CurrentTeam = currentTeam;
+                CalendarView.CurrentTeam = _currentTeam;
             }
 
             if (FileView != null)
             {
-                FileView.CurrentTeam = currentTeam;
+                FileView.CurrentTeam = _currentTeam;
             }
             
             if (MemoView != null)
             {
-                MemoView.CurrentTeam = currentTeam;
+                MemoView.CurrentTeam = _currentTeam;
             }
         }
 
