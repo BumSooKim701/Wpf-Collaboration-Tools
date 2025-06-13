@@ -49,7 +49,7 @@ public partial class ScheduleDetailsWindow : Window
         var scheduleItem = DataContext as ScheduleItem;
 
         MessageBoxResult result = MessageBox.Show(
-            "메모를 삭제하시겠습니까?", 
+            "일정을 삭제하시겠습니까?", 
             "삭제 확인", 
             MessageBoxButton.YesNo, 
             MessageBoxImage.Question);

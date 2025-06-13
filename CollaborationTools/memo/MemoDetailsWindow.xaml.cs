@@ -30,14 +30,23 @@ public partial class MemoDetailsWindow : Window
     
     private async void DeleteButtonClicked(object sender, RoutedEventArgs e)
     {
-        var memoService = new MemoService();
-        bool isSucceed = memoService.DeleteMemoItem(_memoItem);
-        
-        MessageBox.Show(isSucceed ? "메모가 정상적으로 삭제되었습니다" : "삭제에 실패하였습니다");
-        if (isSucceed) 
-            MemoDeleted?.Invoke(this, _memoItem);;
+        MessageBoxResult result = MessageBox.Show(
+            "메모를 삭제하시겠습니까?", 
+            "삭제 확인", 
+            MessageBoxButton.YesNo, 
+            MessageBoxImage.Question);
 
-        Close();
+        if (result == MessageBoxResult.Yes)
+        {
+            var memoService = new MemoService();
+            bool isSucceed = memoService.DeleteMemoItem(_memoItem);
+
+            MessageBox.Show(isSucceed ? "메모가 정상적으로 삭제되었습니다" : "삭제에 실패하였습니다");
+            if (isSucceed)
+                MemoDeleted?.Invoke(this, _memoItem);
+
+            Close();
+        }
     }
     
     private void RevertButtonClicked(object sender, RoutedEventArgs e)

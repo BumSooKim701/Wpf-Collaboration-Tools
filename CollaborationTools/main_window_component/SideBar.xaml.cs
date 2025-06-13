@@ -230,7 +230,7 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
         if (parameter is MenuItem menuItem)
         {
             // 메뉴 클릭 처리 로직
-            MessageBox.Show($"{menuItem.MenuType} - {menuItem.Title} 클릭됨");
+            // MessageBox.Show($"{menuItem.MenuType} - {menuItem.Title} 클릭됨");
             
             switch (menuItem.Action)
             {
@@ -238,14 +238,24 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
                     OpenTeamInfoWindow();
                     break;
                 case "TeamDelete":
-                    if (CurUserAuthority == TeamMember.TEAM_LEADER_AUTHORITY)
+                    MessageBoxResult result = MessageBox.Show(
+                        "팀을 삭제하시겠습니까?", 
+                        "삭제 확인", 
+                        MessageBoxButton.YesNo, 
+                        MessageBoxImage.Question);
+
+                    if (result == MessageBoxResult.Yes)
                     {
-                        DeleteTeam(SelectedTeam);
+                        if (CurUserAuthority == TeamMember.TEAM_LEADER_AUTHORITY)
+                        {
+                            DeleteTeam(SelectedTeam);
+                        }
+                        else
+                        {
+                            MessageBox.Show("권한이 없습니다.");
+                        }
                     }
-                    else
-                    {
-                        MessageBox.Show("권한이 없습니다.");
-                    }
+
                     break;
                 case "MemberRegistration":
                     if (CurUserAuthority == TeamMember.TEAM_LEADER_AUTHORITY)
