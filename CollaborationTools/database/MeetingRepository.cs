@@ -17,7 +17,7 @@ public class MeetingRepository
     public Meeting GetMeeting(int teamId)
     {
         MySqlConnection connection = null;
-        var result = true;
+        var hasData = false;
         var meetingPlan = new Meeting();
         
         try
@@ -33,8 +33,10 @@ public class MeetingRepository
                 {
                     while (reader.Read())
                     {
+                        hasData = true;
                         meetingPlan.Title = reader.GetString("title");
                         meetingPlan.ToDo = reader.GetString("todo");
+                        meetingPlan.Status = reader.GetByte("status");
                     }
                 }
             }
@@ -47,6 +49,8 @@ public class MeetingRepository
         {
             if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
+
+        if (!hasData) return null;
         
         return meetingPlan;
     }

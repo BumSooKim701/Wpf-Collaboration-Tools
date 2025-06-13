@@ -11,89 +11,84 @@
         <Border DockPanel.Dock="Top" Margin="10" Padding="10" Height="Auto"
                 VerticalAlignment="Top"
                 CornerRadius="8"
-                BorderBrush="#E0E0E0" 
+                BorderBrush="#E0E0E0"
                 BorderThickness="1">
             <Grid>
-                <DockPanel Visibility="Visible">
-                    <TextBlock DockPanel.Dock="Top"
-                               Text="조율 중인 일정"
-                               FontSize="20" FontWeight="Bold" Margin="0,5" />
-                    <DockPanel>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="150" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-                            <Label Grid.Row="0" Grid.Column="0" Content="회의 주제:" VerticalAlignment="Top"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" 
-                                       Text="{Binding Meeting.Title}" FontSize="15" />
+                <TextBlock Grid.Row="0" x:Name="MeetingView_TextBlock"
+                           Text="조율 중인 일정"
+                           FontSize="20" FontWeight="Bold" Margin="0,5" 
+                           />
 
-                            <Label Grid.Row="1" Grid.Column="0" Content="회의 내용:" VerticalAlignment="Top" />
-                            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Top"
-                                       Text="{Binding Meeting.ToDo}" TextWrapping="Wrap" FontSize="13" />
+                <Grid Grid.Row="1" x:Name="NoPlanView" Visibility="Visible">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
 
-                            <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
-                                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,30,0"
-                                    Content="+희망 날짜 제출" />
-                        </Grid>
-                    </DockPanel>
-                </DockPanel>
-
-
-                <DockPanel Visibility="Collapsed">
-                    <TextBlock DockPanel.Dock="Top" Text="예정된 미팅 일정"
-                               FontSize="20" FontWeight="Bold" Margin="0,5" />
-
+                    <TextBlock Grid.Column="0" Text="예정된 미팅이 없습니다." VerticalAlignment="Center"
+                               FontSize="15" />
+                    <Button Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,0,0"
+                            Content="+미팅 일정잡기" />
+                </Grid>
+                
+                <DockPanel Grid.Row="1" x:Name="ArrangingView" Visibility="Collapsed">
                     <Grid>
-                        <Grid Visibility="Visible">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" Text="예정된 미팅이 없습니다." VerticalAlignment="Center"
-                                       FontSize="15" />
-                            <Button Grid.Column="1" HorizontalAlignment="Center" Margin="0,0,0,0"
-                                    Content="+미팅 일정잡기" />
-                        </Grid>
+                        <Label Grid.Row="0" Grid.Column="0" Content="회의 주제:" VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Top"
+                                   Text="{Binding Meeting.Title}" FontSize="15" />
 
-                        <DockPanel Visibility="Collapsed">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                        <Label Grid.Row="1" Grid.Column="0" Content="회의 내용:" VerticalAlignment="Top" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Top"
+                                   Text="{Binding Meeting.ToDo}" TextWrapping="Wrap" FontSize="13" />
 
-                                <Label Grid.Row="0" Grid.Column="0" Content="회의 주제:" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="윈프 최종 회의" FontSize="15" />
-
-                                <Label Grid.Row="1" Grid.Column="0" Content="회의 내용:" Margin="0,5" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,5"
-                                           TextWrapping="Wrap"
-                                           Text="최종 발표 발표 방식. ppt 발표자료, 결과보고서" FontSize="13" />
-
-                                <Label Grid.Row="0" Grid.Column="2" Content="일자:" />
-                                <TextBlock Grid.Row="0" Grid.Column="3" Text="2025-06-13 (금)" FontSize="15" />
-
-                                <Label Grid.Row="1" Grid.Column="2" Content="장소:" Margin="0,5" />
-                                <TextBlock Grid.Row="1" Grid.Column="3" Margin="0,5"
-                                           Text="DB134" FontSize="13" />
-                            </Grid>
-                        </DockPanel>
+                        <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
+                                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,30,0"
+                                Content="+희망 날짜 제출" />
                     </Grid>
                 </DockPanel>
+
+                <Grid Grid.Row="1" x:Name="ScheduledView" Visibility="Collapsed">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="회의 주제:" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="윈프 최종 회의" FontSize="15" />
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="회의 내용:" Margin="0,5" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,5"
+                               TextWrapping="Wrap"
+                               Text="최종 발표 발표 방식. ppt 발표자료, 결과보고서" FontSize="13" />
+
+                    <Label Grid.Row="0" Grid.Column="2" Content="일자:" />
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="2025-06-13 (금)" FontSize="15" />
+
+                    <Label Grid.Row="1" Grid.Column="2" Content="장소:" Margin="0,5" />
+                    <TextBlock Grid.Row="1" Grid.Column="3" Margin="0,5"
+                               Text="DB134" FontSize="13" />
+                </Grid>
             </Grid>
         </Border>
         

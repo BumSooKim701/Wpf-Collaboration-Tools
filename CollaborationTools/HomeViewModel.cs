@@ -11,6 +11,7 @@ public class HomeViewModel : INotifyPropertyChanged
     
     private Meeting _meeting = new Meeting();
     private Team _currentTeam;
+    private MeetingViewType _viewType = MeetingViewType.NoPlan;
 
 
     public Meeting Meeting
@@ -33,6 +34,16 @@ public class HomeViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+
+    public MeetingViewType ViewType
+    {
+        get => _viewType;
+        set
+        {
+            _viewType = value;
+            OnPropertyChanged();
+        }
+    }
     
     private void UpdateMeeting()
     {
@@ -40,8 +51,25 @@ public class HomeViewModel : INotifyPropertyChanged
         {
             MeetingService meetingService = new();
             Meeting meetingPlan = meetingService.GetMeeting(CurrentTeam);
-            Meeting.Title = meetingPlan.Title;
-            Meeting.ToDo = meetingPlan.ToDo;
+            
+            if (meetingPlan == null) 
+                _viewType = MeetingViewType.NoPlan;
+            else
+            {
+                _viewType = MeetingViewType.Arranging;
+                Meeting.Title = meetingPlan.Title;
+                Meeting.ToDo = meetingPlan.ToDo;
+                Meeting.Status = meetingPlan.Status;
+
+                if (Meeting.Status == 0)
+                {
+                    _viewType = MeetingViewType.Arranging;
+                }
+                else if (Meeting.Status == 1)
+                {
+                    _viewType = MeetingViewType.Scheduled;
+                }
+            }
         }
     }
     
@@ -50,4 +78,11 @@ public class HomeViewModel : INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+}
+
+public enum MeetingViewType
+{
+    NoPlan,
+    Arranging,
+    Scheduled
 }

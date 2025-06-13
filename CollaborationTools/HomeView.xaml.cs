@@ -12,11 +12,6 @@ public partial class HomeView : UserControl
     public HomeView()
     {
         InitializeComponent();
-        // _meeting = new Meeting()
-        // {
-        //     Title = "윈프 종료 발표 회의",
-        //     ToDo = "최종 보고서 작성\nppt 준비\n발표 내용 정하기\n시연 동영상",
-        // };
         _viewModel = new HomeViewModel();
         DataContext = _viewModel;
     }
@@ -40,6 +35,29 @@ public partial class HomeView : UserControl
         if (d is HomeView homeView && homeView.DataContext is HomeViewModel homeViewModel)
         {
             homeViewModel.CurrentTeam = (Team)e.NewValue;
+            
+            // 미팅 일정잡기 화면 / 조율 중인 미팅 표시 화면 / 예정된 미팅 일정 화면
+            switch (homeViewModel.ViewType)
+            {
+                case MeetingViewType.NoPlan:
+                    homeView.MeetingView_TextBlock.Text = "예정된 미팅 일정";
+                    homeView.NoPlanView.Visibility = Visibility.Visible;
+                    homeView.ArrangingView.Visibility = Visibility.Collapsed;
+                    homeView.ScheduledView.Visibility = Visibility.Collapsed;
+                    break;
+                case MeetingViewType.Arranging:
+                    homeView.MeetingView_TextBlock.Text = "조율 중인 일정";
+                    homeView.NoPlanView.Visibility = Visibility.Collapsed;
+                    homeView.ArrangingView.Visibility = Visibility.Visible;
+                    homeView.ScheduledView.Visibility = Visibility.Collapsed;
+                    break;
+                case MeetingViewType.Scheduled:
+                    homeView.MeetingView_TextBlock.Text = "예정된 미팅 일정";
+                    homeView.NoPlanView.Visibility = Visibility.Collapsed;
+                    homeView.ArrangingView.Visibility = Visibility.Collapsed;
+                    homeView.ScheduledView.Visibility = Visibility.Visible;
+                    break;
+            }
         }
     }
 

@@ -7,6 +7,7 @@ public class Meeting : INotifyPropertyChanged
 {
     private string _title;
     private string _toDo;
+    private byte status;
 
     public string Title
     {
@@ -25,6 +26,17 @@ public class Meeting : INotifyPropertyChanged
         {
             _toDo = value;
             OnPropertyChanged();  
+        }
+    }
+
+    // 0: 조율중, 1: 조율완료
+    public byte Status
+    {
+        get => status;
+        set
+        {
+            status = value;
+            OnPropertyChanged();
         }
     }
 
