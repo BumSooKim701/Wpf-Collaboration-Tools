@@ -1,0 +1,92 @@
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using CollaborationTools.Common;
+
+namespace CollaborationTools.meeting_schedule;
+
+public class ScheduleRowViewModel : INotifyPropertyChanged
+{
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private DateTime _date;
+    private bool _isAllDay;
+    
+    
+    public DateTime Date
+    {
+        get => _date;
+        set
+        {
+            _date = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsAllDay
+    {
+        get => _isAllDay;
+        set
+        {
+            _isAllDay = value;
+            OnPropertyChanged();
+        }
+    }
+    public ObservableCollection<TimeRange> TimeRanges { get; } = new ObservableCollection<TimeRange>();
+    public ICommand AddTimeRangeCommand { get; }
+
+    public ScheduleRowViewModel()
+    {
+        AddTimeRangeCommand = new RelayCommand(AddTimeRange);
+        TimeRanges.Add(new TimeRange());
+        Date = DateTime.Now;
+        IsAllDay = false;
+    }
+
+    private void AddTimeRange(object obj) => TimeRanges.Add(new TimeRange());
+    
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+}
+
+public class TimeRange : INotifyPropertyChanged
+{
+    private DateTime _startTime;
+    private DateTime _endTime;
+
+    public DateTime StartTime
+    {
+        get => _startTime;
+        set
+        {
+            _startTime = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DateTime EndTime
+    {
+        get => _endTime;
+        set
+        {
+            _endTime = value;
+            OnPropertyChanged();
+        }
+    }
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public TimeRange()
+    {
+        StartTime = DateTime.MinValue;
+        EndTime = DateTime.MinValue;
+    }
+    
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    
+}

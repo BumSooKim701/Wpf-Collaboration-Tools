@@ -79,13 +79,20 @@ public partial class HomeView : UserControl
             _viewModel.ViewType = MeetingViewType.Arranging;
             SwitchMeetingView();
         };
-        Show(meetingArrangeWindow);
+        ShowDialog(meetingArrangeWindow);
     }
     
-    private void Show(Window window)
+    private void ShowDialog(Window window)
     {
         window.Owner = Application.Current.MainWindow;
         window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-        window.Show();
+        window.ShowDialog();
+    }
+
+    private void PersonalSubmit_ButtonClicked(object sender, RoutedEventArgs e)
+    {
+        PersonalScheduleSubmitWindow submitWindow = new(_viewModel.Meeting);
+        
+        ShowDialog(submitWindow);
     }
 }

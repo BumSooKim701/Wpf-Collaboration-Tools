@@ -1,4 +1,6 @@
-﻿using CollaborationTools.meeting_schedule;
+﻿using System.Diagnostics;
+using System.Text;
+using CollaborationTools.meeting_schedule;
 using MySqlConnector;
 
 namespace CollaborationTools.database;
@@ -34,6 +36,7 @@ public class MeetingRepository
                     while (reader.Read())
                     {
                         hasData = true;
+                        meetingPlan.MeetingId = reader.GetInt32("id");
                         meetingPlan.Title = reader.GetString("title");
                         meetingPlan.ToDo = reader.GetString("todo");
                         meetingPlan.Status = reader.GetByte("status");
@@ -91,4 +94,67 @@ public class MeetingRepository
 
         return result;
     }
+
+    public bool RegisterPersonalSchedule(PersonalScheduleList personalSchedules)
+    {
+        MySqlConnection connection = null;
+        var result = false;
+
+        List<Schedule> schedules = personalSchedules.Schedules;
+        int teamMemberId;
+        
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            
+            using (var command = new MySqlCommand(
+                       "SELECT id FROM team_member WHERE team_id = @teamId and user_id = @userId", connection))
+            {
+                command.Parameters.AddWithValue("@teamId", personalSchedules.TeamId);
+                command.Parameters.AddWithValue("@userId", personalSchedules.UserId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        teamMemberId = reader.GetInt32("id");
+                    }
+                    else
+                    {
+                        throw new Exception("Team member id not found");   
+                    }
+                }
+            }
+            
+            var queryBuilder = new StringBuilder(
+                "INSERT INTO personal_schedule (date, starttime_unavailable, endtime_unavailable, team_member_id, meeting_schedule_id) VALUES ");
+
+            foreach (var schedule in schedules)
+            {
+                queryBuilder.Append($"('{schedule.Date.ToString("yyyy-MM-dd")}', '{schedule.StartDateTime.ToString("hh':'mm':'ss''")}', '{schedule.EndDateTime.ToString("hh':'mm':'ss''")}', {teamMemberId}, {personalSchedules.MeetingScheduleId}),");
+            }
+            queryBuilder.Remove(queryBuilder.Length - 1, 1);
+            queryBuilder.Append(";");
+
+            Debug.WriteLine(queryBuilder.ToString());
+            using (var command = new MySqlCommand(queryBuilder.ToString(), connection))
+            {
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult == schedules.Count) result = true;    
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error creating meeting: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
+    }
+
+
 }

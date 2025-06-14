@@ -1,0 +1,79 @@
+﻿<Window x:Class="CollaborationTools.meeting_schedule.PersonalScheduleSubmitWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="ScheduleDetailsDialog" Height="450" Width="600"
+        WindowStyle="None" ResizeMode="NoResize" MouseDown="Window_MouseDown"
+        AllowsTransparency="True" Background="Transparent">
+    
+
+    <materialDesign:Card Margin="20" Padding="20">
+        <DockPanel HorizontalAlignment="Center">
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel HorizontalAlignment="Center">
+                        <ItemsControl ItemsSource="{Binding ScheduleRows}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="희망날짜" Margin="40,0" />
+                                            <TextBlock Text="종일 가능" Margin="0,0" />
+                                            <TextBlock Text="불가능 시간" Margin="40,0,0,0" />
+                                        </StackPanel>
+
+                                        <!-- 첫 번째 줄: 날짜, 체크박스, 시작/종료 시간, 시간 추가 버튼 -->
+                                        <StackPanel Orientation="Horizontal">
+                                            <DatePicker SelectedDate="{Binding Date}" Width="120" Margin="5" VerticalAlignment="Top"/>
+                                            <CheckBox IsChecked="{Binding IsAllDay}" Margin="5" VerticalAlignment="Top"/>
+                                            <ItemsControl ItemsSource="{Binding TimeRanges}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <materialDesign:TimePicker SelectedTime="{Binding StartTime}" Width="80" Margin="5"/>
+                                                            <TextBlock Text="~" VerticalAlignment="Center"/>
+                                                            <materialDesign:TimePicker SelectedTime="{Binding EndTime}" Width="80" Margin="5"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                            </ItemsControl>
+                                            <Button Content="추가" Command="{Binding AddTimeRangeCommand}" Margin="5" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Button Content="날짜 추가" Command="{Binding AddDateRowCommand}" Margin="10" />
+                    </StackPanel>
+                </ScrollViewer>
+                
+
+                <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Margin="0,10" Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Button Content="제출"
+                            Style="{StaticResource MaterialDesignFlatSecondaryButton}"
+                            Click="SubmitButton_Click" />
+                    <Button Content="취소"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Click="CloseButton_Click" />
+                </StackPanel>
+            </Grid>
+
+        </DockPanel>
+    </materialDesign:Card>
+</Window>

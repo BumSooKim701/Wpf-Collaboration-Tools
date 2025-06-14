@@ -23,4 +23,9 @@ public class MeetingService
     {
         return _meetingRepository.CreateMeeting(meetingPlan);
     }
+
+    public bool RegisterPersonalSchedule(PersonalScheduleList personalSchedules)
+    {
+        return _meetingRepository.RegisterPersonalSchedule(personalSchedules);
+    }
 }

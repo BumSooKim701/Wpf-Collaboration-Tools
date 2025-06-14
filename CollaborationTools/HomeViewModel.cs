@@ -8,7 +8,6 @@ namespace CollaborationTools;
 public class HomeViewModel : INotifyPropertyChanged
 {
     private Team _currentTeam;
-
     private Meeting _meeting = new();
     private MeetingViewType _viewType = MeetingViewType.NoPlan;
 
@@ -59,6 +58,7 @@ public class HomeViewModel : INotifyPropertyChanged
             }
             else
             {
+                Meeting.MeetingId = meetingPlan.MeetingId;
                 Meeting.Title = meetingPlan.Title;
                 Meeting.ToDo = meetingPlan.ToDo;
                 Meeting.Status = meetingPlan.Status;
