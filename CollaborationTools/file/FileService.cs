@@ -228,57 +228,6 @@ public class FileService
             return false;
         }
     }
-    
-    public static async Task LoadFileItems(ObservableCollection<TimelineItem> timelineItems,
-        string teamId, DateTime startDate, DateTime endDate)
-    {
-        try
-        {
-            var folderService = new FolderService();
-            var teamService = new TeamService();
-            var currentTeam = teamService.FindTeamByCalId(teamId);
-        
-            if (currentTeam?.teamFolderId == null)
-                return;
-
-            var files = await folderService.GetFilesInFolderAsync(currentTeam.teamFolderId);
-        
-            foreach (var file in files.Where(f => 
-                         f.ModifiedTime.HasValue && 
-                         f.ModifiedTime.Value.Date >= startDate && 
-                         f.ModifiedTime.Value.Date <= endDate))
-            {
-                timelineItems.Add(new TimelineItem
-                {
-                    DateTime = file.ModifiedTime?.Date ?? DateTime.Now,
-                    Title = file.Name,
-                    Description = $"파일이 업로드되었습니다. ({FormatFileSize(file.Size ?? 0)})",
-                    ItemType = TimelineItemType.File,
-                    TeamId = teamId,
-                    OriginalItem = file,
-                    CreatedBy = "팀원"
-                });
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"파일 로드 오류: {ex.Message}");
-        }
-    }
-
-// 파일 크기 포맷팅 (FileManagerWindow에서 가져온 로직)
-    private static string FormatFileSize(long bytes)
-    {
-        string[] sizes = { "B", "KB", "MB", "GB", "TB" };
-        double len = bytes;
-        var order = 0;
-        while (len >= 1024 && order < sizes.Length - 1)
-        {
-            order++;
-            len = len / 1024;
-        }
-        return $"{len:0.##} {sizes[order]}";
-    }
 
 
     private string GetMimeType(string filePath)
