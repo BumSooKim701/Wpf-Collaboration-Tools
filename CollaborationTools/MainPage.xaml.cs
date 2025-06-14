@@ -141,6 +141,12 @@ public partial class MainPage : Page
             MemoView.IsPrimary = true;
             MemoView.CurrentTeam = null;
         }
+        
+        if (HomeView?.FindName("TimelineControl") is timeline.TimeLine timelineControl)
+        {
+            timelineControl.CurrentTeam = null;
+            Console.WriteLine("primary mode update");
+        }
     }
 
     private void UpdateTeamInfo()
