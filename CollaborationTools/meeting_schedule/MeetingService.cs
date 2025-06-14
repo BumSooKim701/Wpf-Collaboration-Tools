@@ -5,12 +5,12 @@ namespace CollaborationTools.meeting_schedule;
 
 public class MeetingService
 {
-    private MeetingRepository _meetingRepository;
-    
-    
+    private readonly MeetingRepository _meetingRepository;
+
+
     public MeetingService()
     {
-        _meetingRepository = new();
+        _meetingRepository = new MeetingRepository();
     }
 
 

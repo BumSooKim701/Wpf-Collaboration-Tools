@@ -7,9 +7,16 @@ namespace CollaborationTools;
 
 public partial class HomeView : UserControl
 {
-    private HomeViewModel _viewModel;
-    
-    
+    public static readonly DependencyProperty CurrentTeamProperty =
+        DependencyProperty.Register(
+            nameof(CurrentTeam),
+            typeof(Team),
+            typeof(HomeView),
+            new PropertyMetadata(null, OnCurrentTeamChanged));
+
+    private readonly HomeViewModel _viewModel;
+
+
     public HomeView()
     {
         InitializeComponent();
@@ -23,20 +30,12 @@ public partial class HomeView : UserControl
         set => SetValue(CurrentTeamProperty, value);
     }
 
-    
-    public static readonly DependencyProperty CurrentTeamProperty =
-        DependencyProperty.Register(
-            nameof(CurrentTeam),
-            typeof(Team),
-            typeof(HomeView),
-            new PropertyMetadata(null, OnCurrentTeamChanged));
-    
     private static void OnCurrentTeamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is HomeView homeView && homeView.DataContext is HomeViewModel homeViewModel)
         {
             homeViewModel.CurrentTeam = (Team)e.NewValue;
-            
+
             // 미팅 일정잡기 화면 / 조율 중인 미팅 표시 화면 / 예정된 미팅 일정 화면
             switch (homeViewModel.ViewType)
             {
@@ -67,7 +66,7 @@ public partial class HomeView : UserControl
         var meetingArrangeWindow = new MeetingArrangeWindow(_viewModel.CurrentTeam.teamId);
         Show(meetingArrangeWindow);
     }
-    
+
     private void Show(Window window)
     {
         window.Owner = Application.Current.MainWindow;

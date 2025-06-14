@@ -4,7 +4,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:calendar="clr-namespace:CollaborationTools.calendar"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         Title="ScheduleDetailsDialog" Height="450" Width="450" MinHeight="300" MinWidth="400"
@@ -22,19 +21,19 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Text="미팅 일정 조율"
-                     Margin="0, 5"
-                     FontSize="20" FontWeight="Bold"/>
-            
-            <StackPanel Grid.Row="1" >
-                <Label Content="주제" Margin="0,5"/>
+                       Margin="0, 5"
+                       FontSize="20" FontWeight="Bold" />
+
+            <StackPanel Grid.Row="1">
+                <Label Content="주제" Margin="0,5" />
                 <TextBox Text="{Binding Title}"
                          AcceptsReturn="False"
                          Margin="0, 5"
                          Style="{StaticResource MaterialDesignTextBox}"
                          FontSize="20" />
             </StackPanel>
-            
-            <Label Grid.Row="2" Margin="0,5,0,0" Content="회의 할 내용"/>
+
+            <Label Grid.Row="2" Margin="0,5,0,0" Content="회의 할 내용" />
             <TextBox Grid.Row="3"
                      Text="{Binding ToDo}"
                      TextWrapping="Wrap"
@@ -43,8 +42,8 @@
                      VerticalScrollBarVisibility="Auto"
                      VerticalContentAlignment="Top"
                      Style="{StaticResource MaterialDesignFilledTextBox}"
-                     FontSize="15"/>
-            
+                     FontSize="15" />
+
             <StackPanel Grid.Row="4" Margin="0,10" Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <Button Content="등록"

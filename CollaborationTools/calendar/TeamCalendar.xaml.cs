@@ -8,16 +8,16 @@ namespace CollaborationTools.calendar;
 
 public partial class TeamCalendar : UserControl
 {
-    private readonly string _calendarId;
-    private ObservableCollection<ScheduleItem> _oneDaySchedules;
-    private ObservableCollection<ScheduleItem> _schedules;
-    
     public static readonly DependencyProperty CurrentTeamProperty =
         DependencyProperty.Register(
             nameof(CurrentTeam),
             typeof(Team),
             typeof(TeamCalendar),
             new PropertyMetadata(null, OnCurrentTeamChanged));
+
+    private readonly string _calendarId;
+    private ObservableCollection<ScheduleItem> _oneDaySchedules;
+    private ObservableCollection<ScheduleItem> _schedules;
 
     public TeamCalendar() : this("primary")
     {
@@ -31,19 +31,16 @@ public partial class TeamCalendar : UserControl
         _oneDaySchedules = new ObservableCollection<ScheduleItem>();
         _ = LoadScheduleItems();
     }
-    
+
     public Team? CurrentTeam
     {
         get => (Team)GetValue(CurrentTeamProperty);
         set => SetValue(CurrentTeamProperty, value);
     }
-    
+
     private static void OnCurrentTeamChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is TeamCalendar control)
-        {
-            control.LoadScheduleItems();
-        }
+        if (d is TeamCalendar control) control.LoadScheduleItems();
     }
 
     // 다가오는 일정 화면에 불러오기
@@ -72,9 +69,10 @@ public partial class TeamCalendar : UserControl
                 NoScheduleMsg.Visibility = Visibility.Visible;
                 CardListView.ItemsSource = null;
             }
+
             return;
         }
-        
+
         Console.WriteLine("team calendar" + CurrentTeam?.teamCalendarId);
 
         // 팀 캘린더 불러오기
@@ -84,8 +82,8 @@ public partial class TeamCalendar : UserControl
             CardListView.ItemsSource = null;
             return;
         }
-        
-        if (CurrentTeam?.teamCalendarId == null) 
+
+        if (CurrentTeam?.teamCalendarId == null)
         {
             NoScheduleMsg.Visibility = Visibility.Visible;
             CardListView.ItemsSource = null;
@@ -118,37 +116,31 @@ public partial class TeamCalendar : UserControl
     private void ListView_MouseDown(object sender, MouseButtonEventArgs e)
     {
         var scheduleItem = ((FrameworkElement)e.OriginalSource).DataContext as ScheduleItem;
-        
+
         if (scheduleItem != null)
         {
             var scheduleDetailsWindow = new ScheduleDetailsWindow(scheduleItem);
-            
-            scheduleDetailsWindow.ScheduleSaved += (s,args) =>
-            {
-                LoadScheduleItems();
-            };
-            
+
+            scheduleDetailsWindow.ScheduleSaved += (s, args) => { LoadScheduleItems(); };
+
             ShowDialog(scheduleDetailsWindow);
         }
     }
-    
+
     // 일정 생성
     private void RegisterButtonClicked(object sender, RoutedEventArgs e)
     {
-        DateTime startDateTime = Calendar.SelectedDate.HasValue 
-            ? Calendar.SelectedDate.Value 
+        var startDateTime = Calendar.SelectedDate.HasValue
+            ? Calendar.SelectedDate.Value
             : DateTime.Now;
         var scheduleRegisterWindow = new ScheduleRegisterWindow(
-            new ScheduleItem()
+            new ScheduleItem
             {
-                StartDateTime = startDateTime, 
+                StartDateTime = startDateTime,
                 CalendarId = CurrentTeam.teamCalendarId
             });
-        
-        scheduleRegisterWindow.ScheduleSaved += (s,args) =>
-        {
-            LoadScheduleItems();
-        };
+
+        scheduleRegisterWindow.ScheduleSaved += (s, args) => { LoadScheduleItems(); };
         ShowDialog(scheduleRegisterWindow);
     }
 
@@ -171,7 +163,7 @@ public partial class TeamCalendar : UserControl
 
     private async Task DisplayCalendarSchedule(DateTime selectedDate) // 캘린더에서 선택된 날짜 일정
     {
-        if (CurrentTeam?.teamCalendarId == null) 
+        if (CurrentTeam?.teamCalendarId == null)
         {
             NoScheduleMsgCalendar.Visibility = Visibility.Visible;
             CardListViewCalendar.ItemsSource = null;
@@ -199,5 +191,4 @@ public partial class TeamCalendar : UserControl
             CardListViewCalendar.ItemsSource = null;
         }
     }
-    
 }

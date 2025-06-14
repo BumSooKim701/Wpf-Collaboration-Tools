@@ -1,7 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using CollaborationTools.memo;
-using CollaborationTools.team;
-using CollaborationTools.user;
 using MySqlConnector;
 
 namespace CollaborationTools.database;
@@ -9,7 +7,7 @@ namespace CollaborationTools.database;
 public class MemoRepository
 {
     private readonly ConnectionPool _connectionPool;
-    
+
     public MemoRepository()
     {
         _connectionPool = ConnectionPool.GetInstance();
@@ -20,7 +18,7 @@ public class MemoRepository
         MySqlConnection connection = null;
         var result = true;
         var memoItems = new ObservableCollection<MemoItem>();
-        
+
         try
         {
             connection = _connectionPool.GetConnection();
@@ -34,7 +32,6 @@ public class MemoRepository
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
-                    {
                         memoItems.Add(new MemoItem
                         {
                             MemoId = reader.GetInt32("id"),
@@ -42,10 +39,8 @@ public class MemoRepository
                             Content = reader.GetString("memo_content"),
                             LastModifiedDate = reader.GetDateTime("date_of_modified"),
                             LastEditorName = reader.GetString("last_editor_name"),
-                            TeamId = teamId,
+                            TeamId = teamId
                         });
-                    }
-                        
                 }
             }
         }
@@ -57,7 +52,7 @@ public class MemoRepository
         {
             if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
-        
+
         return memoItems;
     }
 
@@ -65,7 +60,7 @@ public class MemoRepository
     {
         MySqlConnection connection = null;
         var result = false;
-        
+
         try
         {
             connection = _connectionPool.GetConnection();
@@ -87,9 +82,9 @@ public class MemoRepository
                 {
                     if (reader.Read())
                     {
-                        int rowsAffected = Convert.ToInt32(reader["AffectedRows"]);
-                        int newId = Convert.ToInt32(reader["NewId"]);
-                        
+                        var rowsAffected = Convert.ToInt32(reader["AffectedRows"]);
+                        var newId = Convert.ToInt32(reader["NewId"]);
+
                         if (rowsAffected > 0)
                         {
                             memoItem.MemoId = newId;
@@ -97,7 +92,6 @@ public class MemoRepository
                         }
                     }
                 }
-
             }
         }
         catch (Exception e)
@@ -111,23 +105,24 @@ public class MemoRepository
 
         return result;
     }
-    
+
     public bool AddMemoForUser(MemoItem memoItem, int memberId)
     {
         MySqlConnection connection = null;
         var result = false;
-        
+
         try
         {
             connection = _connectionPool.GetConnection();
 
             using (var command = new MySqlCommand(
                        "INSERT INTO team_memo (memo_title, memo_content, date_of_modified, team_member_id) " +
-                       "VALUES (@memoTitle, @memoContent, @dateOfModified, @memberId);" + 
+                       "VALUES (@memoTitle, @memoContent, @dateOfModified, @memberId);" +
                        "SELECT ROW_COUNT() AS AffectedRows, LAST_INSERT_ID() AS NewId;",
                        connection))
             {
-                Console.WriteLine(memoItem.Title + " " + memoItem.Content + " " + memoItem.LastModifiedDate + " " + memberId);
+                Console.WriteLine(memoItem.Title + " " + memoItem.Content + " " + memoItem.LastModifiedDate + " " +
+                                  memberId);
                 command.Parameters.AddWithValue("@memoTitle", memoItem.Title);
                 command.Parameters.AddWithValue("@memoContent", memoItem.Content);
                 command.Parameters.AddWithValue("@dateOfModified", memoItem.LastModifiedDate);
@@ -137,9 +132,9 @@ public class MemoRepository
                 {
                     if (reader.Read())
                     {
-                        int rowsAffected = Convert.ToInt32(reader["AffectedRows"]);
-                        int newId = Convert.ToInt32(reader["NewId"]);
-                        
+                        var rowsAffected = Convert.ToInt32(reader["AffectedRows"]);
+                        var newId = Convert.ToInt32(reader["NewId"]);
+
                         if (rowsAffected > 0)
                         {
                             memoItem.MemoId = newId;
@@ -165,7 +160,7 @@ public class MemoRepository
     {
         MySqlConnection connection = null;
         var result = false;
-        
+
         try
         {
             connection = _connectionPool.GetConnection();

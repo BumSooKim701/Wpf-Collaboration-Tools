@@ -162,7 +162,7 @@ public class TeamMemberRepository
 
     public List<TeamMember?>? FindTeamMembersByTeamId(int teamId)
     {
-        List<TeamMember?>? teamMemberList = new List<TeamMember?>();
+        var teamMemberList = new List<TeamMember?>();
         MySqlConnection connection = null;
 
         try
@@ -197,20 +197,23 @@ public class TeamMemberRepository
 
         return teamMemberList;
     }
-    
+
     public TeamMember? FindTeamMember(int teamId, int userId)
     {
-        TeamMember teamMember = new TeamMember();
+        var teamMember = new TeamMember();
         MySqlConnection connection = null;
 
         try
         {
             connection = _connectionPool.GetConnection();
 
-            using (var command = new MySqlCommand("SELECT * FROM team_member WHERE team_id = @teamId and user_id = @userId", connection))
+            using (var command =
+                   new MySqlCommand("SELECT * FROM team_member WHERE team_id = @teamId and user_id = @userId",
+                       connection))
             {
                 command.Parameters.AddWithValue("@teamId", teamId);
-                command.Parameters.AddWithValue("@userId", userId);;
+                command.Parameters.AddWithValue("@userId", userId);
+                ;
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -236,7 +239,7 @@ public class TeamMemberRepository
 
         return teamMember;
     }
-    
+
     public byte FindTeamMemberAuthority(int teamId, int userId)
     {
         byte authority = 0;
@@ -246,7 +249,9 @@ public class TeamMemberRepository
         {
             connection = _connectionPool.GetConnection();
 
-            using (var command = new MySqlCommand("SELECT authority from team_member where team_id = @teamId and user_id = @userId", connection))
+            using (var command =
+                   new MySqlCommand("SELECT authority from team_member where team_id = @teamId and user_id = @userId",
+                       connection))
             {
                 command.Parameters.AddWithValue("@teamId", teamId);
                 command.Parameters.AddWithValue("@userId", userId);
@@ -269,7 +274,7 @@ public class TeamMemberRepository
 
         return authority;
     }
-    
+
     public TeamMember FindTeamMemberId(int userId, int teamId)
     {
         var teamMember = new TeamMember();
@@ -279,7 +284,9 @@ public class TeamMemberRepository
         {
             connection = _connectionPool.GetConnection();
 
-            using (var command = new MySqlCommand("SELECT id FROM team_member WHERE user_id = @userId and team_id = @teamId", connection))
+            using (var command =
+                   new MySqlCommand("SELECT id FROM team_member WHERE user_id = @userId and team_id = @teamId",
+                       connection))
             {
                 command.Parameters.AddWithValue("@userId", userId);
                 command.Parameters.AddWithValue("@teamId", teamId);

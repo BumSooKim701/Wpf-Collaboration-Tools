@@ -11,7 +11,7 @@
     <ItemGroup>
         <PackageReference Include="Google.Apis.Auth" Version="1.69.0"/>
         <PackageReference Include="Google.Apis.Calendar.v3" Version="1.69.0.3746"/>
-        <PackageReference Include="Google.Apis.Drive.v3" Version="1.69.0.3783" />
+        <PackageReference Include="Google.Apis.Drive.v3" Version="1.69.0.3783"/>
         <PackageReference Include="MaterialDesignColors" Version="5.2.2-ci998"/>
         <PackageReference Include="MaterialDesignThemes" Version="5.2.2-ci998"/>
         <PackageReference Include="MySqlConnector" Version="2.4.0"/>
@@ -29,18 +29,18 @@
             <SubType>Designer</SubType>
         </Page>
         <Page Update="calendar\ScheduleRegisterWindow.xaml">
-          <Generator>MSBuild:Compile</Generator>
-          <XamlRuntime>Wpf</XamlRuntime>
-          <SubType>Designer</SubType>
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
         </Page>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="bin\Debug\net8.0-windows\credential\client_secret.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Include="bin\Debug\net8.0-windows\credential\Google.Apis.Auth.OAuth2.Responses.TokenResponse-user" />
-      <Content Include="credential\client_secret.json" />
+        <Content Include="bin\Debug\net8.0-windows\credential\client_secret.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="bin\Debug\net8.0-windows\credential\Google.Apis.Auth.OAuth2.Responses.TokenResponse-user"/>
+        <Content Include="credential\client_secret.json"/>
     </ItemGroup>
 
     <PropertyGroup>

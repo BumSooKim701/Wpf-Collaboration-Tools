@@ -36,8 +36,7 @@
                 materialDesign:ButtonAssist.CornerRadius="16"
                 Background="{DynamicResource MaterialDesign.Brush.Secondary}"
                 BorderThickness="0"
-                Foreground="{DynamicResource PrimaryHueMidBrushForeground}"
-                >
+                Foreground="{DynamicResource PrimaryHueMidBrushForeground}">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon
                         Width="24"

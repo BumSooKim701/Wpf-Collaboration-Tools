@@ -5,10 +5,10 @@ namespace CollaborationTools.meeting_schedule;
 
 public class Meeting : INotifyPropertyChanged
 {
-    private string _title;
-    private string _toDo;
     private byte _status;
     private int _teamId;
+    private string _title;
+    private string _toDo;
 
     public string Title
     {
@@ -16,7 +16,7 @@ public class Meeting : INotifyPropertyChanged
         set
         {
             _title = value;
-            OnPropertyChanged();   
+            OnPropertyChanged();
         }
     }
 
@@ -26,7 +26,7 @@ public class Meeting : INotifyPropertyChanged
         set
         {
             _toDo = value;
-            OnPropertyChanged();  
+            OnPropertyChanged();
         }
     }
 

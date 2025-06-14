@@ -1,4 +1,4 @@
-﻿using CollaborationTools.team;
+﻿using System.Data;
 using CollaborationTools.user;
 using MySqlConnector;
 
@@ -23,16 +23,17 @@ public class UserRepository
 
                 using (var reader = command.ExecuteReader())
                 {
-                    if (reader.Read()) 
+                    if (reader.Read())
                         user = new User
                         {
                             userId = reader.GetInt32("id"),
                             GoogleId = reader.GetString("google_id"),
                             Email = reader.GetString("email"),
                             Name = reader.GetString("name"),
-                            PictureUri = reader.GetString("picture_uri"),
+                            PictureUri = reader.IsDBNull("picture_uri") ? null : reader.GetString("picture_uri"),
                             CreatedAt = reader.GetDateTime("created_at"),
-                            LastLoginAt = reader.GetDateTime("last_login_at")
+                            LastLoginAt = reader.GetDateTime("last_login_at"),
+                            TeamId = reader.GetInt32("team_id")
                         };
                 }
             }
@@ -71,7 +72,7 @@ public class UserRepository
                             GoogleId = reader.GetString("google_id"),
                             Email = reader.GetString("email"),
                             Name = reader.GetString("name"),
-                            PictureUri = reader.GetString("picture_uri"),
+                            PictureUri = reader.IsDBNull("picture_uri") ? null : reader.GetString("picture_uri"),
                             CreatedAt = reader.GetDateTime("created_at"),
                             LastLoginAt = reader.GetDateTime("last_login_at"),
                             TeamId = reader.GetInt32("team_id")
@@ -130,7 +131,7 @@ public class UserRepository
 
         return result;
     }
-    
+
     public bool UpdatePrimaryTeamId(User user, int teamId)
     {
         MySqlConnection connection = null;
@@ -140,7 +141,6 @@ public class UserRepository
         {
             connection = _connectionPool.GetConnection();
             
-            Console.WriteLine(user.userId + " " + teamId);
             using (var command =
                    new MySqlCommand(
                        "UPDATE user SET team_id = @teamId WHERE id = @userId",
@@ -164,5 +164,93 @@ public class UserRepository
         }
 
         return result;
+    }
+
+    public List<User> FindUsersInAddressBook(int userId)
+    {
+        var users = new List<User>();
+        MySqlConnection connection = null;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            
+            var query = "SELECT * FROM address_book WHERE owner = @ownerId";
+
+            using (var command = new MySqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@ownerId", userId);
+                
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var member = FindUserById(reader.GetInt32("member"));
+                        
+                        users.Add(member);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"GetAllUsers Error: {ex.Message}");
+        }
+        finally
+        {
+            // 반드시 연결을 풀에 반환
+            if (connection != null)
+            {
+                _connectionPool.ReleaseConnection(connection);
+            }
+        }
+
+        return users;
+    }
+
+    // UserRepository.cs에 추가할 메서드
+    public List<User> GetAllUsers()
+    {
+        var users = new List<User>();
+        MySqlConnection connection = null;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            
+            var query = "SELECT * FROM user";
+
+            using (var command = new MySqlCommand(query, connection))
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                    users.Add(new User
+                    {
+                        userId = reader.GetInt32("id"),
+                        GoogleId = reader.GetString("google_id"),
+                        Name = reader.GetString("name"),
+                        Email = reader.GetString("email"),
+                        PictureUri = reader.IsDBNull("picture_uri") ? null : reader.GetString("picture_uri"),
+                        RefreshToken = reader.GetString("refresh_token"),
+                        CreatedAt = reader.GetDateTime("created_at"),
+                        LastLoginAt = reader.GetDateTime("last_login_at"),
+                        TeamId = reader.GetInt32("team_id")
+                    });
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"GetAllUsers Error: {ex.Message}");
+        }
+        finally
+        {
+            // 반드시 연결을 풀에 반환
+            if (connection != null)
+            {
+                _connectionPool.ReleaseConnection(connection);
+            }
+        }
+
+        return users;
     }
 }

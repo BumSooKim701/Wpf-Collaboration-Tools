@@ -8,7 +8,8 @@ public class TeamRepository
 {
     private readonly ConnectionPool _connectionPool = ConnectionPool.GetInstance();
 
-    public bool AddTeam(string teamName, string uuid, int teamMemberCount, DateTime dateOfCreated, string teamCalName, string teamDescription, byte visibility)
+    public bool AddTeam(string teamName, string uuid, int teamMemberCount, DateTime dateOfCreated, string teamCalName,
+        string teamDescription, byte visibility)
     {
         MySqlConnection connection = null;
         var result = true;
@@ -46,16 +47,17 @@ public class TeamRepository
 
         return result;
     }
-    
+
     public bool UpdateTeamCalendarId(int teamId, string teamCalId)
     {
         MySqlConnection connection = null;
         var result = true;
-        
+
         try
         {
             connection = _connectionPool.GetConnection();
-            using (var command = new MySqlCommand("UPDATE team SET team_calendar_id = @teamCalId WHERE id = @teamId", connection))
+            using (var command = new MySqlCommand("UPDATE team SET team_calendar_id = @teamCalId WHERE id = @teamId",
+                       connection))
             {
                 command.Parameters.AddWithValue("@teamCalId", teamCalId);
                 command.Parameters.AddWithValue("@teamId", teamId);
@@ -76,16 +78,17 @@ public class TeamRepository
 
         return result;
     }
-    
+
     public bool UpdateTeamDriveId(int teamId, string teamDriveId)
     {
         MySqlConnection connection = null;
         var result = true;
-        
+
         try
         {
             connection = _connectionPool.GetConnection();
-            using (var command = new MySqlCommand("UPDATE team SET shared_drive_id = @teamDriveId WHERE id = @teamId", connection))
+            using (var command = new MySqlCommand("UPDATE team SET shared_drive_id = @teamDriveId WHERE id = @teamId",
+                       connection))
             {
                 command.Parameters.AddWithValue("@teamDriveId", teamDriveId);
                 command.Parameters.AddWithValue("@teamId", teamId);
@@ -163,7 +166,7 @@ public class TeamRepository
                             teamCalendarName = reader.GetString("team_calendar_name"),
                             teamCalendarId = reader.GetString("team_calendar_id"),
                             teamDescription = reader.GetString("team_description"),
-                            teamFolderId = reader.GetString("shared_drive_id"),
+                            teamFolderId = reader.GetString("shared_drive_id")
                         };
                 }
             }
@@ -239,12 +242,13 @@ public class TeamRepository
     {
         Team team = new();
         MySqlConnection connection = null;
-        
+
         try
         {
             connection = _connectionPool.GetConnection();
 
-            using (var command = new MySqlCommand("SELECT * FROM team WHERE id = @teamId and visibility = 0", connection))
+            using (var command =
+                   new MySqlCommand("SELECT * FROM team WHERE id = @teamId and visibility = 0", connection))
             {
                 command.Parameters.AddWithValue("@teamId", teamId);
 
@@ -322,24 +326,21 @@ public class TeamRepository
 
         return team;
     }
-    
+
     public int FindTeamIdFromFolderId(string folderId)
     {
-        int result = -1;
+        var result = -1;
         MySqlConnection connection = null;
-            
+
         try
         {
             connection = _connectionPool.GetConnection();
-                
+
             using var command = new MySqlCommand("SELECT id FROM team WHERE shared_drive_id = @folder_id", connection);
             command.Parameters.AddWithValue("@folder_id", folderId);
-                
+
             using var reader = command.ExecuteReader();
-            if (reader.Read())
-            {
-                result = reader.GetInt32("id");
-            }
+            if (reader.Read()) result = reader.GetInt32("id");
         }
         catch (Exception e)
         {
@@ -349,7 +350,7 @@ public class TeamRepository
         {
             if (connection != null) _connectionPool.ReleaseConnection(connection);
         }
-            
+
         return result;
     }
 }

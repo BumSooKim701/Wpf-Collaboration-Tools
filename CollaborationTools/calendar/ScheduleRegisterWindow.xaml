@@ -99,7 +99,7 @@
                         IsEnabled="True"
                         Style="{StaticResource MaterialDesignFloatingHintTimePicker}" />
                 </StackPanel>
-                
+
                 <TextBlock Grid.Row="3" Grid.Column="0" Text="장소" Style="{StaticResource TextBlockStyle}" />
                 <TextBox Grid.Row="3" Grid.Column="1" Margin="0,5" Text="{Binding Location}"
                          Style="{StaticResource TextBoxStyle}" />

@@ -3,33 +3,31 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using CollaborationTools.calendar;
 using CollaborationTools.Common;
 using CollaborationTools.file;
 using CollaborationTools.user;
-using Google.Apis.Calendar.v3;
 using CalendarService = CollaborationTools.calendar.CalendarService;
 
 namespace CollaborationTools.team;
 
 public partial class TeamMemberRegistrationWindow : Window, INotifyPropertyChanged
 {
-    private readonly TeamService _teamService = new();
-    private readonly UserService _userService = new();
     private readonly CalendarService _calendarService = new();
     private readonly FolderService _folderService = new();
-    private Team _team;
+    private readonly TeamService _teamService = new();
+    private readonly UserService _userService = new();
     private string _newMemberEmail;
+    private Team _team;
     private ObservableCollection<string> _teamMembers;
-    
+
     public TeamMemberRegistrationWindow(Team team)
     {
         InitializeComponent();
 
         Team = team;
-        
+
         TeamMembers = new ObservableCollection<string>();
-        
+
         AddMemberCommand = new RelayCommand(AddMember, CanAddMember);
         RemoveMemberCommand = new RelayCommand(RemoveMember);
         RegisterMembersCommand = new RelayCommand(RegisterMembers, CanRegisterMembers);
@@ -38,7 +36,7 @@ public partial class TeamMemberRegistrationWindow : Window, INotifyPropertyChang
         // 데이터 컨텍스트 설정
         DataContext = this;
     }
-    
+
     public Team Team
     {
         get => _team;
@@ -48,7 +46,7 @@ public partial class TeamMemberRegistrationWindow : Window, INotifyPropertyChang
             OnPropertyChanged();
         }
     }
-    
+
     public string NewMemberEmail
     {
         get => _newMemberEmail;
@@ -68,19 +66,21 @@ public partial class TeamMemberRegistrationWindow : Window, INotifyPropertyChang
             OnPropertyChanged();
         }
     }
-    
+
     public ICommand AddMemberCommand { get; }
     public ICommand RemoveMemberCommand { get; }
     public ICommand RegisterMembersCommand { get; }
     public ICommand CancelCommand { get; }
-    
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
     // 멤버 추가 가능 여부 검사
     private bool CanAddMember(object parameter)
     {
         return !string.IsNullOrWhiteSpace(NewMemberEmail) && !TeamMembers.Contains(NewMemberEmail)
                                                           && _teamService.IsValidEmail(NewMemberEmail);
     }
-    
+
     private void AddMember(object parameter)
     {
         var isValidUser = _userService.IsExistUser(NewMemberEmail);
@@ -99,12 +99,12 @@ public partial class TeamMemberRegistrationWindow : Window, INotifyPropertyChang
             MessageBox.Show("팀원 추가를 실패했습니다.", "팀원 추가 실패", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
-    
+
     private void RemoveMember(object parameter)
     {
         if (parameter is string email) TeamMembers.Remove(email);
     }
-    
+
     private bool CanRegisterMembers(object parameter)
     {
         return TeamMembers.Count > 0;
@@ -112,35 +112,32 @@ public partial class TeamMemberRegistrationWindow : Window, INotifyPropertyChang
 
     private void RegisterMembers(object parameter)
     {
-        bool success = _teamService.AddTeamMembersByEmail(Team, TeamMembers, TeamMember.TEAM_MEMBER_AUTHORITY);
+        var success = _teamService.AddTeamMembersByEmail(Team, TeamMembers, TeamMember.TEAM_MEMBER_AUTHORITY);
 
         if (success)
         {
             _calendarService.CreateCalendarAsync(Team.teamCalendarId, Team.teamName);
 
             _folderService.ShareFolderWithMemberAsync(Team.teamCalendarId, Team.teamName);
-            
-            MessageBox.Show($"'{Team.teamName}' 팀에 {TeamMembers.Count}명의 팀원이 등록되었습니다.", 
+
+            MessageBox.Show($"'{Team.teamName}' 팀에 {TeamMembers.Count}명의 팀원이 등록되었습니다.",
                 "팀원 등록 완료", MessageBoxButton.OK, MessageBoxImage.Information);
-            
+
             // 창 닫기
             DialogResult = true;
-
         }
         else
         {
             MessageBox.Show("팀원 등록 중 오류가 발생했습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
-    
+
     private void Cancel(object parameter)
     {
         // 창 닫기
         DialogResult = false;
     }
-    
-    public event PropertyChangedEventHandler PropertyChanged;
-    
+
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

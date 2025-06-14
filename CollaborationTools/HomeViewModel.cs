@@ -7,10 +7,9 @@ namespace CollaborationTools;
 
 public class HomeViewModel : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-    
-    private Meeting _meeting = new Meeting();
     private Team _currentTeam;
+
+    private Meeting _meeting = new();
     private MeetingViewType _viewType = MeetingViewType.NoPlan;
 
 
@@ -23,7 +22,7 @@ public class HomeViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
+
     public Team CurrentTeam
     {
         get => _currentTeam;
@@ -44,16 +43,20 @@ public class HomeViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     private void UpdateMeeting()
     {
         if (CurrentTeam != null)
         {
             MeetingService meetingService = new();
-            Meeting meetingPlan = meetingService.GetMeeting(CurrentTeam);
-            
-            if (meetingPlan == null) 
+            var meetingPlan = meetingService.GetMeeting(CurrentTeam);
+
+            if (meetingPlan == null)
+            {
                 _viewType = MeetingViewType.NoPlan;
+            }
             else
             {
                 Meeting.Title = meetingPlan.Title;
@@ -62,17 +65,12 @@ public class HomeViewModel : INotifyPropertyChanged
                 Meeting.TeamId = meetingPlan.TeamId;
 
                 if (Meeting.Status == 0)
-                {
                     _viewType = MeetingViewType.Arranging;
-                }
-                else if (Meeting.Status == 1)
-                {
-                    _viewType = MeetingViewType.Scheduled;
-                }
+                else if (Meeting.Status == 1) _viewType = MeetingViewType.Scheduled;
             }
         }
     }
-    
+
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {

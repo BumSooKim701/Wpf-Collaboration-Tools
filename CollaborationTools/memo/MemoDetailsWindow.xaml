@@ -4,7 +4,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:calendar="clr-namespace:CollaborationTools.calendar"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         Title="ScheduleDetailsDialog" Height="450" Width="450" MinHeight="300" MinWidth="400"
@@ -21,14 +20,14 @@
             </Grid.RowDefinitions>
 
             <DockPanel Grid.Row="0">
-                <Grid DockPanel.Dock="Right" 
-                    HorizontalAlignment="Right">
+                <Grid DockPanel.Dock="Right"
+                      HorizontalAlignment="Right">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    
-                    
+
+
                     <Button Grid.Column="0" Click="EditButtonClicked"
                             x:Name="EditButton"
                             VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
@@ -52,9 +51,9 @@
                             Height="15"
                             Kind="Delete" />
                     </Button>
-                    
+
                     <Button Grid.Column="0" Click="RevertButtonClicked"
-                            x:Name="RevertButton" 
+                            x:Name="RevertButton"
                             Visibility="Collapsed"
                             VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
                             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
@@ -66,7 +65,7 @@
                             Kind="ArrowBack" />
                     </Button>
                     <Button Grid.Column="1" Click="SaveButtonClicked"
-                            x:Name="SaveButton" 
+                            x:Name="SaveButton"
                             Visibility="Collapsed"
                             VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,0"
                             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
@@ -80,12 +79,12 @@
                 </Grid>
 
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                    <TextBlock Text="마지막 편집" Margin="0,0,2,0" Foreground="Gray"/>
-                    <TextBlock Text="{Binding LastModifiedDate}" Margin="2,0" Foreground="Gray"/>
-                    <TextBlock Text="{Binding LastEditorName}" Margin="2,0,0,0" Foreground="Gray"/>
+                    <TextBlock Text="마지막 편집" Margin="0,0,2,0" Foreground="Gray" />
+                    <TextBlock Text="{Binding LastModifiedDate}" Margin="2,0" Foreground="Gray" />
+                    <TextBlock Text="{Binding LastEditorName}" Margin="2,0,0,0" Foreground="Gray" />
                 </StackPanel>
             </DockPanel>
-            
+
             <TextBox Grid.Row="1" Text="{Binding Title}"
                      x:Name="TitleBox"
                      IsReadOnly="True"
@@ -93,7 +92,7 @@
                      Margin="0, 5"
                      Style="{StaticResource MaterialDesignTextBox}"
                      FontSize="20" />
-            
+
             <!-- <TextBlock Grid.Row="1" Text="{Binding Title}" -->
             <!--            TextWrapping="Wrap" -->
             <!--            Margin="0, 5" -->
@@ -108,8 +107,8 @@
                      VerticalScrollBarVisibility="Auto"
                      VerticalContentAlignment="Top"
                      Style="{StaticResource MaterialDesignFilledTextBox}"
-                     FontSize="15"/>
-            
+                     FontSize="15" />
+
             <Button Grid.Row="3" Content="Close"
                     Style="{StaticResource MaterialDesignFlatButton}"
                     Click="CloseButton_Click" />

@@ -5,14 +5,15 @@ namespace CollaborationTools.memo;
 
 public partial class MemoCreateWindow : Window
 {
-    public event EventHandler<MemoItem> MemoCreated;
-    private MemoItem _memoItem = new();
-    
+    private readonly MemoItem _memoItem = new();
+
     public MemoCreateWindow()
     {
         InitializeComponent();
         DataContext = _memoItem;
     }
+
+    public event EventHandler<MemoItem> MemoCreated;
 
     private void ShowDialog(Window window)
     {
@@ -20,23 +21,20 @@ public partial class MemoCreateWindow : Window
         window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         window.ShowDialog();
     }
-    
+
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {
         MemoCreated?.Invoke(this, _memoItem);
-        this.Close();
+        Close();
     }
-    
+
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
-        this.Close();
+        Close();
     }
-    
+
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.ChangedButton == MouseButton.Left)
-        {
-            this.DragMove();
-        }
+        if (e.ChangedButton == MouseButton.Left) DragMove();
     }
 }

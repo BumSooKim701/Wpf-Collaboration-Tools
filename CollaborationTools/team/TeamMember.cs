@@ -7,7 +7,7 @@ public class TeamMember
     public static byte TEAM_MEMBER_AUTHORITY = 0;
 
     public int memberId { get; set; }
-    
+
     public int userId { get; set; }
 
     public int teamId { get; set; }

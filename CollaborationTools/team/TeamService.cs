@@ -42,7 +42,7 @@ public class TeamService
     {
         return _teamRepository.FindTeamsByUser(user);
     }
-    
+
     public Team? FindUserPrimaryTeam(User user)
     {
         return _teamRepository.FindPrimaryTeam(user.TeamId);
@@ -57,7 +57,7 @@ public class TeamService
     {
         return _teamMemberRepository.FindTeamMembersByTeamId(teamId);
     }
-    
+
     public TeamMember? FindTeamMember(int teamId, int userId)
     {
         return _teamMemberRepository.FindTeamMember(teamId, userId);
@@ -91,21 +91,21 @@ public class TeamService
 
     public bool UpdateTeamCalendarId(Team team, string calendarId)
     {
-        bool result = _teamRepository.UpdateTeamCalendarId(team.teamId, calendarId);
+        var result = _teamRepository.UpdateTeamCalendarId(team.teamId, calendarId);
 
         return result;
     }
 
     public bool UpdateTeamDriveId(Team team, string driveId)
     {
-        bool result = _teamRepository.UpdateTeamDriveId(team.teamId, driveId);
+        var result = _teamRepository.UpdateTeamDriveId(team.teamId, driveId);
 
         return result;
     }
-    
+
     public byte FindAuthority(Team team, User user)
     {
-        
-        return _teamMemberRepository.FindTeamMemberAuthority(team.teamId, user.userId);;
+        return _teamMemberRepository.FindTeamMemberAuthority(team.teamId, user.userId);
+        ;
     }
 }
