@@ -138,6 +138,7 @@ public class MeetingRepository
         return result;
     }
 
+    // 미팅 후보 날짜 불러오기
     public ObservableCollection<DateItem> GetMeetingDateItem(int meetingId)
     {
         MySqlConnection connection = null;
@@ -148,7 +149,7 @@ public class MeetingRepository
             connection = _connectionPool.GetConnection();
 
             using (var command = new MySqlCommand(
-                       "SELECT * FROM meeting_date WHERE meeting_schedule_id = @meetingId", connection))
+                       "SELECT * FROM meeting_date WHERE meeting_schedule_id = @meetingId ORDER BY date", connection))
             {
                 command.Parameters.AddWithValue("@meetingId", meetingId);
 
@@ -289,9 +290,9 @@ public class MeetingRepository
                         personalSchedules.UserId = userId;
                         personalSchedules.MeetingScheduleId = reader.GetInt32("meeting_schedule_id");
                         var date = reader.GetDateTime("date");
-                        var startTime = reader.GetDateTime("starttime_unavailable");
-                        var endTime = reader.GetDateTime("endtime_unavailable");
-                        personalSchedules.AddSchedule(date, startTime, endTime);
+                        var startTime = reader.GetTimeSpan("starttime_unavailable");
+                        var endTime = reader.GetTimeSpan("endtime_unavailable");
+                        personalSchedules.AddSchedule(date, DateTime.MinValue.Add(startTime), DateTime.MinValue.Add(endTime));
                     }
                 }
             }
@@ -306,6 +307,67 @@ public class MeetingRepository
         }
         
         return personalSchedules;
+    }
+
+    public (ObservableCollection<Schedule>, int) GetAllPersonalSchedule(int teamId)
+    {
+        MySqlConnection connection = null;
+        var result = false;
+        
+        ObservableCollection<Schedule> allPersonalSchedules = new();
+        int meetingId = 0;
+        
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            
+            using (var command = new MySqlCommand(
+                       "SELECT id FROM meeting_schedule WHERE team_id = @teamId", connection))
+            {
+                command.Parameters.AddWithValue("@teamId", teamId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        meetingId = reader.GetInt32("id");
+                    }
+                    else
+                    {
+                        throw new Exception("Meeting id not found");
+                    }
+                }
+            }
+            using (var command = new MySqlCommand(
+                       "SELECT * FROM personal_schedule WHERE meeting_schedule_id = @meetingId", connection))
+            {
+                command.Parameters.AddWithValue("@meetingId", meetingId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var date = reader.GetDateTime("date");
+                        var startTime = reader.GetTimeSpan("starttime_unavailable");
+                        var endTime = reader.GetTimeSpan("endtime_unavailable");
+                     
+                        allPersonalSchedules.Add(new Schedule(date, DateTime.MinValue.Add(startTime), DateTime.MinValue.Add(endTime)));
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error fetching personal schedule: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+        
+        if (allPersonalSchedules.Count == 0) return (null, meetingId);
+        
+        return (allPersonalSchedules, meetingId);
     }
 
 }

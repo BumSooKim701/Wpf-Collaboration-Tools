@@ -88,6 +88,13 @@ public partial class HomeView : UserControl
         window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         window.ShowDialog();
     }
+    
+    private void Show(Window window)
+    {
+        window.Owner = Application.Current.MainWindow;
+        window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        window.Show();
+    }
 
     private void PersonalSubmit_ButtonClicked(object sender, RoutedEventArgs e)
     {
@@ -98,6 +105,8 @@ public partial class HomeView : UserControl
 
     private void CheckAvailable_ButtonClicked(object sender, RoutedEventArgs e)
     {
+        MeetingAvailableTimeWindow availableTimeWindow = new(CurrentTeam.teamId);
         
+        Show(availableTimeWindow);
     }
 }

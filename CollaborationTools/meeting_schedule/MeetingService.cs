@@ -35,6 +35,11 @@ public class MeetingService
         return _meetingRepository.RegisterPersonalSchedule(personalSchedules);
     }
 
+    public (ObservableCollection<Schedule>, int) GetAllPersonalSchedule(int teamId)
+    {
+        return _meetingRepository.GetAllPersonalSchedule(teamId);
+    }
+    
     public PersonalScheduleList GetPersonalSchedule(int userId, int teamId)
     {
         return _meetingRepository.getPersonalSchedule(userId, teamId);

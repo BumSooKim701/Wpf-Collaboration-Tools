@@ -1,12 +1,120 @@
 ﻿<Window x:Class="CollaborationTools.meeting_schedule.MeetingAvailableTimeWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CollaborationTools.meeting_schedule"
         mc:Ignorable="d"
-        Title="MeetingAvailableTimeWindow" Height="450" Width="800">
-    <Grid>
+        Title="회의 가능 시간 확인" Height="600" Width="900"
+        WindowStartupLocation="CenterOwner">
+
+    <Window.Resources>
+        <local:ScheduleColorConverter x:Key="ScheduleColorConverter"/>
         
+        <Style TargetType="Border" x:Key="GridCellStyle">
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        </Style>
+        
+        <Style TargetType="TextBlock" x:Key="HeaderTextStyle">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Margin="10">
+            <TextBlock Text="팀 회의 가능 시간" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+            <TextBlock Text="가능 시간: 연두색" Margin="0,0,0,5"/>
+        </StackPanel>
+        
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource GridCellStyle}">
+                    <TextBlock Text="시간/날짜" Style="{StaticResource HeaderTextStyle}" />
+                </Border>
+
+                <ItemsControl Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Dates}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="LightGray" BorderThickness="0,0,1,1" Width="120" Height="50">
+                                <TextBlock Text="{Binding StringFormat='yyyy-MM-dd'}"
+                                           Style="{StaticResource HeaderTextStyle}" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl Grid.Row="1" Grid.Column="0" ItemsSource="{Binding HourStr}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="LightGray" BorderThickness="0,0,1,1" Width="70" Height="30">
+                                <TextBlock Text="{Binding}" Style="{StaticResource HeaderTextStyle}" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Dates}">
+                    
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ItemsControl
+                                ItemsSource="{Binding DataContext.Hours, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                                
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource GridCellStyle}" Width="120" Height="30">
+                                            <Border.Background>
+                                                <MultiBinding Converter="{StaticResource ScheduleColorConverter}">
+                                                    <Binding Path="DataContext" RelativeSource="{RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}, AncestorLevel=2}" />
+                                                    <Binding Path="." />
+                                                    <Binding Path="DataContext.AllPersonalSchedules" RelativeSource="{RelativeSource AncestorType={x:Type Window}}" />
+                                                </MultiBinding>
+                                            </Border.Background>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                                
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                
+                            </ItemsControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>
