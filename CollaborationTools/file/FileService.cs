@@ -1,9 +1,13 @@
-﻿using System.IO;
+﻿using System.Collections.ObjectModel;
+using System.IO;
 using System.Net;
 using System.Windows;
 using CollaborationTools.authentication;
 using CollaborationTools.database;
+using CollaborationTools.team;
+using CollaborationTools.timeline;
 using Google;
+using Google.Apis.Calendar.v3;
 using Google.Apis.Download;
 using Google.Apis.Upload;
 using GoogleFile = Google.Apis.Drive.v3.Data.File;
@@ -17,6 +21,9 @@ public class FileService
     // 파일 업로드 (등록)
     public async Task<GoogleFile> UploadFileAsync(string folderId, string filePath)
     {
+        if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            return null;
+        
         var driveService = GoogleAuthentication.DriveService;
 
         if (driveService == null) throw new InvalidOperationException("Google Drive 서비스가 초기화되지 않았습니다.");
@@ -60,6 +67,9 @@ public class FileService
     // 기존 파일 버전 업데이트 (핵심 기능)
     public async Task<GoogleFile> UpdateFileVersionAsync(string fileId, string filePath)
     {
+        if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            return null;
+        
         var driveService = GoogleAuthentication.DriveService;
         if (driveService == null)
             throw new InvalidOperationException("Google Drive 서비스에 연결할 수 없습니다.");
@@ -96,6 +106,9 @@ public class FileService
     // 파일이 이미 존재하는지 확인
     public async Task<string> FindExistingFileAsync(string folderId, string fileName)
     {
+        if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            return null;
+        
         var driveService = GoogleAuthentication.DriveService;
         if (driveService == null)
             throw new InvalidOperationException("Google Drive 서비스에 연결할 수 없습니다.");
@@ -146,6 +159,9 @@ public class FileService
 
     public async Task<IList<GoogleFile>> GetFileVersionsAsync(string fileId)
     {
+        if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            return null;
+        
         var driveService = GoogleAuthentication.DriveService;
         if (driveService == null) throw new InvalidOperationException("Google Drive 서비스가 초기화되지 않았습니다.");
 
@@ -212,6 +228,58 @@ public class FileService
             return false;
         }
     }
+    
+    public static async Task LoadFileItems(ObservableCollection<TimelineItem> timelineItems,
+        string teamId, DateTime startDate, DateTime endDate)
+    {
+        try
+        {
+            var folderService = new FolderService();
+            var teamService = new TeamService();
+            var currentTeam = teamService.FindTeamByCalId(teamId);
+        
+            if (currentTeam?.teamFolderId == null)
+                return;
+
+            var files = await folderService.GetFilesInFolderAsync(currentTeam.teamFolderId);
+        
+            foreach (var file in files.Where(f => 
+                         f.ModifiedTime.HasValue && 
+                         f.ModifiedTime.Value.Date >= startDate && 
+                         f.ModifiedTime.Value.Date <= endDate))
+            {
+                timelineItems.Add(new TimelineItem
+                {
+                    DateTime = file.ModifiedTime?.Date ?? DateTime.Now,
+                    Title = file.Name,
+                    Description = $"파일이 업로드되었습니다. ({FormatFileSize(file.Size ?? 0)})",
+                    ItemType = TimelineItemType.File,
+                    TeamId = teamId,
+                    OriginalItem = file,
+                    CreatedBy = "팀원"
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"파일 로드 오류: {ex.Message}");
+        }
+    }
+
+// 파일 크기 포맷팅 (FileManagerWindow에서 가져온 로직)
+    private static string FormatFileSize(long bytes)
+    {
+        string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+        double len = bytes;
+        var order = 0;
+        while (len >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            len = len / 1024;
+        }
+        return $"{len:0.##} {sizes[order]}";
+    }
+
 
     private string GetMimeType(string filePath)
     {

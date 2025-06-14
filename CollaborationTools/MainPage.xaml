@@ -7,6 +7,7 @@
       xmlns:file="clr-namespace:CollaborationTools.file"
       xmlns:calendar="clr-namespace:CollaborationTools.calendar"
       xmlns:memo="clr-namespace:CollaborationTools.memo"
+      xmlns:timeline="clr-namespace:CollaborationTools.timeline"
       mc:Ignorable="d"
       Title="MainPage" Height="Auto" Width="Auto">
     <Grid>
@@ -22,69 +23,37 @@
             <!-- Main Content Area -->
             <Grid x:Name="MainContentArea">
                 <!-- Home View -->
-                <local:HomeView x:Name="HomeView" Visibility="Visible" />
-                <!-- <Grid x:Name="HomeView" Visibility="Visible"> -->
-                <!--     <Grid.RowDefinitions> -->
-                <!--         <RowDefinition Height="*"/> -->
-                <!--         <RowDefinition Height="*"/> -->
-                <!--     </Grid.RowDefinitions> -->
-                <!--     <Grid.ColumnDefinitions> -->
-                <!--         <ColumnDefinition Width="*"/> -->
-                <!--         <ColumnDefinition Width="*"/> -->
-                <!--     </Grid.ColumnDefinitions> -->
-                <!--      -->
-                <!--     ~1~ Recent Calendar Events @1@ -->
-                <!--     <Border Grid.Row="0" Grid.Column="0"  -->
-                <!--             Background="White"  -->
-                <!--             Margin="10"  -->
-                <!--             CornerRadius="8" -->
-                <!--             BorderBrush="#E0E0E0"  -->
-                <!--             BorderThickness="1"> -->
-                <!--         <StackPanel Margin="15"> -->
-                <!--             <TextBlock Text="최근 일정"  -->
-                <!--                      FontSize="16"  -->
-                <!--                      FontWeight="Bold"  -->
-                <!--                      Margin="0,0,0,10"/> -->
-                <!--             <calendar:TeamCalendar x:Name="HomeCalendarView"  -->
-                <!--                                  Height="200"/> -->
-                <!--         </StackPanel> -->
-                <!--     </Border> -->
-                <!--      -->
-                <!--     ~1~ Recent Files @1@ -->
-                <!--     <Border Grid.Row="0" Grid.Column="1"  -->
-                <!--             Background="White"  -->
-                <!--             Margin="10"  -->
-                <!--             CornerRadius="8" -->
-                <!--             BorderBrush="#E0E0E0"  -->
-                <!--             BorderThickness="1"> -->
-                <!--         <StackPanel Margin="15"> -->
-                <!--             <TextBlock Text="최근 파일"  -->
-                <!--                      FontSize="16"  -->
-                <!--                      FontWeight="Bold"  -->
-                <!--                      Margin="0,0,0,10"/> -->
-                <!--             <file:FileManagerWindow x:Name="HomeFileView"  -->
-                <!--                                    Height="200"/> -->
-                <!--         </StackPanel> -->
-                <!--     </Border> -->
-                <!--      -->
-                <!--     ~1~ Team Info @1@ -->
-                <!--     <Border Grid.Row="1" Grid.ColumnSpan="2"  -->
-                <!--             Background="White"  -->
-                <!--             Margin="10"  -->
-                <!--             CornerRadius="8" -->
-                <!--             BorderBrush="#E0E0E0"  -->
-                <!--             BorderThickness="1"> -->
-                <!--         <StackPanel Margin="15"> -->
-                <!--             <TextBlock Text="팀 정보"  -->
-                <!--                      FontSize="16"  -->
-                <!--                      FontWeight="Bold"  -->
-                <!--                      Margin="0,0,0,10"/> -->
-                <!--             <TextBlock x:Name="TeamInfoText"  -->
-                <!--                      Text="팀을 선택해주세요"  -->
-                <!--                      FontSize="14"/> -->
-                <!--         </StackPanel> -->
-                <!--     </Border> -->
-                <!-- </Grid> -->
+                <local:HomeView x:Name="HomeView" Visibility="Visible">
+                    <!-- <Grid> -->
+                    <!--     <Grid.RowDefinitions> -->
+                    <!--         <RowDefinition Height="Auto"/> -->
+                    <!--         <RowDefinition Height="*"/> -->
+                    <!--     </Grid.RowDefinitions> -->
+                    <!-- -->
+                    <!--     ~1~ 기존 미팅 정보 @1@ -->
+                    <!--     <Border Grid.Row="0" Background="White" Margin="10" Padding="10"  -->
+                    <!--             CornerRadius="8" BorderBrush="#E0E0E0" BorderThickness="1"> -->
+                    <!--         ~1~ 기존 HomeView 내용 @1@ -->
+                    <!--     </Border> -->
+                    <!-- -->
+                        <!-- 타임라인 섹션 -->
+                    <!--     <Border Grid.Row="1" Background="White" Margin="10" Padding="10" -->
+                    <!--             CornerRadius="8" BorderBrush="#E0E0E0" BorderThickness="1"> -->
+                    <!--         <Grid> -->
+                    <!--             <Grid.RowDefinitions> -->
+                    <!--                 <RowDefinition Height="Auto"/> -->
+                    <!--                 <RowDefinition Height="*"/> -->
+                    <!--             </Grid.RowDefinitions> -->
+                    <!-- -->
+                    <!--             <TextBlock Grid.Row="0" Text="팀 타임라인" FontSize="16" -->
+                    <!--                        FontWeight="Bold" Margin="0,0,0,10"/> -->
+                    <!-- -->
+                    <!--             <timeline:TimeLine x:Name="HomeTimeline" Grid.Row="1" -->
+                    <!--                                    Height="300"/> -->
+                    <!--         </Grid> -->
+                    <!--     </Border> -->
+                    <!-- </Grid> -->
+                </local:HomeView>
 
                 <!-- Calendar View -->
                 <calendar:TeamCalendar x:Name="CalendarView"

@@ -13,7 +13,7 @@ public class MemoRepository
         _connectionPool = ConnectionPool.GetInstance();
     }
 
-    public ObservableCollection<MemoItem> GetMemosByTeamId(int teamId)
+    public async Task<ObservableCollection<MemoItem>> GetMemosByTeamId(int teamId)
     {
         MySqlConnection connection = null;
         var result = true;
