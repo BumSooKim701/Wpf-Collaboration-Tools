@@ -359,3 +359,9 @@ C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddressBookWindow.baml
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddAddressWindow.g.cs
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddressBookWindow.g.cs
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddAddressWindow.baml
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddressBookWindow.baml
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\meeting_schedule\PersonalScheduleRegisterWindow.baml
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddAddressWindow.g.cs
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddressBookWindow.g.cs
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\meeting_schedule\PersonalScheduleRegisterWindow.g.cs
