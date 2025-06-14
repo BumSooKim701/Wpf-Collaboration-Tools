@@ -6,6 +6,7 @@ namespace CollaborationTools.meeting_schedule;
 public partial class MeetingArrangeWindow : Window
 {
     private Meeting _meetingPlan;
+    public EventHandler<Meeting> MeetingCreated;
     
     
     public MeetingArrangeWindow(int teamId)
@@ -25,9 +26,13 @@ public partial class MeetingArrangeWindow : Window
         
         bool isSucceed = meetingService.CreateMeeting(_meetingPlan);
 
-        MessageBox.Show(isSucceed ? "미팅 조율 등록에 성공하였습니다." : "미팅 조율 등록에 실패하였습니다.");
+        MessageBox.Show(Application.Current.MainWindow, isSucceed ? "미팅 조율 등록에 성공하였습니다." : "미팅 조율 등록에 실패하였습니다.");
         if (isSucceed)
+        {
+            MeetingCreated?.Invoke(this, _meetingPlan);
             this.Close();
+        }
+            
     }
     
     private void CloseButton_Click(object sender, RoutedEventArgs e)

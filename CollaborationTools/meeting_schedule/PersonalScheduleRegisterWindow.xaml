@@ -1,0 +1,96 @@
+﻿<Window x:Class="CollaborationTools.meeting_schedule.PersonalScheduleRegisterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="ScheduleDetailsDialog" Height="450" Width="600"
+        WindowStyle="None" ResizeMode="NoResize" MouseDown="Window_MouseDown"
+        AllowsTransparency="True" Background="Transparent">
+    <Window.Resources>
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="0,5,15,5" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox"
+               BasedOn="{StaticResource MaterialDesignTextBox}">
+            <Setter Property="Margin" Value="5,5,10,5" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+        <Style x:Key="TextBoxMemoStyle" TargetType="TextBox"
+               BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+            <Setter Property="Margin" Value="5,5,10,5" />
+            <Setter Property="Padding" Value="5" />
+        </Style>
+    </Window.Resources>
+
+    <materialDesign:Card Margin="20" Padding="20">
+        <DockPanel>
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="일정명" Style="{StaticResource TextBlockStyle}" />
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,5" Text="{Binding Title}"
+                         x:Name="TitleTextBox"
+                         Style="{StaticResource TextBoxStyle}" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="시작 날짜" Style="{StaticResource TextBlockStyle}" />
+                <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,5" Orientation="Horizontal">
+                    <DatePicker
+                        x:Name="StartDatePicker"
+                        HorizontalAlignment="Left"
+                        Width="100"
+                        Margin="10,0"
+                        materialDesign:HintAssist.Hint="시작 날짜"
+                        SelectedDate="{Binding StartDateTime}"
+                        SelectedDateChanged="StartDatePickerChanged"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                    <materialDesign:TimePicker
+                        x:Name="StartTimePicker"
+                        Width="100"
+                        Margin="10,0"
+                        materialDesign:HintAssist.Hint="시작 시간"
+                        SelectedTime="{Binding StartDateTime}"
+                        SelectedTimeChanged="StartTimePickerChanged"
+                        IsEnabled="True"
+                        Style="{StaticResource MaterialDesignFloatingHintTimePicker}" />
+                    <CheckBox VerticalAlignment="Bottom"
+                              Content="종일"
+                              Margin="5,0"
+                              IsChecked="{Binding IsAllDayEvent}"
+                              Checked="CheckBox_Checked"
+                              Unchecked="CheckBox_Unchecked" />
+                </StackPanel>
+
+
+                <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Margin="0,10" Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Button Content="저장"
+                            Style="{StaticResource MaterialDesignFlatSecondaryButton}"
+                            Click="SaveButton_Click" />
+                    <Button Content="취소"
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Click="CloseButton_Click" />
+                </StackPanel>
+            </Grid>
+
+        </DockPanel>
+    </materialDesign:Card>
+</Window>

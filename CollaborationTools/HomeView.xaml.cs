@@ -37,34 +37,48 @@ public partial class HomeView : UserControl
         {
             homeViewModel.CurrentTeam = (Team)e.NewValue;
             
-            // 미팅 일정잡기 화면 / 조율 중인 미팅 표시 화면 / 예정된 미팅 일정 화면
-            switch (homeViewModel.ViewType)
-            {
-                case MeetingViewType.NoPlan:
-                    homeView.MeetingView_TextBlock.Text = "예정된 미팅 일정";
-                    homeView.NoPlanView.Visibility = Visibility.Visible;
-                    homeView.ArrangingView.Visibility = Visibility.Collapsed;
-                    homeView.ScheduledView.Visibility = Visibility.Collapsed;
-                    break;
-                case MeetingViewType.Arranging:
-                    homeView.MeetingView_TextBlock.Text = "조율 중인 일정";
-                    homeView.NoPlanView.Visibility = Visibility.Collapsed;
-                    homeView.ArrangingView.Visibility = Visibility.Visible;
-                    homeView.ScheduledView.Visibility = Visibility.Collapsed;
-                    break;
-                case MeetingViewType.Scheduled:
-                    homeView.MeetingView_TextBlock.Text = "예정된 미팅 일정";
-                    homeView.NoPlanView.Visibility = Visibility.Collapsed;
-                    homeView.ArrangingView.Visibility = Visibility.Collapsed;
-                    homeView.ScheduledView.Visibility = Visibility.Visible;
-                    break;
-            }
+            homeView.SwitchMeetingView();
+        }
+    }
+
+    private void SwitchMeetingView()
+    {
+        // 미팅 일정잡기 화면 / 조율 중인 미팅 표시 화면 / 예정된 미팅 일정 화면
+        switch (_viewModel.ViewType)
+        {
+            case MeetingViewType.NoPlan:
+                MeetingView_TextBlock.Text = "예정된 미팅 일정";
+                NoPlanView.Visibility = Visibility.Visible;
+                ArrangingView.Visibility = Visibility.Collapsed;
+                ScheduledView.Visibility = Visibility.Collapsed;
+                break;
+            case MeetingViewType.Arranging:
+                MeetingView_TextBlock.Text = "조율 중인 일정";
+                NoPlanView.Visibility = Visibility.Collapsed;
+                ArrangingView.Visibility = Visibility.Visible;
+                ScheduledView.Visibility = Visibility.Collapsed;
+                break;
+            case MeetingViewType.Scheduled:
+                MeetingView_TextBlock.Text = "예정된 미팅 일정";
+                NoPlanView.Visibility = Visibility.Collapsed;
+                ArrangingView.Visibility = Visibility.Collapsed;
+                ScheduledView.Visibility = Visibility.Visible;
+                break;
         }
     }
 
     private void MeetingArrange_ButtonClicked(object sender, RoutedEventArgs e)
     {
         var meetingArrangeWindow = new MeetingArrangeWindow(_viewModel.CurrentTeam.teamId);
+        meetingArrangeWindow.MeetingCreated += (s, meetingPlan) =>
+        {
+            _viewModel.Meeting.Title = meetingPlan.Title;
+            _viewModel.Meeting.ToDo = meetingPlan.ToDo;
+            _viewModel.Meeting.Status = meetingPlan.Status;
+            _viewModel.Meeting.TeamId = meetingPlan.TeamId;
+            _viewModel.ViewType = MeetingViewType.Arranging;
+            SwitchMeetingView();
+        };
         Show(meetingArrangeWindow);
     }
     
