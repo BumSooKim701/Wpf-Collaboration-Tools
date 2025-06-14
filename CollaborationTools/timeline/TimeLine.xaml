@@ -21,6 +21,7 @@
                       HorizontalScrollBarVisibility="Auto" 
                       VerticalScrollBarVisibility="Auto"
                       SizeChanged="TimelineScrollViewer_SizeChanged">
+            
             <Canvas x:Name="TimelineCanvas" 
                     Background="LightGray" 
                     SizeChanged="TimelineCanvas_SizeChanged">

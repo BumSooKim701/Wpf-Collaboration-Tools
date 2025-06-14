@@ -9,13 +9,14 @@ namespace CollaborationTools.meeting_schedule;
 
 public partial class PersonalScheduleSubmitWindow : Window
 {
-    private ScheduleMainViewModel _mainViewModel = new();
+    private ScheduleMainViewModel _mainViewModel;
     private Meeting _meeting;
     
     public PersonalScheduleSubmitWindow(Meeting meeting)
     {
         InitializeComponent();
         _meeting = meeting;
+        _mainViewModel = new ScheduleMainViewModel(meeting);
         DataContext = _mainViewModel;
     }
 
@@ -57,16 +58,6 @@ public partial class PersonalScheduleSubmitWindow : Window
             this.Close();
     }
 
-    // 종일 이벤트 체크박스 처리
-    private void CheckBox_Checked(object sender, RoutedEventArgs e)
-    {
-        
-
-    }
-    private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-    {
-        
-    }
     
     // 종료날짜를 시작날짜 이후로 선택 가능하도록 하는 함수
     private void StartDatePickerChanged(object sender, SelectionChangedEventArgs e)

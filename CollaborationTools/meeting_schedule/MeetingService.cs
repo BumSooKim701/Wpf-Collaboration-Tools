@@ -1,4 +1,5 @@
-﻿using CollaborationTools.database;
+﻿using System.Collections.ObjectModel;
+using CollaborationTools.database;
 using CollaborationTools.team;
 
 namespace CollaborationTools.meeting_schedule;
@@ -17,6 +18,11 @@ public class MeetingService
     public Meeting GetMeeting(Team team)
     {
         return _meetingRepository.GetMeeting(team.teamId);
+    }
+
+    public ObservableCollection<DateItem> GetMeetingDates(int meetingId)
+    {
+        return _meetingRepository.GetMeetingDateItem(meetingId);
     }
 
     public bool CreateMeeting(Meeting meetingPlan)

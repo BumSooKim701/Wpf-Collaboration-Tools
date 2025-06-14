@@ -6,8 +6,16 @@ namespace CollaborationTools.meeting_schedule;
 public class DateItem : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
-    private DateTime _date = DateTime.Now;
+    private DateTime _date;
 
+    public DateItem()
+    {
+        Date = DateTime.Now;
+    }
+    public DateItem(DateTime date)
+    {
+        Date = date;
+    }
 
     public DateTime Date
     {

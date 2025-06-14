@@ -13,7 +13,7 @@ public class Meeting : INotifyPropertyChanged
     private int _teamId;
     private string _title;
     private string _toDo;
-    public ObservableCollection<DateItem> DateList { get; } = new ();
+    public ObservableCollection<DateItem> DateList { get; set; } = new ();
     public ICommand AddDateRowCommand { get; }
     public ICommand RemoveDateRowCommand { get; }
 

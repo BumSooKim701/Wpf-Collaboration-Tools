@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 using CollaborationTools.meeting_schedule;
 using MySqlConnector;
@@ -16,6 +17,7 @@ public class MeetingRepository
     }
 
 
+    // 팀의 조율 중인 미팅 조회
     public Meeting GetMeeting(int teamId)
     {
         MySqlConnection connection = null;
@@ -59,6 +61,7 @@ public class MeetingRepository
         return meetingPlan;
     }
 
+    // 조율할 미팅을 테이블에 삽입
     public bool CreateMeeting(Meeting meetingPlan)
     {
         MySqlConnection connection = null;
@@ -135,6 +138,45 @@ public class MeetingRepository
         return result;
     }
 
+    public ObservableCollection<DateItem> GetMeetingDateItem(int meetingId)
+    {
+        MySqlConnection connection = null;
+        var dateList = new ObservableCollection<DateItem>();
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+
+            using (var command = new MySqlCommand(
+                       "SELECT * FROM meeting_date WHERE meeting_schedule_id = @meetingId", connection))
+            {
+                command.Parameters.AddWithValue("@meetingId", meetingId);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var dateTime = reader.GetDateTime("date");
+                        dateList.Add(new DateItem(dateTime));
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error fetching meeting plan: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        if (dateList.Count == 0) return null;
+
+        return dateList;
+    }
+
+    // 조율할 미팅에 대한 개인 일정을 등록
     public bool RegisterPersonalSchedule(PersonalScheduleList personalSchedules)
     {
         MySqlConnection connection = null;
@@ -179,7 +221,7 @@ public class MeetingRepository
 
             foreach (var schedule in schedules)
             {
-                queryBuilder.Append($"('{schedule.Date.ToString("yyyy-MM-dd")}', '{schedule.StartDateTime.ToString("hh':'mm':'ss''")}', '{schedule.EndDateTime.ToString("hh':'mm':'ss''")}', {teamMemberId}, {personalSchedules.MeetingScheduleId}),");
+                queryBuilder.Append($"('{schedule.Date.ToString("yyyy-MM-dd")}', '{schedule.StartDateTime.ToString("HH':'mm':'ss''")}', '{schedule.EndDateTime.ToString("HH':'mm':'ss''")}', {teamMemberId}, {personalSchedules.MeetingScheduleId}),");
             }
             queryBuilder.Remove(queryBuilder.Length - 1, 1);
 
@@ -203,6 +245,7 @@ public class MeetingRepository
         return result;
     }
 
+    // 조율 중인 팀 미팅에 대한 개인 일정 조회 
     public PersonalScheduleList getPersonalSchedule(int userId, int teamId)
     {
         MySqlConnection connection = null;

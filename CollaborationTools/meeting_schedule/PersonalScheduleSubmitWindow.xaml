@@ -14,8 +14,7 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" /> 
-                <RowDefinition Height="*" />    
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />   
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
@@ -31,47 +30,47 @@
                                 <StackPanel Margin="0,10,0,10">
                                     <Grid Margin="0,0,0,5">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" /> 
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="150" /> 
+                                            <ColumnDefinition Width="70" />
+                                            <ColumnDefinition Width="250" />
+                                            <ColumnDefinition Width="50" />
                                         </Grid.ColumnDefinitions>
                                         
-                                        <TextBlock Grid.Column="0" Text="희망날짜" HorizontalAlignment="Left"
-                                                   FontWeight="Bold" />
-                                        <TextBlock Grid.Column="1" Text="종일 가능" Margin="10,0,0,0"
-                                                   HorizontalAlignment="Left" FontWeight="Bold" />
-                                        <TextBlock Grid.Column="2" Text="불가능 시간" Margin="20,0,0,0"
-                                                   HorizontalAlignment="Left" FontWeight="Bold" />
+                                        <TextBlock Grid.Column="0" Text="미팅날짜 후보" 
+                                                   HorizontalAlignment="Center" FontWeight="Bold" />
+                                        <TextBlock Grid.Column="1" Text="종일 가능" 
+                                                   HorizontalAlignment="Center" FontWeight="Bold" />
+                                        <TextBlock Grid.Column="2" Text="불가능 시간" 
+                                                   HorizontalAlignment="Center" FontWeight="Bold" />
                                     </Grid>
 
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="150" />
+                                            <ColumnDefinition Width="70" />
+                                            <ColumnDefinition Width="250" />
+                                            <ColumnDefinition Width="50" />
                                         </Grid.ColumnDefinitions>
 
-                                        <DatePicker Grid.Column="0" SelectedDate="{Binding Date}" Width="120"
-                                                    Margin="5,0" VerticalAlignment="Top" />
+                                        <DatePicker Grid.Column="0" SelectedDate="{Binding Date}" Width="90"
+                                                     VerticalAlignment="Top" HorizontalAlignment="Center" />
                                         <CheckBox Grid.Column="1" IsChecked="{Binding IsAllDay}" 
-                                                  Margin="10,0,0,0"
-                                                  VerticalAlignment="Top" />
+                                                  VerticalAlignment="Top" HorizontalAlignment="Center" />
 
                                         <ItemsControl Grid.Column="2" ItemsSource="{Binding TimeRanges}"
-                                                      VerticalAlignment="Top">
+                                                      VerticalAlignment="Top" HorizontalAlignment="Center">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5" >
                                                         <materialDesign:TimePicker x:Name="StartTimePicker"
                                                             SelectedTime="{Binding StartTime}"
                                                             IsEnabled="{Binding IsEnabled}"
-                                                            Width="80" Margin="5,0" />
-                                                        <TextBlock Text="~" VerticalAlignment="Center" />
+                                                            Width="80" />
+                                                        <TextBlock Text="~" VerticalAlignment="Center" Margin="5,0" />
                                                         <materialDesign:TimePicker x:Name="EndTimePicker"
                                                             SelectedTime="{Binding EndTime}"
                                                             IsEnabled="{Binding IsEnabled}"
-                                                            Width="80" Margin="5,0" />
+                                                            Width="80" />
                                                         
                                                     </StackPanel>
                                                 </DataTemplate>
@@ -83,7 +82,7 @@
                                             </ItemsControl.ItemsPanel>
                                         </ItemsControl>
 
-                                        <Grid Grid.Column="3">
+                                        <Grid Grid.Column="3" HorizontalAlignment="Center">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition />
                                                 <RowDefinition/>
@@ -91,14 +90,16 @@
                                             
                                             <Button Grid.Row="0" Content="+" Command="{Binding AddTimeRangeCommand}"
                                                     HorizontalAlignment="Right" VerticalAlignment="Top"
+                                                    FontSize="15"
                                                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                                    Margin="0,0,5,0"
+                                                    Margin="0,5"
                                                     IsEnabled="{Binding IsButtonEnabled}" />
                                             <Button Grid.Row="1" Content="-"
                                                     Command="{Binding RemoveTimeRangeCommand}"
                                                     HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                                    FontSize="15"
                                                     Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
-                                                    Margin="0,0,5,0"
+                                                    Margin="0,5"
                                                     IsEnabled="{Binding IsButtonEnabled}" />
                                         </Grid>
                                         
@@ -110,10 +111,10 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <Button Grid.Row="2" Content="날짜 추가" Command="{Binding AddDateRowCommand}" Margin="0,10"
-                    HorizontalAlignment="Center" />
+            <!-- <Button Grid.Row="2" Content="날짜 추가" Command="{Binding AddDateRowCommand}" Margin="0,10" -->
+            <!--         HorizontalAlignment="Center" /> -->
 
-            <StackPanel Grid.Row="3" Margin="0,10" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Grid.Row="2" Margin="0,10" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="제출"
                         Style="{StaticResource MaterialDesignFlatSecondaryButton}"
                         Click="SubmitButton_Click" Margin="5,0" />

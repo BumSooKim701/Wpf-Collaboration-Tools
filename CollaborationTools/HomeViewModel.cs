@@ -10,8 +10,9 @@ public class HomeViewModel : INotifyPropertyChanged
     private Team _currentTeam;
     private Meeting _meeting = new();
     private MeetingViewType _viewType = MeetingViewType.NoPlan;
-
-
+    
+    
+    
     public Meeting Meeting
     {
         get => _meeting;

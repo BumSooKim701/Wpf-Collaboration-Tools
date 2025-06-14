@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CollaborationTools")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+80cf3be489ad92d9c1d4d2151e936952a63147d7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e828f218cd0566bef81427b82825b72f639c0c50")]
 [assembly: System.Reflection.AssemblyProductAttribute("CollaborationTools")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CollaborationTools")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
