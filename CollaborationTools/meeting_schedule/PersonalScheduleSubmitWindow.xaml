@@ -39,9 +39,13 @@
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
                                                         <StackPanel Orientation="Horizontal">
-                                                            <materialDesign:TimePicker SelectedTime="{Binding StartTime}" Width="80" Margin="5"/>
+                                                            <materialDesign:TimePicker x:Name="StartTimePicker" SelectedTime="{Binding StartTime}"
+                                                                IsEnabled="{Binding IsEnabled}"
+                                                                Width="80" Margin="5"/>
                                                             <TextBlock Text="~" VerticalAlignment="Center"/>
-                                                            <materialDesign:TimePicker SelectedTime="{Binding EndTime}" Width="80" Margin="5"/>
+                                                            <materialDesign:TimePicker x:Name="EndTimePicker" SelectedTime="{Binding EndTime}" 
+                                                                IsEnabled="{Binding IsEnabled}"
+                                                                Width="80" Margin="5"/>
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
@@ -51,7 +55,8 @@
                                                     </ItemsPanelTemplate>
                                                 </ItemsControl.ItemsPanel>
                                             </ItemsControl>
-                                            <Button Content="추가" Command="{Binding AddTimeRangeCommand}" Margin="5" />
+                                            <Button Content="추가" Command="{Binding AddTimeRangeCommand}" Margin="5" 
+                                                    IsEnabled="{Binding IsButtonEnabled}"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </DataTemplate>

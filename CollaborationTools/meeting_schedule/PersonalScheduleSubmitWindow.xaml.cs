@@ -61,6 +61,7 @@ public partial class PersonalScheduleSubmitWindow : Window
     private void CheckBox_Checked(object sender, RoutedEventArgs e)
     {
         
+
     }
     private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
     {

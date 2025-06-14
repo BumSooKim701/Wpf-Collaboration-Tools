@@ -28,4 +28,9 @@ public class MeetingService
     {
         return _meetingRepository.RegisterPersonalSchedule(personalSchedules);
     }
+
+    public PersonalScheduleList GetPersonalSchedule(int userId, int teamId)
+    {
+        return _meetingRepository.getPersonalSchedule(userId, teamId);
+    }
 }
