@@ -12,13 +12,13 @@
     <Grid>
         <DockPanel>
             <!-- SideBar -->
-            <local:SideBar x:Name="SideBarControl" 
-                          DockPanel.Dock="Left"/>
-            
+            <local:SideBar x:Name="SideBarControl"
+                           DockPanel.Dock="Left" />
+
             <!-- MenuBar -->
-            <local:MenuBar x:Name="MenuBarControl" 
-                          DockPanel.Dock="Top"/>
-            
+            <local:MenuBar x:Name="MenuBarControl"
+                           DockPanel.Dock="Top" />
+
             <!-- Main Content Area -->
             <Grid x:Name="MainContentArea">
                 <!-- Home View -->
@@ -85,18 +85,17 @@
                 <!--         </StackPanel> -->
                 <!--     </Border> -->
                 <!-- </Grid> -->
-                
+
                 <!-- Calendar View -->
-                <calendar:TeamCalendar x:Name="CalendarView" 
-                                     Visibility="Collapsed"
-                                     />
-                
+                <calendar:TeamCalendar x:Name="CalendarView"
+                                       Visibility="Collapsed" />
+
                 <!-- File View -->
-                <file:FileManagerWindow x:Name="FileView" 
-                                       Visibility="Collapsed"/>
-                
+                <file:FileManagerWindow x:Name="FileView"
+                                        Visibility="Collapsed" />
+
                 <!-- Memo View -->
-                <memo:TeamMemo x:Name="MemoView" Visibility="Collapsed"/>
+                <memo:TeamMemo x:Name="MemoView" Visibility="Collapsed" />
                 <!-- <Grid x:Name="MemoView" Visibility="Collapsed"> -->
                 <!--     <TextBlock Text="메모 기능은 준비 중입니다" -->
                 <!--              HorizontalAlignment="Center" -->

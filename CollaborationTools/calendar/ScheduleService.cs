@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Documents;
 using CollaborationTools.authentication;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
@@ -14,42 +13,41 @@ public static class ScheduleService
         var calendarService = GoogleAuthentication.CalendarService;
 
         // 이벤트 요청 설정
-        EventsResource.ListRequest request = calendarService.Events.List(calendarId);
+        var request = calendarService.Events.List(calendarId);
         request.TimeMinDateTimeOffset = DateTime.Now;
         request.TimeMaxDateTimeOffset = DateTime.Now.AddYears(1);
         request.ShowDeleted = false;
         request.SingleEvents = true;
         request.MaxResults = 20;
         request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
-        
+
         // 비동기로 이벤트 실행
-        Events events = await request.ExecuteAsync();
+        var events = await request.ExecuteAsync();
 
         return GetScheduleItems(events, calendarId);
     }
 
     // 캘린더로 선택한 날짜의 일정 불러오기
-    public static async Task<ObservableCollection<ScheduleItem>> GetOneDayScheduleItems(string calendarId, DateTime selectedDate)
+    public static async Task<ObservableCollection<ScheduleItem>> GetOneDayScheduleItems(string calendarId,
+        DateTime selectedDate)
     {
         var calendarService = GoogleAuthentication.CalendarService;
-        
-        if (calendarService == null)
-        {
-            throw new InvalidOperationException("먼저 Google에 로그인하세요.");
-        }
-    
+
+        if (calendarService == null) throw new InvalidOperationException("먼저 Google에 로그인하세요.");
+
         // 이벤트 요청 설정
-        EventsResource.ListRequest request = calendarService.Events.List(calendarId);
+        var request = calendarService.Events.List(calendarId);
         request.TimeMinDateTimeOffset = selectedDate;
-        request.TimeMaxDateTimeOffset = selectedDate.AddDays(1);;
+        request.TimeMaxDateTimeOffset = selectedDate.AddDays(1);
+        ;
         request.ShowDeleted = false;
         request.SingleEvents = true;
         request.MaxResults = 20;
         request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
-        
+
         // 비동기로 이벤트 실행
-        Events events = await request.ExecuteAsync();
-        
+        var events = await request.ExecuteAsync();
+
         return GetScheduleItems(events, calendarId);
     }
 
@@ -63,10 +61,10 @@ public static class ScheduleService
 
         foreach (var eventItem in events.Items)
         {
-            var (startDateTime, isAllDayEvent) = ParseEventDateTime(eventItem.Start, isEnd: false);
-            var (endDateTime, _) = ParseEventDateTime(eventItem.End, isEnd: true);
+            var (startDateTime, isAllDayEvent) = ParseEventDateTime(eventItem.Start, false);
+            var (endDateTime, _) = ParseEventDateTime(eventItem.End, true);
 
-            bool isOneDayEvent = startDateTime.Date == endDateTime.Date;
+            var isOneDayEvent = startDateTime.Date == endDateTime.Date;
 
             var schedule = new ScheduleItem
             {
@@ -78,13 +76,14 @@ public static class ScheduleService
                 IsOneDayEvent = isOneDayEvent,
                 Location = eventItem.Location,
                 Description = eventItem.Description,
-                CalendarId = calendarId,
+                CalendarId = calendarId
             };
             schedules.Add(schedule);
         }
+
         return schedules;
     }
-    
+
     // 종일 이벤트 고려하여 날짜 시간 포매팅하여 반환
     private static (DateTime dateTime, bool isAllDayEvent) ParseEventDateTime(EventDateTime eventDateTime, bool isEnd)
     {
@@ -92,10 +91,9 @@ public static class ScheduleService
         if (string.IsNullOrEmpty(eventDateTime.DateTimeRaw))
         {
             var date = DateTime.Parse(eventDateTime.Date).Date;
-            
-            if (isEnd) 
-            { date = date.AddDays(-1);}
-            
+
+            if (isEnd) date = date.AddDays(-1);
+
             return (date, true);
         }
 
@@ -108,8 +106,8 @@ public static class ScheduleService
     public static async Task UpdateSchedule(Event eventItem, string calendarId)
     {
         var calendarService = GoogleAuthentication.CalendarService;
-        
-        EventsResource.UpdateRequest request = new EventsResource.UpdateRequest(calendarService, eventItem, calendarId, eventItem.Id);
+
+        var request = new EventsResource.UpdateRequest(calendarService, eventItem, calendarId, eventItem.Id);
 
         try
         {
@@ -117,20 +115,19 @@ public static class ScheduleService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message); 
+            Console.WriteLine(ex.Message);
         }
-        
     }
 
     // 일정 등록 요청
     public static async Task RegisterSchedule(ScheduleItem scheduleItem)
     {
         var calendarService = GoogleAuthentication.CalendarService;
-        
+
         var request = calendarService.Events.Insert(scheduleItem.Event, scheduleItem.CalendarId);
         _ = await request.ExecuteAsync();
     }
-    
+
     // 일정 삭제 요청
     public static async Task DeleteSchedule(ScheduleItem scheduleItem)
     {
@@ -139,5 +136,4 @@ public static class ScheduleService
         var request = calendarService.Events.Delete(scheduleItem.CalendarId, scheduleItem.Event.Id);
         _ = await request.ExecuteAsync();
     }
-
 }

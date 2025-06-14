@@ -8,11 +8,10 @@ public partial class MeetingArrangeWindow : Window
     private Meeting _meetingPlan;
     public EventHandler<Meeting> MeetingCreated;
     
-    
     public MeetingArrangeWindow(int teamId)
     {
         InitializeComponent();
-        _meetingPlan = new()
+        _meetingPlan = new Meeting
         {
             Status = 0, 
             TeamId = teamId,
@@ -37,15 +36,11 @@ public partial class MeetingArrangeWindow : Window
     
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
-        
-        this.Close();
+        Close();
     }
     
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.ChangedButton == MouseButton.Left)
-        {
-            this.DragMove();
-        }
+        if (e.ChangedButton == MouseButton.Left) DragMove();
     }
 }

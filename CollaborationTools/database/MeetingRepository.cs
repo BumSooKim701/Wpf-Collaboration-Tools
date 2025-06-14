@@ -7,7 +7,7 @@ public class MeetingRepository
 {
     private readonly ConnectionPool _connectionPool;
 
-    
+
     public MeetingRepository()
     {
         _connectionPool = ConnectionPool.GetInstance();
@@ -19,7 +19,7 @@ public class MeetingRepository
         MySqlConnection connection = null;
         var hasData = false;
         var meetingPlan = new Meeting();
-        
+
         try
         {
             connection = _connectionPool.GetConnection();
@@ -52,7 +52,7 @@ public class MeetingRepository
         }
 
         if (!hasData) return null;
-        
+
         return meetingPlan;
     }
 
@@ -60,7 +60,7 @@ public class MeetingRepository
     {
         MySqlConnection connection = null;
         var result = false;
-        
+
         try
         {
             connection = _connectionPool.GetConnection();

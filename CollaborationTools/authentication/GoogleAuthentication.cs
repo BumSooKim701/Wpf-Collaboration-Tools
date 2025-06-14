@@ -51,7 +51,7 @@ public class GoogleAuthentication
                 HttpClientInitializer = _credential,
                 ApplicationName = ApplicationName
             });
-            
+
             // Drive 서비스 초기화
             DriveService = new DriveService(new BaseClientService.Initializer
             {

@@ -17,7 +17,7 @@
                     </StackPanel>
                 </DataTemplate>
             </TabControl.ItemTemplate>
-            
+
             <TabControl.ContentTemplate>
                 <DataTemplate>
                     <StackPanel Margin="10">

@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Input;
 using CollaborationTools.Common;
 using CollaborationTools.user;
-using CollaborationTools.file;
 
 namespace CollaborationTools.team;
 
@@ -17,7 +16,6 @@ public partial class TeamCreateWindow : Window, INotifyPropertyChanged
     private string _teamDescription;
     private ObservableCollection<string> _teamMembers;
     private string _teamName;
-    private string _uuid;
 
     public TeamCreateWindow()
     {
@@ -75,15 +73,8 @@ public partial class TeamCreateWindow : Window, INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    
-    public string Uuid
-    {
-        get => _uuid;
-        set
-        {
-            _uuid = value;
-        }
-    }
+
+    public string Uuid { get; set; }
 
     public ICommand AddMemberCommand { get; }
     public ICommand RemoveMemberCommand { get; }

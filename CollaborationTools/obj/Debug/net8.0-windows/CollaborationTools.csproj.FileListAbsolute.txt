@@ -353,3 +353,9 @@ C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\bin\D
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\bin\Debug\net8.0-windows\bin\Debug\net8.0-windows\credential\client_secret.json
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\meeting_schedule\MeetingArrangeWindow.g.cs
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\meeting_schedule\MeetingArrangeWindow.baml
+C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\meeting_schedule\MeetingArrangeWindow.g.cs
+C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\meeting_schedule\MeetingArrangeWindow.baml
+C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddAddressWindow.baml
+C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddressBookWindow.baml
+C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddAddressWindow.g.cs
+C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddressBookWindow.g.cs

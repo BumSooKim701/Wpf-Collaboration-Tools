@@ -1,20 +1,20 @@
 ﻿using System.Windows;
 using CollaborationTools.authentication;
-using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
 
 namespace CollaborationTools.calendar;
 
 public class CalendarService
 {
-    public async Task<Calendar> CreateCalendarAsync(string calendarName, string description, string timeZone = "Asia/Seoul")
+    public async Task<Calendar> CreateCalendarAsync(string calendarName, string description,
+        string timeZone = "Asia/Seoul")
     {
         var calendarService = GoogleAuthentication.CalendarService;
 
         try
         {
             // 새 캘린더 객체 생성
-            Calendar calendar = new Calendar
+            var calendar = new Calendar
             {
                 Summary = calendarName,
                 Description = description,
@@ -22,7 +22,7 @@ public class CalendarService
             };
 
             // 캘린더 생성 API 호출
-            Calendar createdCalendar = await calendarService.Calendars.Insert(calendar).ExecuteAsync();
+            var createdCalendar = await calendarService.Calendars.Insert(calendar).ExecuteAsync();
             return createdCalendar;
         }
         catch (Exception ex)
@@ -31,7 +31,7 @@ public class CalendarService
             return null;
         }
     }
-    
+
     public async Task<List<CalendarListEntry>> GetCalendarListAsync()
     {
         var calendarService = GoogleAuthentication.CalendarService;
@@ -39,8 +39,10 @@ public class CalendarService
         try
         {
             // 캘린더 목록 요청
-            CalendarList calendarList = await calendarService.CalendarList.List().ExecuteAsync();
-            return calendarList.Items != null ? new List<CalendarListEntry>(calendarList.Items) : new List<CalendarListEntry>();
+            var calendarList = await calendarService.CalendarList.List().ExecuteAsync();
+            return calendarList.Items != null
+                ? new List<CalendarListEntry>(calendarList.Items)
+                : new List<CalendarListEntry>();
         }
         catch (Exception ex)
         {
@@ -48,7 +50,7 @@ public class CalendarService
             return new List<CalendarListEntry>();
         }
     }
-    
+
     public async Task<bool> DeleteCalendarAsync(string calendarId)
     {
         var calendarService = GoogleAuthentication.CalendarService;
@@ -65,24 +67,24 @@ public class CalendarService
             return false;
         }
     }
-    
+
     // 캘린더에 멤버 추가
     public async Task<bool> AddCalendarMemberAsync(string calendarId, string email, string role = "writer")
     {
         try
         {
             var calendarService = GoogleAuthentication.CalendarService;
-        
-            var rule = new AclRule()
+
+            var rule = new AclRule
             {
-                Scope = new AclRule.ScopeData()
+                Scope = new AclRule.ScopeData
                 {
                     Type = "user",
                     Value = email
                 },
                 Role = role // "reader", "writer", "owner"
             };
-        
+
             await calendarService.Acl.Insert(rule, calendarId).ExecuteAsync();
             return true;
         }

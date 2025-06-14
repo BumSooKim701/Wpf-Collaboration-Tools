@@ -7,12 +7,12 @@ namespace CollaborationTools;
 
 public class TabItem : INotifyPropertyChanged
 {
+    private Team? _curTeam;
     private string? _header;
     private string _iconKind;
+    private ObservableCollection<MenuItem> _menuItems;
     private string? _title;
     private string? _type;
-    private Team? _curTeam;
-    private ObservableCollection<MenuItem> _menuItems;
 
     public string? Header
     {

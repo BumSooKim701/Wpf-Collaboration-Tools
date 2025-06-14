@@ -1,15 +1,10 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using MaterialDesignThemes.Wpf;
 
 namespace CollaborationTools;
 
 public partial class MenuBar : UserControl
 {
-    private List<MenuItem> MenuList { get; set; }
-    
-    public event System.EventHandler<MainPage.MenuChangedEventArgs> MenuChanged;
-
     public MenuBar()
     {
         InitializeComponent();
@@ -49,14 +44,16 @@ public partial class MenuBar : UserControl
         NavigationBar.ItemsSource = MenuList;
     }
 
+    private List<MenuItem> MenuList { get; }
+
+    public event EventHandler<MainPage.MenuChangedEventArgs> MenuChanged;
+
     private void OnMenuChanged(object sender, SelectionChangedEventArgs e)
     {
         var menuBarListBox = sender as ListBox;
         var selectedMenu = menuBarListBox.SelectedItem;
 
         if (selectedMenu is MenuItem menuItem)
-        {
             MenuChanged?.Invoke(this, new MainPage.MenuChangedEventArgs(menuItem.MenuType));
-        }
     }
 }

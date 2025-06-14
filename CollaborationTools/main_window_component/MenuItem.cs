@@ -18,5 +18,5 @@ public enum MenuType
     File,
     Memo,
     Personal,
-    Team,
+    Team
 }

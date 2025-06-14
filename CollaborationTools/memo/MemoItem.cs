@@ -5,16 +5,11 @@ namespace CollaborationTools.memo;
 
 public class MemoItem : INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-    
-    private string _title;
     private string _content;
-    private DateTime _lastModifiedDate;
-    private int _editorUserId;
     private string _lastEditorName;
-    private int _memoId;
-    private int _teamId;
-    private bool _isDirty = false; // 변경 추적 플래그
+    private DateTime _lastModifiedDate;
+
+    private string _title;
 
     public MemoItem()
     {
@@ -29,7 +24,7 @@ public class MemoItem : INotifyPropertyChanged
             if (_title != value)
             {
                 _title = value;
-                _isDirty = true;
+                IsDirty = true;
                 OnPropertyChanged();
             }
         }
@@ -43,12 +38,12 @@ public class MemoItem : INotifyPropertyChanged
             if (_content != value)
             {
                 _content = value;
-                _isDirty = true;
+                IsDirty = true;
                 OnPropertyChanged();
             }
         }
     }
-    
+
 
     public DateTime LastModifiedDate
     {
@@ -63,11 +58,7 @@ public class MemoItem : INotifyPropertyChanged
         }
     }
 
-    public int EditorUserId
-    {
-        get => _editorUserId;
-        set => _editorUserId = value;
-    }
+    public int EditorUserId { get; set; }
 
     public string LastEditorName
     {
@@ -82,26 +73,17 @@ public class MemoItem : INotifyPropertyChanged
         }
     }
 
-    public int MemoId
-    {
-        get => _memoId;
-        set => _memoId = value;
-    }
-    
-    public int TeamId
-    {
-        get => _teamId;
-        set => _teamId = value;
-    }
+    public int MemoId { get; set; }
 
-    public bool IsDirty
-    {
-        get => _isDirty;
-    }
+    public int TeamId { get; set; }
+
+    public bool IsDirty { get; private set; }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public void ResetDirtyFlag()
     {
-        _isDirty = false;
+        IsDirty = false;
     }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
