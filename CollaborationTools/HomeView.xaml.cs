@@ -76,6 +76,7 @@ public partial class HomeView : UserControl
             _viewModel.Meeting.ToDo = meetingPlan.ToDo;
             _viewModel.Meeting.Status = meetingPlan.Status;
             _viewModel.Meeting.TeamId = meetingPlan.TeamId;
+            _viewModel.Meeting.MeetingId = meetingPlan.MeetingId;
             _viewModel.ViewType = MeetingViewType.Arranging;
             SwitchMeetingView();
         };

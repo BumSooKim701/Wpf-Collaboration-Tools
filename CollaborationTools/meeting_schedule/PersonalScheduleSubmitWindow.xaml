@@ -62,12 +62,12 @@
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,5" >
-                                                        <materialDesign:TimePicker x:Name="StartTimePicker"
+                                                        <materialDesign:TimePicker
                                                             SelectedTime="{Binding StartTime}"
                                                             IsEnabled="{Binding IsEnabled}"
                                                             Width="80" />
                                                         <TextBlock Text="~" VerticalAlignment="Center" Margin="5,0" />
-                                                        <materialDesign:TimePicker x:Name="EndTimePicker"
+                                                        <materialDesign:TimePicker
                                                             SelectedTime="{Binding EndTime}"
                                                             IsEnabled="{Binding IsEnabled}"
                                                             Width="80" />

@@ -102,6 +102,10 @@ public class TimeRange : INotifyPropertyChanged
         {
             _startTime = value;
             OnPropertyChanged();
+            if (IsEnabled && EndTime < _startTime)
+            {
+                EndTime = _startTime;
+            }
         }
     }
 
@@ -112,6 +116,10 @@ public class TimeRange : INotifyPropertyChanged
         {
             _endTime = value;
             OnPropertyChanged();
+            if (IsEnabled && StartTime > _endTime)
+            {
+                StartTime = _endTime;
+            }
         }
     }
     public event PropertyChangedEventHandler? PropertyChanged;

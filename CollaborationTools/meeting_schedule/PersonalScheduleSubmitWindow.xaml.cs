@@ -57,23 +57,6 @@ public partial class PersonalScheduleSubmitWindow : Window
         if (isSucceed) 
             this.Close();
     }
-
-    
-    // 종료날짜를 시작날짜 이후로 선택 가능하도록 하는 함수
-    private void StartDatePickerChanged(object sender, SelectionChangedEventArgs e)
-    {
-        
-    }
-
-    private void StartTimePickerChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
-    {
-        
-    }
-    
-    private void EndTimePickerChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
-    {
-        
-    }
     
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)
     {
