@@ -46,9 +46,7 @@ namespace CollaborationTools.address
         {
             try
             {
-                // 실제 구현에서는 AddressBook 테이블에서 DELETE
-                // DELETE FROM addressbook WHERE userId = userId AND targetUserId = targetUserId
-                return true;
+                return _addressRepository.RemoveAddress(userId, targetUserId);;
             }
             catch (Exception ex)
             {
