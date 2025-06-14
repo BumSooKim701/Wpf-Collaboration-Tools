@@ -70,7 +70,8 @@ public class MeetingRepository
 
             using (var command = new MySqlCommand(
                        "INSERT INTO meeting_schedule (title, todo, status, team_id) " +
-                       "VALUES (@title, @todo, @status, @teamId);",
+                       "VALUES (@title, @todo, @status, @teamId);" +
+                       "SELECT ROW_COUNT() AS AffectedRows, LAST_INSERT_ID() AS NewId;",
                        connection))
             {
                 command.Parameters.AddWithValue("@title", meetingPlan.Title);
@@ -78,10 +79,49 @@ public class MeetingRepository
                 command.Parameters.AddWithValue("@status", meetingPlan.Status);
                 command.Parameters.AddWithValue("@teamId", meetingPlan.TeamId);
 
-                var executeResult = command.ExecuteNonQuery();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        var rowsAffected = Convert.ToInt32(reader["AffectedRows"]);
+                        var newId = Convert.ToInt32(reader["NewId"]);
 
-                if (executeResult > 0) result = true;
+                        if (rowsAffected > 0)
+                        {
+                            meetingPlan.MeetingId = newId;
+                            result = true;
+                            Debug.WriteLine("meeting_schedule 테이블에 삽입 성공");
+                        }
+                    }
+                }
             }
+
+            if (result)
+            {
+                result = false;
+                
+                var queryBuilder = new StringBuilder(
+                    "INSERT INTO meeting_date (date, meeting_schedule_id) VALUES ");
+
+                foreach (var dateItem in meetingPlan.DateList)
+                {
+                    queryBuilder.Append($"('{dateItem.Date.ToString("yyyy-MM-dd")}', {meetingPlan.MeetingId}),");
+                }
+                queryBuilder.Remove(queryBuilder.Length - 1, 1);
+
+                Debug.WriteLine(queryBuilder.ToString());
+                using (var command = new MySqlCommand(queryBuilder.ToString(), connection))
+                {
+                    var executeResult = command.ExecuteNonQuery();
+
+                    if (executeResult == meetingPlan.DateList.Count)
+                    {
+                        result = true;
+                        Debug.WriteLine("meeting_date 테이블에 삽입 성공");
+                    }    
+                }
+            }
+            
         }
         catch (Exception e)
         {

@@ -32,6 +32,7 @@
                     <TextBlock Grid.Column="0" Text="예정된 미팅이 없습니다." VerticalAlignment="Center"
                                FontSize="15" />
                     <Button Grid.Column="1" HorizontalAlignment="Center"
+                            x:Name="RegisterMeetingButton"
                             Content="+미팅 일정잡기"
                             Click="MeetingArrange_ButtonClicked"
                             Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
@@ -57,11 +58,16 @@
                         <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Top"
                                    Text="{Binding Meeting.ToDo}" TextWrapping="Wrap" FontSize="13" />
                         
-                        <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
-                                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,30,0"
-                                Content="+희망 날짜 제출"
-                                Click="PersonalSubmit_ButtonClicked"
-                                Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
+                        <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
+                                    HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,30,0">
+                            <Button Content="+희망 날짜 제출" Margin="0,5"
+                                    Click="PersonalSubmit_ButtonClicked"
+                                    Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
+                            <Button Content="미팅 가능시간" Margin="0,5"
+                                    Click="CheckAvailable_ButtonClicked"
+                                    Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
+                        </StackPanel>
+                        
                     </Grid>
                 </DockPanel>
 

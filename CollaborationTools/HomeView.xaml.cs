@@ -95,4 +95,9 @@ public partial class HomeView : UserControl
         
         ShowDialog(submitWindow);
     }
+
+    private void CheckAvailable_ButtonClicked(object sender, RoutedEventArgs e)
+    {
+        
+    }
 }

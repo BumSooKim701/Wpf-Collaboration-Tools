@@ -54,17 +54,25 @@ public class ScheduleRowViewModel : INotifyPropertyChanged
         
     public ObservableCollection<TimeRange> TimeRanges { get; } = new ObservableCollection<TimeRange>();
     public ICommand AddTimeRangeCommand { get; }
+    public ICommand RemoveTimeRangeCommand { get; }
 
     public ScheduleRowViewModel()
     {
         AddTimeRangeCommand = new RelayCommand(AddTimeRange);
+        RemoveTimeRangeCommand = new RelayCommand(RemoveTimeRange);
         TimeRanges.Add(new TimeRange());
         Date = DateTime.Now;
         IsAllDay = false;
     }
 
     private void AddTimeRange(object obj) => TimeRanges.Add(new TimeRange());
-    
+
+    private void RemoveTimeRange(object obj)
+    {
+        if (TimeRanges.Count > 1)
+            TimeRanges.RemoveAt(TimeRanges.Count - 1);
+    }
+
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
