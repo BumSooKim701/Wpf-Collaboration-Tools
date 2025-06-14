@@ -182,6 +182,50 @@ public class TeamRepository
 
         return team;
     }
+    
+    public Team? FindTeamByCalId(string id)
+    {
+        Team? team = null;
+        MySqlConnection connection = null;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+
+            using (var command = new MySqlCommand("SELECT * FROM team WHERE team_calendar_id = @id", connection))
+            {
+                command.Parameters.AddWithValue("@id", id);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                        team = new Team
+                        {
+                            teamId = reader.GetInt32("id"),
+                            uuid = reader.GetString("uuid"),
+                            teamName = reader.GetString("team_name"),
+                            teamMemberCount = reader.GetInt32("team_member_count"),
+                            dateOfCreated = reader.GetDateTime("date_of_created"),
+                            teamCalendarName = reader.GetString("team_calendar_name"),
+                            teamCalendarId = reader.GetString("team_calendar_id"),
+                            teamDescription = reader.GetString("team_description"),
+                            teamFolderId = reader.GetString("shared_drive_id")
+                        };
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"find team by id error: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return team;
+    }
+
 
     public List<Team?> FindTeamsByUser(User user)
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CollaborationTools.authentication;
+using CollaborationTools.timeline;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
 
@@ -135,5 +136,35 @@ public static class ScheduleService
 
         var request = calendarService.Events.Delete(scheduleItem.CalendarId, scheduleItem.Event.Id);
         _ = await request.ExecuteAsync();
+    }
+    
+    public static async Task LoadScheduleItems(ObservableCollection<TimelineItem> timelineItems, 
+        string teamCalendarId, DateTime startDate, DateTime endDate)
+    {
+        try
+        {
+            var schedules = await ScheduleService.GetScheduleItems(teamCalendarId);
+        
+            foreach (var schedule in schedules.Where(s => 
+                         s.StartDateTime >= startDate && s.StartDateTime <= endDate))
+            {
+                timelineItems.Add(new TimelineItem
+                {
+                    DateTime = schedule.StartDateTime,
+                    Title = schedule.Title,
+                    Description = !string.IsNullOrEmpty(schedule.Description) 
+                        ? schedule.Description 
+                        : schedule.Location ?? "일정",
+                    ItemType = TimelineItemType.Schedule,
+                    TeamId = teamCalendarId,
+                    OriginalItem = schedule,
+                    CreatedBy = "팀원"
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"일정 로드 오류: {ex.Message}");
+        }
     }
 }

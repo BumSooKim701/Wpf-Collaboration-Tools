@@ -47,7 +47,12 @@ public class TeamService
     {
         return _teamRepository.FindPrimaryTeam(user.TeamId);
     }
-
+    
+    public Team? FindTeamByCalId(string folderId)
+    {
+        return _teamRepository.FindTeamByCalId(folderId);
+    }
+    
     public Team? FindTeamByUuid(string uuid)
     {
         return _teamRepository.FindTeamByUuid(uuid);

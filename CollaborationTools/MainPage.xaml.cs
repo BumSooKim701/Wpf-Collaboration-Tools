@@ -101,6 +101,9 @@ public partial class MainPage : Page
         // {
         //     HomeFileView.CurrentTeam = currentTeam;
         // }
+        
+        if (HomeView?.FindName("HomeTimeline") is timeline.TimeLine timelineView)
+            timelineView.CurrentTeam = currentTeam;
         if (HomeView != null) HomeView.CurrentTeam = currentTeam;
         if (CalendarView != null) CalendarView.CurrentTeam = currentTeam;
 
@@ -125,6 +128,9 @@ public partial class MainPage : Page
         // {
         //     HomeFileView.CurrentUser = currentUser;
         // }
+        
+        if (HomeView?.FindName("HomeTimeline") is timeline.TimeLine timelineView)
+            timelineView.CurrentTeam = null;
 
         if (CalendarView != null) CalendarView.CurrentTeam = null;
 

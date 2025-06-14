@@ -133,13 +133,13 @@ public partial class TeamMemo : UserControl
         {
             var newItems = _memoService.GetMemoItems(UserSession.CurrentUser.TeamId);
             _memoItems.Clear();
-            foreach (var item in newItems) _memoItems.Add(item);
+            foreach (var item in newItems.Result) _memoItems.Add(item);
         }
         else
         {
             var newItems = _memoService.GetMemoItems(CurrentTeam.teamId);
             _memoItems.Clear();
-            foreach (var item in newItems) _memoItems.Add(item);
+            foreach (var item in newItems.Result) _memoItems.Add(item);
         }
     }
 }

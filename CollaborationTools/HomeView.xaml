@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:timeline="clr-namespace:CollaborationTools.timeline"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="700">
     <DockPanel>
@@ -92,7 +93,22 @@
                 </Grid>
             </Grid>
         </Border>
-
-
+        
+        <!-- 타임라인 섹션 -->
+        <Border Grid.Row="1" Background="White" Margin="10" Padding="10"
+                CornerRadius="8" BorderBrush="#E0E0E0" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                    
+                <TextBlock Grid.Row="0" Text="팀 타임라인" FontSize="16"
+                           FontWeight="Bold" Margin="0,0,0,10"/>
+                    
+                <timeline:TimeLine x:Name="HomeTimeline" Grid.Row="1"
+                                   Height="300"/>
+            </Grid>
+        </Border>
     </DockPanel>
 </UserControl>
