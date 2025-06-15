@@ -8,47 +8,48 @@
       Title="Login" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
 
-        <!-- 로고 및 타이틀 -->
-        <StackPanel Grid.Row="0"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
-            <TextBlock Text="로그인"
-                       FontSize="32"
-                       FontWeight="Bold"
-                       Margin="0,20,0,0" />
-        </StackPanel>
-
-        <!-- 로그인 폼 -->
-        <StackPanel Grid.Row="1"
-                    Margin="40,0">
-
-            <Button
-                x:Name="LoginButton"
-                Click="LoginButton_Click"
-                Width="300"
-                Height="56"
-                Margin="0,40,0,80"
-                materialDesign:ButtonAssist.CornerRadius="16"
-                Background="{DynamicResource MaterialDesign.Brush.Secondary}"
-                BorderThickness="0"
-                Foreground="{DynamicResource PrimaryHueMidBrushForeground}">
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon
-                        Width="24"
-                        Height="24"
-                        Kind="Google" />
-                    <TextBlock Text="Google 계정으로 로그인" FontSize="20" Margin="10,0" />
-                </StackPanel>
-            </Button>
-        </StackPanel>
+        
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="통합 관리 협업툴"
+                   FontSize="38"
+                   FontWeight="Medium"
+                   VerticalAlignment="Center"/>
+        
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="로그인"
+                   FontSize="32" FontWeight="Bold" Margin="0,0,0,20"
+                   VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+        
+        <Button Grid.Row="2" Grid.Column="1"
+            x:Name="LoginButton"
+            Click="LoginButton_Click"
+            Width="300" Height="56" Margin="0,20,0,0"
+            VerticalAlignment="Top" HorizontalAlignment="Center"
+            materialDesign:ButtonAssist.CornerRadius="16"
+            Background="{DynamicResource MaterialDesign.Brush.Secondary}"
+            BorderThickness="0"
+            Foreground="{DynamicResource PrimaryHueLightBrushForeground}">
+            
+            <StackPanel Orientation="Horizontal">
+                <materialDesign:PackIcon
+                    Width="24"
+                    Height="24"
+                    Kind="Google" />
+                
+                <TextBlock Text="Google 계정으로 로그인" FontSize="20" Margin="10,0" />
+            </StackPanel>
+        </Button>
 
         <!-- 하단 상태바 -->
-        <StatusBar Grid.Row="2">
+        <StatusBar Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
             <StatusBarItem>
                 <TextBlock x:Name="txtStatus" />
             </StatusBarItem>

@@ -59,7 +59,7 @@ public class HomeViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private void UpdateMeeting()
+    public void UpdateMeeting()
     {
         if (CurrentTeam != null)
         {
@@ -68,7 +68,7 @@ public class HomeViewModel : INotifyPropertyChanged
 
             if (meetingPlan == null)
             {
-                _viewType = MeetingViewType.NoPlan;
+                ViewType = MeetingViewType.NoPlan;
             }
             else
             {
@@ -79,8 +79,8 @@ public class HomeViewModel : INotifyPropertyChanged
                 Meeting.TeamId = meetingPlan.TeamId;
 
                 if (Meeting.Status == 0)
-                    _viewType = MeetingViewType.Arranging;
-                else if (Meeting.Status == 1) _viewType = MeetingViewType.Scheduled;
+                    ViewType = MeetingViewType.Arranging;
+                else if (Meeting.Status == 1) ViewType = MeetingViewType.Scheduled;
             }
         }
     }

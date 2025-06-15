@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:timeline="clr-namespace:CollaborationTools.timeline"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="700">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -25,7 +26,19 @@
                                    Text="조율 중인 일정"
                                    FontSize="20" FontWeight="Bold" Margin="0,5" />
                         <Button DockPanel.Dock="Right" x:Name="MeetingDeleteButton" Visibility="Collapsed"
-                                Click="MeetingDelete_ButtonClicked" Content="삭제" />
+                                Style="{StaticResource MaterialDesignIconButton}"
+                                Click="MeetingDelete_ButtonClicked"
+                                ToolTip="미팅 조율 삭제">
+                            <materialDesign:PackIcon Kind="Delete" Foreground="{DynamicResource MaterialDesignShadowBrush}"
+                                                     Width="25" Height="25" />
+                        </Button>
+                        <Button DockPanel.Dock="Right" x:Name="MeetingRefreshButton" Visibility="Visible"
+                                Style="{StaticResource MaterialDesignIconButton}"
+                                Click="MeetingRefresh_ButtonClicked"
+                                ToolTip="미팅 새로고침">
+                            <materialDesign:PackIcon Kind="Refresh" Foreground="{DynamicResource MaterialDesignShadowBrush}"
+                                                     Width="25" Height="25" />
+                        </Button>
                     </DockPanel>
 
 
