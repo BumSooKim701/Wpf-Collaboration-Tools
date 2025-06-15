@@ -6,7 +6,7 @@ namespace CollaborationTools;
 
 public partial class MainPage : Page
 {
-    private Team currentTeam;
+    private Team? currentTeam;
 
     public MainPage()
     {

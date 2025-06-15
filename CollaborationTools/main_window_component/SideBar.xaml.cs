@@ -8,6 +8,7 @@ using CollaborationTools.address;
 using CollaborationTools.calendar;
 using CollaborationTools.Common;
 using CollaborationTools.file;
+using CollaborationTools.profile;
 using CollaborationTools.team;
 using CollaborationTools.user;
 using MaterialDesignThemes.Wpf;
@@ -247,6 +248,9 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
                 case "AddressBook":
                     OpenAddressBookWindow();
                     break;
+                case "Profile":
+                    OpenProfileWindow();
+                    break;
             }
     }
 
@@ -354,6 +358,15 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
         addressBookWindow.Owner = Application.Current.MainWindow;
         addressBookWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         addressBookWindow.Show();
+    }
+
+    public void OpenProfileWindow()
+    {
+        var profileWindow = new UserProfile();
+        
+        profileWindow.Owner = Application.Current.MainWindow;
+        profileWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        profileWindow.Show();
     }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

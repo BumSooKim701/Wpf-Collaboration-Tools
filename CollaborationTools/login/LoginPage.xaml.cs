@@ -24,7 +24,6 @@ public partial class LoginPage : Page
         try
         {
             LoginButton.IsEnabled = false;
-            Debug.WriteLine("Google 로그인 중...");
 
             // OAuth 인증 및 사용자 정보 수집
             var googleUser = await _googleAuthentication.AuthenticateGoogleAsync();
@@ -33,7 +32,6 @@ public partial class LoginPage : Page
 
             if (dbUser == null)
             {
-                Console.WriteLine("Register User");
                 var result = _userRepository.AddUser(googleUser);
 
                 if (!result)
@@ -72,7 +70,7 @@ public partial class LoginPage : Page
             else
             {
                 Console.WriteLine("Login Success");
-                Console.WriteLine("email: " + googleUser.Email + ". name: " + googleUser.Name);
+                Console.WriteLine("email: " + googleUser.Email);
 
                 NavigatePage(dbUser);
             }
@@ -92,9 +90,22 @@ public partial class LoginPage : Page
     private void NavigatePage(User user)
     {
         UserSession.Login(user);
-        Console.WriteLine($"Login User is {user.TeamId}");
-
+        
         Page mainPage = new MainPage();
         NavigationService.Navigate(mainPage);
+    }
+    
+    public void Show()
+    {
+        var loginWindow = new Window
+        {
+            Title = "로그인",
+            Width = 800,
+            Height = 450,
+            WindowStartupLocation = WindowStartupLocation.CenterScreen,
+            Content = this
+        };
+        
+        loginWindow.Show();
     }
 }
