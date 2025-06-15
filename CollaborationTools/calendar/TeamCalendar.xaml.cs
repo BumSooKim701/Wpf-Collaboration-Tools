@@ -192,4 +192,9 @@ public partial class TeamCalendar : UserControl
             CardListViewCalendar.ItemsSource = null;
         }
     }
+
+    private async void RefreshButton_Clicked(object sender, RoutedEventArgs e)
+    {
+        await LoadScheduleItems();
+    }
 }

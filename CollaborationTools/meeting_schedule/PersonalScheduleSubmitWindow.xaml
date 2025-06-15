@@ -52,8 +52,8 @@
                                             <ColumnDefinition Width="50" />
                                         </Grid.ColumnDefinitions>
 
-                                        <DatePicker Grid.Column="0" SelectedDate="{Binding Date}" Width="90"
-                                                     VerticalAlignment="Top" HorizontalAlignment="Center" />
+                                        <DatePicker Grid.Column="0" SelectedDate="{Binding Date}" IsEnabled="False" 
+                                                    Width="90" VerticalAlignment="Top" HorizontalAlignment="Center" />
                                         <CheckBox Grid.Column="1" IsChecked="{Binding IsAllDay}" 
                                                   VerticalAlignment="Top" HorizontalAlignment="Center" />
 

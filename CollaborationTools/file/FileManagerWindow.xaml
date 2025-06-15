@@ -54,8 +54,8 @@
                     <!-- Expand Arrow -->
                     <materialDesign:PackIcon Grid.Column="2"
                                              Kind="{Binding ExpandIcon}"
-                                             Width="16" Height="16"
-                                             Foreground="{DynamicResource MaterialDesign.Brush.Foreground}"
+                                             Width="20" Height="20"
+                                             Foreground="{DynamicResource MaterialDesignShadowBrush}"
                                              Opacity="0.6"
                                              VerticalAlignment="Center"
                                              Margin="5,0" />
@@ -67,8 +67,8 @@
                             CommandParameter="{Binding}"
                             ToolTip="파일 다운로드"
                             Margin="5,0">
-                        <materialDesign:PackIcon Kind="Download"
-                                                 Width="18" Height="18" />
+                        <materialDesign:PackIcon Kind="Download" Foreground="{DynamicResource MaterialDesignShadowBrush}"
+                                                 Width="20" Height="20" />
                     </Button>
 
                     <!-- Delete Button -->
@@ -80,7 +80,7 @@
                             Margin="5,0,15,0">
                         <materialDesign:PackIcon Kind="Delete"
                                                  Width="18" Height="18"
-                                                 Foreground="{DynamicResource MaterialDesign.Brush.Validation.Error}" />
+                                                 Foreground="{DynamicResource MaterialDesignShadowBrush}" />
                     </Button>
                 </Grid>
             </materialDesign:Card>
@@ -193,7 +193,7 @@
                         Click="RefreshFiles_Click"
                         ToolTip="파일 목록 새로고침">
                     <materialDesign:PackIcon Kind="Refresh"
-                                             Foreground="{DynamicResource MaterialDesign.Brush.Primary.Foreground}"
+                                             Foreground="{DynamicResource MaterialDesign.Brush.Secondary.Foreground}"
                                              Width="20" Height="20" />
                 </Button>
             </Grid>

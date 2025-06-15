@@ -124,7 +124,15 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="다가오는 일정" FontSize="25" FontWeight="Bold" Margin="10" />
+            <DockPanel Grid.Row="0" LastChildFill="False">
+                <TextBlock DockPanel.Dock="Left" Text="다가오는 일정" FontSize="25" FontWeight="Bold" Margin="10" />
+                <Button DockPanel.Dock="Right" Style="{StaticResource MaterialDesignIconButton}"
+                        Click="RefreshButton_Clicked" ToolTip="새로고침" Margin="0,0,50,0">
+                    <materialDesign:PackIcon Kind="Refresh" Foreground="{DynamicResource MaterialDesignShadowBrush}"
+                                             Width="25" Height="25" />
+                </Button>
+            </DockPanel>
+            
 
             <TextBlock Grid.Row="1" x:Name="NoScheduleMsg" Text="예정된 일정이 없습니다"
                        Style="{StaticResource NoScheduleMsgStyle}" />

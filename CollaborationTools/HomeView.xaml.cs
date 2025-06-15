@@ -52,7 +52,8 @@ public partial class HomeView : UserControl
                 NoPlanView.Visibility = Visibility.Visible;
                 ArrangingView.Visibility = Visibility.Collapsed;
                 ScheduledView.Visibility = Visibility.Collapsed;
-                MeetingDeleteButton.Visibility = Visibility.Collapsed;;
+                MeetingDeleteButton.Visibility = Visibility.Collapsed;
+                MeetingRefreshButton.Visibility = Visibility.Visible;
                 break;
             case MeetingViewType.Arranging:
                 MeetingView_TextBlock.Text = "조율 중인 일정";
@@ -60,6 +61,7 @@ public partial class HomeView : UserControl
                 ArrangingView.Visibility = Visibility.Visible;
                 ScheduledView.Visibility = Visibility.Collapsed;
                 MeetingDeleteButton.Visibility = Visibility.Visible;
+                MeetingRefreshButton.Visibility = Visibility.Collapsed;
                 LoadPersonalSchedule();
                 break;
             case MeetingViewType.Scheduled:
@@ -67,6 +69,8 @@ public partial class HomeView : UserControl
                 NoPlanView.Visibility = Visibility.Collapsed;
                 ArrangingView.Visibility = Visibility.Collapsed;
                 ScheduledView.Visibility = Visibility.Visible;
+                MeetingDeleteButton.Visibility = Visibility.Collapsed;
+                MeetingRefreshButton.Visibility = Visibility.Collapsed;
                 break;
         }
     }
@@ -160,5 +164,11 @@ public partial class HomeView : UserControl
             }
         }
         
+    }
+
+    private void MeetingRefresh_ButtonClicked(object sender, RoutedEventArgs e)
+    {
+        _viewModel.UpdateMeeting();
+        SwitchMeetingView();
     }
 }
