@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using CollaborationTools.team;
 
@@ -14,6 +15,7 @@ public partial class MainPage : Page
 
         // SideBar의 PropertyChanged 이벤트 구독
         SideBarControl.SideBarChanged += SideBarControl_Changed;
+        SideBarControl.LogoutRequested += LogoutRequested;
 
         // MenuBar의 SelectionChanged 이벤트 구독
         MenuBarControl.MenuChanged += MenuBarControl_MenuChanged;
@@ -35,6 +37,21 @@ public partial class MainPage : Page
             UpdateCurrentTeamInViews();
             UpdateTeamInfo();
         }
+    }
+
+    private void LogoutRequested(object sender, EventArgs e)
+    {
+        if (NavigationService.CanGoBack)
+        {
+            NavigationService.GoBack();
+            Debug.WriteLine("로그인 화면으로 go back");
+        }
+        else
+        {
+            Debug.WriteLine("이전 페이지로 갈 수 없습니다.");
+
+        }
+            
     }
 
     private void MenuBarControl_MenuChanged(object sender, MenuChangedEventArgs e)

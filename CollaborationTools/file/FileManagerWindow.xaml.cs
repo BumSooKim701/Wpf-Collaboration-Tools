@@ -45,7 +45,7 @@ public partial class FileManagerWindow : UserControl, INotifyPropertyChanged
         set => SetValue(CurrentTeamProperty, value);
     }
 
-    public string CurrentTeamName => CurrentTeam?.teamName ?? "팀을 선택하세요";
+    public string CurrentTeamName => CurrentTeam?.teamName ?? "개인 저장소";
 
     public ObservableCollection<FileItemViewModel> TeamFiles
     {
@@ -211,7 +211,7 @@ public partial class FileManagerWindow : UserControl, INotifyPropertyChanged
                 var fileName = Path.GetFileName(filePath);
 
                 // 기존 파일이 있는지 확인
-                var existingFileId = await fileService.FindExistingFileAsync(CurrentTeam.teamFolderId, fileName);
+                var existingFileId = await fileService.FindExistingFileAsync(CurrentTeam?.teamFolderId ?? "root" , fileName);
 
                 GoogleFile processedFile;
 
@@ -235,7 +235,7 @@ public partial class FileManagerWindow : UserControl, INotifyPropertyChanged
                 {
                     // 새 파일 업로드
                     StatusMessage = $"새 파일 업로드 중: {fileName}";
-                    processedFile = await fileService.UploadNewFileAsync(CurrentTeam.teamFolderId, filePath);
+                    processedFile = await fileService.UploadNewFileAsync(CurrentTeam?.teamFolderId ?? "root", filePath);
 
                     // UI에 새 파일 항목 추가
                     if (processedFile != null)

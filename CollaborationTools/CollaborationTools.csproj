@@ -40,6 +40,7 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         <Content Include="bin\Debug\net8.0-windows\credential\Google.Apis.Auth.OAuth2.Responses.TokenResponse-user"/>
+        <Content Include="bin\Debug\net8.0-windows\credential\token\Google.Apis.Auth.OAuth2.Responses.TokenResponse-user" />
         <Content Include="credential\client_secret.json"/>
     </ItemGroup>
 

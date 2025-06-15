@@ -17,6 +17,7 @@ namespace CollaborationTools;
 
 public partial class SideBar : UserControl, INotifyPropertyChanged
 {
+    public EventHandler? LogoutRequested;
     private readonly CalendarService _calendarService = new();
     private readonly FolderService _folderService = new();
     private readonly TeamService _teamService = new();
@@ -363,6 +364,11 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
     public void OpenProfileWindow()
     {
         var profileWindow = new UserProfile();
+
+        profileWindow.LogoutRequested += (s, e) =>
+        {
+            LogoutRequested?.Invoke(this, EventArgs.Empty);
+        };
         
         profileWindow.Owner = Application.Current.MainWindow;
         profileWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;

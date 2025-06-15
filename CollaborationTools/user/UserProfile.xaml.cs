@@ -1,8 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.IO;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using CollaborationTools.user;
 using CollaborationTools.team;
 using CollaborationTools.memo;
@@ -13,6 +17,7 @@ namespace CollaborationTools.profile
 {
     public partial class UserProfile : Window, INotifyPropertyChanged
     {
+        public EventHandler? LogoutRequested;
         private UserRepository userRepository = new();
         private TeamRepository teamRepository = new();
         private MemoService memoService = new();
@@ -322,23 +327,30 @@ namespace CollaborationTools.profile
             
             if (result == MessageBoxResult.Yes)
             {
-                currentUser = null;
+                var tokenPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "credential/token");
+                DeleteAllFilesInDirectory(tokenPath);
                 
                 // 로그아웃 처리
                 UserSession.Logout();
-                
-                // 로그인 창으로 이동
-                
-                var loginWindow = new LoginPage();
-                loginWindow.Show();
-                
-                // 현재 메인 창 닫기
-                var mainWindow = Application.Current.MainWindow;
-                if (mainWindow != null)
+                LogoutRequested?.Invoke(this, EventArgs.Empty);
+                Close();
+            }
+        }
+        
+        public static void DeleteAllFilesInDirectory(string directoryPath)
+        {
+            if (Directory.Exists(directoryPath))
+            {
+                string[] files = Directory.GetFiles(directoryPath);
+                foreach (string file in files)
                 {
-                    mainWindow.Close();
+                    File.Delete(file);
                 }
-                
+                Debug.WriteLine("디렉토리 내 모든 파일이 삭제되었습니다.");
+            }
+            else
+            {
+                Debug.WriteLine("해당 디렉토리가 존재하지 않습니다.");
             }
         }
 

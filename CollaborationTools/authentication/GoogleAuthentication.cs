@@ -35,7 +35,7 @@ public class GoogleAuthentication
             var credentialPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "credential/client_secret.json");
             using (var stream = new FileStream(credentialPath, FileMode.Open, FileAccess.Read))
             {
-                var tokenPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "credential/");
+                var tokenPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "credential/token/");
 
                 _credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,

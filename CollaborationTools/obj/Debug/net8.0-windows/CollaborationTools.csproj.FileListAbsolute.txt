@@ -381,3 +381,5 @@ C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\meeting_schedule\MeetingAvailableTimeWindow.baml
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\user\UserProfile.baml
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\user\UserProfile.g.cs
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\user\UserProfile.baml
+C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\user\UserProfile.g.cs
