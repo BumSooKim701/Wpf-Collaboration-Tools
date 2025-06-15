@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CollaborationTools.meeting_schedule;
 using CollaborationTools.team;
@@ -10,6 +11,7 @@ public class HomeViewModel : INotifyPropertyChanged
     private Team _currentTeam;
     private Meeting _meeting = new();
     private MeetingViewType _viewType = MeetingViewType.NoPlan;
+    private ObservableCollection<FormattedSchedule> _formatedSchedules = new();
     
     
     
@@ -40,6 +42,17 @@ public class HomeViewModel : INotifyPropertyChanged
         set
         {
             _viewType = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    
+    public ObservableCollection<FormattedSchedule> FormattedSchedules
+    {
+        get => _formatedSchedules;
+        set
+        {
+            _formatedSchedules = value;
             OnPropertyChanged();
         }
     }
@@ -84,4 +97,49 @@ public enum MeetingViewType
     NoPlan,
     Arranging,
     Scheduled
+}
+
+public class FormattedSchedule : INotifyPropertyChanged
+{
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private string _date;
+    private string _startTime;
+    private string _endTime;
+
+    public string Date
+    {
+        get => _date;
+        set
+        {
+            _date = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string StartTime
+    {
+        get => _startTime;
+        set
+        {
+            _startTime = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string EndTime
+    {
+        get => _endTime;
+        set
+        {
+            _endTime = value;
+            OnPropertyChanged();
+        }
+    }
+
+    
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
 }

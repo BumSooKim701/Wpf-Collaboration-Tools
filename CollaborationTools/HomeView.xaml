@@ -6,116 +6,151 @@
              xmlns:timeline="clr-namespace:CollaborationTools.timeline"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="700">
-    <DockPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
 
-        <Border DockPanel.Dock="Top" Margin="10" Padding="10" Height="Auto"
-                VerticalAlignment="Top"
-                CornerRadius="8"
-                BorderBrush="#E0E0E0"
-                BorderThickness="1">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            <Border Grid.Row="0" Margin="10" Padding="10" Height="Auto" MaxHeight="200"
+                    VerticalAlignment="Top"
+                    CornerRadius="8"
+                    BorderBrush="#E0E0E0"
+                    BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" x:Name="MeetingView_TextBlock"
-                           Text="조율 중인 일정"
-                           FontSize="20" FontWeight="Bold" Margin="0,5" />
+                    <DockPanel Grid.Row="0" LastChildFill="False">
+                        <TextBlock DockPanel.Dock="Left" x:Name="MeetingView_TextBlock"
+                                   Text="조율 중인 일정"
+                                   FontSize="20" FontWeight="Bold" Margin="0,5" />
+                        <Button DockPanel.Dock="Right" x:Name="MeetingDeleteButton" Visibility="Collapsed"
+                                Click="MeetingDelete_ButtonClicked" Content="삭제" />
+                    </DockPanel>
 
-                <Grid Grid.Row="1" x:Name="NoPlanView" Visibility="Visible">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="예정된 미팅이 없습니다." VerticalAlignment="Center"
-                               FontSize="15" />
-                    <Button Grid.Column="1" HorizontalAlignment="Center"
-                            x:Name="RegisterMeetingButton"
-                            Content="+미팅 일정잡기"
-                            Click="MeetingArrange_ButtonClicked"
-                            Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
-                </Grid>
+                    <Grid Grid.Row="1" x:Name="NoPlanView" Visibility="Visible">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
 
-                <DockPanel Grid.Row="1" x:Name="ArrangingView" Visibility="Collapsed">
-                    <Grid>
+                        <TextBlock Grid.Column="0" Text="예정된 미팅이 없습니다." VerticalAlignment="Center"
+                                   FontSize="15" />
+                        <Button Grid.Column="1" HorizontalAlignment="Center"
+                                x:Name="RegisterMeetingButton"
+                                Content="+미팅 일정잡기"
+                                Click="MeetingArrange_ButtonClicked"
+                                Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
+                    </Grid>
+                    
+                    <Grid Grid.Row="1" x:Name="ArrangingView" Visibility="Collapsed">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0" Content="회의 주제:" VerticalAlignment="Top" />
                         <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Top"
+                                   HorizontalAlignment="Left"
                                    Text="{Binding Meeting.Title}" FontSize="15" />
 
                         <Label Grid.Row="1" Grid.Column="0" Content="회의 내용:" VerticalAlignment="Top" />
-                        <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Top"
-                                   Text="{Binding Meeting.ToDo}" TextWrapping="Wrap" FontSize="13" />
-                        
-                        <StackPanel Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
-                                    HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,30,0">
-                            <Button Content="+희망 날짜 제출" Margin="0,5"
+                        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left"
+                                           Text="{Binding Meeting.ToDo}" TextWrapping="Wrap" FontSize="13" />
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <Label Grid.Row="0" Grid.Column="2" Content="제출한 일정:" VerticalAlignment="Top" />
+                        <ScrollViewer Grid.Row="0" Grid.Column="3" Grid.RowSpan="2" HorizontalAlignment="Left"
+                                      Margin="10,0"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding FormattedSchedules}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Date}" />
+                                            <TextBlock Text="{Binding StartTime}" Margin="5,0,0,0" />
+                                            <TextBlock Text=" ~ " />
+                                            <TextBlock Text="{Binding EndTime}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <StackPanel Grid.Row="0" Grid.Column="4" Grid.RowSpan="2"
+                                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,30,0">
+                            <Button Content="+개인 일정 제출" Margin="0,5"
                                     Click="PersonalSubmit_ButtonClicked"
                                     Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
                             <Button Content="미팅 가능시간" Margin="0,5"
                                     Click="CheckAvailable_ButtonClicked"
                                     Style="{StaticResource MaterialDesignRaisedSecondaryButton}" />
                         </StackPanel>
-                        
-                    </Grid>
-                </DockPanel>
 
-                <Grid Grid.Row="1" x:Name="ScheduledView" Visibility="Collapsed">
+                    </Grid>
+
+                    <Grid Grid.Row="1" x:Name="ScheduledView" Visibility="Collapsed">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Content="회의 주제:" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="윈프 최종 회의" FontSize="15" />
+
+                        <Label Grid.Row="1" Grid.Column="0" Content="회의 내용:" Margin="0,5" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,5"
+                                   TextWrapping="Wrap"
+                                   Text="최종 발표 발표 방식. ppt 발표자료, 결과보고서" FontSize="13" />
+
+                        <Label Grid.Row="0" Grid.Column="2" Content="일자:" />
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="2025-06-13 (금)" FontSize="15" />
+
+                        <Label Grid.Row="1" Grid.Column="2" Content="장소:" Margin="0,5" />
+                        <TextBlock Grid.Row="1" Grid.Column="3" Margin="0,5"
+                                   Text="DB134" FontSize="13" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- 타임라인 섹션 -->
+            <Border Grid.Row="1" Background="White" Margin="10" Padding="10"
+                    CornerRadius="8" BorderBrush="#E0E0E0" BorderThickness="1">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="500" />
                     </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
 
-                    <Label Grid.Row="0" Grid.Column="0" Content="회의 주제:" />
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="윈프 최종 회의" FontSize="15" />
+                    <TextBlock Grid.Row="0" Text="팀 타임라인" FontSize="16"
+                               FontWeight="Bold" Margin="0,0,0,10" />
 
-                    <Label Grid.Row="1" Grid.Column="0" Content="회의 내용:" Margin="0,5" />
-                    <TextBlock Grid.Row="1" Grid.Column="1" Margin="0,5"
-                               TextWrapping="Wrap"
-                               Text="최종 발표 발표 방식. ppt 발표자료, 결과보고서" FontSize="13" />
-
-                    <Label Grid.Row="0" Grid.Column="2" Content="일자:" />
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="2025-06-13 (금)" FontSize="15" />
-
-                    <Label Grid.Row="1" Grid.Column="2" Content="장소:" Margin="0,5" />
-                    <TextBlock Grid.Row="1" Grid.Column="3" Margin="0,5"
-                               Text="DB134" FontSize="13" />
+                    <timeline:TimeLine x:Name="HomeTimeline" Grid.Row="1"/>
                 </Grid>
-            </Grid>
-        </Border>
-        
-        <!-- 타임라인 섹션 -->
-        <Border Grid.Row="1" Background="White" Margin="10" Padding="10"
-                CornerRadius="8" BorderBrush="#E0E0E0" BorderThickness="1">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                    
-                <TextBlock Grid.Row="0" Text="팀 타임라인" FontSize="16"
-                           FontWeight="Bold" Margin="0,0,0,10"/>
-                    
-                <timeline:TimeLine x:Name="HomeTimeline" Grid.Row="1"
-                                   Height="600"/>
-            </Grid>
-        </Border>
-    </DockPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

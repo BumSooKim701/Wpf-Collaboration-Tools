@@ -11,6 +11,7 @@ public partial class PersonalScheduleSubmitWindow : Window
 {
     private ScheduleMainViewModel _mainViewModel;
     private Meeting _meeting;
+    public EventHandler PersonalScheduleSaved;
     
     public PersonalScheduleSubmitWindow(Meeting meeting)
     {
@@ -53,9 +54,13 @@ public partial class PersonalScheduleSubmitWindow : Window
         bool isSucceed = meetingService.RegisterPersonalSchedule(personalSchedules);
 
         MessageBox.Show(Application.Current.MainWindow, isSucceed ? "등록에 성공하였습니다." : "등록에 실패하였습니다");
-        
-        if (isSucceed) 
+
+        if (isSucceed)
+        {
+            PersonalScheduleSaved?.Invoke(this, EventArgs.Empty);
             this.Close();
+        }
+            
     }
     
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)

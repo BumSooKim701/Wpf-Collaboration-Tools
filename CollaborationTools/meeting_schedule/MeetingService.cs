@@ -44,4 +44,9 @@ public class MeetingService
     {
         return _meetingRepository.getPersonalSchedule(userId, teamId);
     }
+    
+    public bool DeleteMeeting(int meetingId)
+    {
+        return _meetingRepository.DeleteMeeting(meetingId);
+    }
 }

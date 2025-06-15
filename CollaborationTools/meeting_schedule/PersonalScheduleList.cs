@@ -1,15 +1,17 @@
-﻿namespace CollaborationTools.meeting_schedule;
+﻿using System.Collections.ObjectModel;
+
+namespace CollaborationTools.meeting_schedule;
 
 public class PersonalScheduleList
 {
     private int _userId;
     private int _teamId;
     private int _meetingScheduleId;
-    private List<Schedule> _schedules;
+    private ObservableCollection<Schedule> _schedules;
     
     public PersonalScheduleList()
     {
-        _schedules = new List<Schedule>();
+        _schedules = new ObservableCollection<Schedule>();
     }
     
     
@@ -18,7 +20,7 @@ public class PersonalScheduleList
         _schedules.Add(new Schedule(date, startTime, endTime));
     }
 
-    public List<Schedule> Schedules
+    public ObservableCollection<Schedule> Schedules
     {
         get => _schedules;
     }

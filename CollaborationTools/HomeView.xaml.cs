@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using CollaborationTools.meeting_schedule;
 using CollaborationTools.team;
+using CollaborationTools.user;
 
 namespace CollaborationTools;
 
@@ -51,12 +52,15 @@ public partial class HomeView : UserControl
                 NoPlanView.Visibility = Visibility.Visible;
                 ArrangingView.Visibility = Visibility.Collapsed;
                 ScheduledView.Visibility = Visibility.Collapsed;
+                MeetingDeleteButton.Visibility = Visibility.Collapsed;;
                 break;
             case MeetingViewType.Arranging:
                 MeetingView_TextBlock.Text = "조율 중인 일정";
                 NoPlanView.Visibility = Visibility.Collapsed;
                 ArrangingView.Visibility = Visibility.Visible;
                 ScheduledView.Visibility = Visibility.Collapsed;
+                MeetingDeleteButton.Visibility = Visibility.Visible;
+                LoadPersonalSchedule();
                 break;
             case MeetingViewType.Scheduled:
                 MeetingView_TextBlock.Text = "예정된 미팅 일정";
@@ -65,6 +69,27 @@ public partial class HomeView : UserControl
                 ScheduledView.Visibility = Visibility.Visible;
                 break;
         }
+    }
+
+    private void LoadPersonalSchedule()
+    {
+        var meetingService = new MeetingService();
+        var personalScheduleList = meetingService.GetPersonalSchedule(UserSession.CurrentUser.userId, CurrentTeam.teamId);
+        
+        var scheduleList = personalScheduleList.Schedules;
+        
+        _viewModel.FormattedSchedules.Clear();
+        foreach (var schedule in scheduleList)
+        {
+            var formattedSchedule = new FormattedSchedule
+            {
+                Date = schedule.Date.ToString("yyyy-MM-dd"),
+                StartTime = schedule.StartDateTime.ToString("HH:mm"),
+                EndTime = schedule.EndDateTime.ToString("HH:mm")
+            };
+            _viewModel.FormattedSchedules.Add(formattedSchedule);
+        }
+        
     }
 
     private void MeetingArrange_ButtonClicked(object sender, RoutedEventArgs e)
@@ -100,7 +125,10 @@ public partial class HomeView : UserControl
     private void PersonalSubmit_ButtonClicked(object sender, RoutedEventArgs e)
     {
         PersonalScheduleSubmitWindow submitWindow = new(_viewModel.Meeting);
-        
+        submitWindow.PersonalScheduleSaved += (s, args) =>
+        {
+            LoadPersonalSchedule();
+        };
         ShowDialog(submitWindow);
     }
 
@@ -109,5 +137,28 @@ public partial class HomeView : UserControl
         MeetingAvailableTimeWindow availableTimeWindow = new(CurrentTeam.teamId);
         
         Show(availableTimeWindow);
+    }
+
+    private void MeetingDelete_ButtonClicked(object sender, RoutedEventArgs e)
+    {
+        var result = MessageBox.Show(
+            "등록된 미팅 조율하기를 삭제하시겠습니까?",
+            "미팅 조율 삭제",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+
+        if (result == MessageBoxResult.Yes)
+        {
+            var meetingService = new MeetingService();
+            bool isSucceed = meetingService.DeleteMeeting(_viewModel.Meeting.MeetingId);
+
+            MessageBox.Show(Application.Current.MainWindow, isSucceed ? "정상적으로 삭제되었습니다." : "삭제에 실패하였습니다.");
+            if (isSucceed)
+            {
+                _viewModel.ViewType = MeetingViewType.NoPlan; 
+                SwitchMeetingView();
+            }
+        }
+        
     }
 }

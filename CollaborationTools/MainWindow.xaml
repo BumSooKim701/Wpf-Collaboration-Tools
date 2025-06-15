@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Style="{StaticResource MaterialDesignWindow}"
-        Title="MainWindow" Width="1100" Height="600">
-    <!-- MinWidth="760" MinHeight="512" -->
+        Title="MainWindow" Width="1100" Height="600" 
+        MinWidth="1000" MinHeight="550">
 
     <Grid>
         <Frame Source="login/LoginPage.xaml" NavigationUIVisibility="Hidden" />

@@ -183,7 +183,7 @@ public class MeetingRepository
         MySqlConnection connection = null;
         var result = false;
 
-        List<Schedule> schedules = personalSchedules.Schedules;
+        ObservableCollection<Schedule> schedules = personalSchedules.Schedules;
         int teamMemberId;
         
         try
@@ -278,7 +278,7 @@ public class MeetingRepository
                 }
             }
             using (var command = new MySqlCommand(
-                       "SELECT * FROM personal_schedule WHERE team_member_id = @teamMemberId", connection))
+                       "SELECT * FROM personal_schedule WHERE team_member_id = @teamMemberId ORDER BY date, starttime_unavailable", connection))
             {
                 command.Parameters.AddWithValue("@teamMemberId", teamMemberId);
 
@@ -368,6 +368,36 @@ public class MeetingRepository
         if (allPersonalSchedules.Count == 0) return (null, meetingId);
         
         return (allPersonalSchedules, meetingId);
+    }
+
+    public bool DeleteMeeting(int meetingId)
+    {
+        MySqlConnection connection = null;
+        var result = false;
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+
+            using (var command = new MySqlCommand("DELETE FROM meeting_schedule WHERE id = @meetingId", connection))
+            {
+                command.Parameters.AddWithValue("@meetingId", meetingId);
+
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult > 0) result = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Error deleting meeting: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
     }
 
 }
