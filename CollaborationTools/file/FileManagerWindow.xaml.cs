@@ -154,11 +154,11 @@ public partial class FileManagerWindow : UserControl, INotifyPropertyChanged
     {
         DropZoneOverlay.Visibility = Visibility.Collapsed;
 
-        if (CurrentTeam?.teamFolderId == null)
-        {
-            MessageBox.Show("팀을 먼저 선택해주세요.");
-            return;
-        }
+        // if (CurrentTeam?.teamFolderId == null)
+        // {
+        //     MessageBox.Show("팀을 먼저 선택해주세요.");
+        //     return;
+        // }
 
         try
         {

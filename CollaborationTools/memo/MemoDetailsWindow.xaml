@@ -102,6 +102,7 @@
                      x:Name="ContentBox"
                      Text="{Binding Content}"
                      IsReadOnly="True"
+                     AcceptsReturn="True"
                      TextWrapping="Wrap"
                      Margin="0,5"
                      VerticalScrollBarVisibility="Auto"

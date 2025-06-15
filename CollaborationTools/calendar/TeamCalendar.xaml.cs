@@ -137,7 +137,7 @@ public partial class TeamCalendar : UserControl
             new ScheduleItem
             {
                 StartDateTime = startDateTime,
-                CalendarId = CurrentTeam.teamCalendarId
+                CalendarId = CurrentTeam?.teamCalendarId ?? "primary"
             });
 
         scheduleRegisterWindow.ScheduleSaved += (s, args) => { LoadScheduleItems(); };
@@ -165,8 +165,9 @@ public partial class TeamCalendar : UserControl
     {
         if (CurrentTeam?.teamCalendarId == null)
         {
-            NoScheduleMsgCalendar.Visibility = Visibility.Visible;
-            CardListViewCalendar.ItemsSource = null;
+            _oneDaySchedules = await ScheduleService.GetOneDayScheduleItems("primary", selectedDate);
+            // NoScheduleMsgCalendar.Visibility = Visibility.Visible;
+            CardListViewCalendar.ItemsSource = _oneDaySchedules;
             return;
         }
 

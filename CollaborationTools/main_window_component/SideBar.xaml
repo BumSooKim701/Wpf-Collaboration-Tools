@@ -8,7 +8,8 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <TabControl ItemsSource="{Binding TabItems}" Width="300" TabStripPlacement="Left"
-                    SelectionChanged="TabControl_SelectionChanged">
+                    SelectionChanged="TabControl_SelectionChanged" >
+            
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
