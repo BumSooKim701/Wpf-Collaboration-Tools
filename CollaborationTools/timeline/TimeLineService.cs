@@ -166,7 +166,7 @@ namespace CollaborationTools.timeline
             }
         }
 
-// 파일 크기 포맷팅 (FileManagerWindow에서 가져온 로직)
+        // 파일 크기 포맷팅 (FileManagerWindow에서 가져온 로직)
         private static string FormatFileSize(long bytes)
         {
             string[] sizes = { "B", "KB", "MB", "GB", "TB" };

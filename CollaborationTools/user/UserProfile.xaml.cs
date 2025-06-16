@@ -4,15 +4,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using CollaborationTools.user;
-using CollaborationTools.team;
 using CollaborationTools.memo;
 using CollaborationTools.database;
-using CollaborationTools.file;
-using CollaborationTools.login;
 
 namespace CollaborationTools.profile
 {
@@ -21,10 +16,7 @@ namespace CollaborationTools.profile
         public EventHandler? LogoutRequested;
         private UserRepository userRepository = new();
         private TeamRepository teamRepository = new();
-        private TeamMemberRepository teamMemberRepository = new();
         private MemoService memoService = new();
-        private FileService fileService = new FileService();
-        private FolderService folderService = new FolderService();
         
         private User? currentUser;
         private BitmapImage? profileImageSource;
@@ -249,12 +241,9 @@ namespace CollaborationTools.profile
             try
             {
                 List<int> counts = userRepository.GetPersonalActivityCount(UserSession.CurrentUser.userId);
-                MemoCount = counts[0];
+                ScheduleCount = counts[0];
                 FileCount = counts[1];
                 MemoCount = counts[2];
-
-                // 일정 개수는 실제 구현에 따라 조정 필요  
-                ScheduleCount = 0;
             }
             catch (Exception ex)
             {
@@ -268,7 +257,7 @@ namespace CollaborationTools.profile
         private void RefreshProfile_Click(object sender, RoutedEventArgs e)
         {
             LoadUserProfile();
-            MessageBox.Show("프로필 정보가 새로고침되었습니다.", "알림", 
+            MessageBox.Show(Application.Current.MainWindow,"프로필 정보가 새로고침되었습니다.", "알림", 
                           MessageBoxButton.OK, MessageBoxImage.Information);
         }
 

@@ -19,13 +19,8 @@ public partial class TeamInfoWindow : Window
     {
         InitializeComponent();
 
-        // 명령 초기화
         CloseCommand = new RelayCommand(Close);
-
-        // 데이터 컨텍스트 설정
         DataContext = this;
-
-        // 팀 정보 설정
         Team = team;
         Console.WriteLine(Team.teamDescription);
 
@@ -59,7 +54,6 @@ public partial class TeamInfoWindow : Window
     {
         try
         {
-            // 팀이 null인 경우 처리
             if (Team == null)
             {
                 Console.WriteLine("Team is null");
@@ -71,16 +65,13 @@ public partial class TeamInfoWindow : Window
             var members = _teamService?.FindTeamMembersByTeamId(Team.teamId);
             var users = _userService.FindUsersByTeamMembers(members);
 
-            // members가 null이 아닌 경우에만 ObservableCollection 생성
             if (users != null && users.Count > 0)
                 TeamMembers = new ObservableCollection<User>(users!);
             else
-                // null인 경우 빈 컬렉션 생성
                 TeamMembers = new ObservableCollection<User>();
         }
         catch (Exception ex)
         {
-            // 예외 처리 및 로깅
             Console.WriteLine($"Error loading team members: {ex.Message}");
             Console.WriteLine($"Stack trace: {ex.StackTrace}");
             TeamMembers = new ObservableCollection<User>(); // 빈 컬렉션으로 초기화
@@ -89,11 +80,9 @@ public partial class TeamInfoWindow : Window
 
     private void Close(object parameter)
     {
-        // 창 닫기
         DialogResult = true;
     }
-
-    // INotifyPropertyChanged 구현
+    
     public event PropertyChangedEventHandler PropertyChanged;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

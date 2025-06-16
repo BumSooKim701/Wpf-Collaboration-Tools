@@ -7,7 +7,6 @@
       xmlns:file="clr-namespace:CollaborationTools.file"
       xmlns:calendar="clr-namespace:CollaborationTools.calendar"
       xmlns:memo="clr-namespace:CollaborationTools.memo"
-      xmlns:timeline="clr-namespace:CollaborationTools.timeline"
       mc:Ignorable="d"
       Title="MainPage" Height="Auto" Width="Auto">
     <Grid>

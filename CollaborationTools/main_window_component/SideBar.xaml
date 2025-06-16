@@ -10,6 +10,12 @@
         <TabControl ItemsSource="{Binding TabItems}" Width="300" TabStripPlacement="Left"
                     SelectionChanged="TabControl_SelectionChanged" >
             
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="TabItem" BasedOn="{StaticResource MaterialDesignTabItem}">
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+            </TabControl.ItemContainerStyle>   
+            
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

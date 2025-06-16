@@ -15,12 +15,6 @@ public partial class MemoCreateWindow : Window
 
     public event EventHandler<MemoItem> MemoCreated;
 
-    private void ShowDialog(Window window)
-    {
-        window.Owner = Application.Current.MainWindow;
-        window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-        window.ShowDialog();
-    }
 
     private async void SaveButton_Click(object sender, RoutedEventArgs e)
     {

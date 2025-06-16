@@ -3,9 +3,7 @@ using System.Windows.Controls;
 
 namespace CollaborationTools;
 
-/// <summary>
-///     Interaction logic for MainWindow.xaml
-/// </summary>
+
 public partial class MainWindow : Window
 {
     private ContentControl mainContentArea;

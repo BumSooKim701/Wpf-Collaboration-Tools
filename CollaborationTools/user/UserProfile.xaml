@@ -139,43 +139,6 @@
                 </materialDesign:Card>
                 
                 
-                <!-- ~1~ Team Information @1@ -->
-                <!-- <materialDesign:Card Margin="0,0,0,10"  -->
-                <!--                     materialDesign:ElevationAssist.Elevation="Dp2"> -->
-                <!--     <StackPanel Margin="20"> -->
-                <!--         <TextBlock Text="팀 정보"  -->
-                <!--                   FontSize="16" FontWeight="Bold" -->
-                <!--                   Margin="0,0,0,15" -->
-                <!--                   Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/> -->
-                <!--          -->
-                <!--         ~1~ Primary Team @1@ -->
-                <!--         <Grid Margin="0,0,0,10"> -->
-                <!--             <Grid.ColumnDefinitions> -->
-                <!--                 <ColumnDefinition Width="120"/> -->
-                <!--                 <ColumnDefinition Width="*"/> -->
-                <!--             </Grid.ColumnDefinitions> -->
-                <!--             <TextBlock Grid.Column="0" Text="주 팀:"  -->
-                <!--                       FontWeight="Medium" -->
-                <!--                       VerticalAlignment="Center"/> -->
-                <!--             <TextBlock Grid.Column="1" Text="{Binding PrimaryTeamName}"  -->
-                <!--                       VerticalAlignment="Center"/> -->
-                <!--         </Grid> -->
-                <!--          -->
-                <!--         ~1~ Team Count @1@ -->
-                <!--         <Grid Margin="0,0,0,10"> -->
-                <!--             <Grid.ColumnDefinitions> -->
-                <!--                 <ColumnDefinition Width="120"/> -->
-                <!--                 <ColumnDefinition Width="*"/> -->
-                <!--             </Grid.ColumnDefinitions> -->
-                <!--             <TextBlock Grid.Column="0" Text="소속 팀 수:"  -->
-                <!--                       FontWeight="Medium" -->
-                <!--                       VerticalAlignment="Center"/> -->
-                <!--             <TextBlock Grid.Column="1" Text="{Binding TeamCount}"  -->
-                <!--                       VerticalAlignment="Center"/> -->
-                <!--         </Grid> -->
-                <!--     </StackPanel> -->
-                <!-- </materialDesign:Card> -->
-                
                 <!-- Statistics -->
                 <materialDesign:Card Margin="0,0,0,10" 
                                     materialDesign:ElevationAssist.Elevation="Dp2">

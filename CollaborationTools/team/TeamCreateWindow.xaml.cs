@@ -154,13 +154,11 @@ public partial class TeamCreateWindow : Window, INotifyPropertyChanged
             MessageBox.Show("팀 생성 중 오류가 발생했습니다.", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        // 창 닫기
         DialogResult = true;
     }
 
     private void Cancel(object parameter)
     {
-        // 창 닫기
         DialogResult = false;
     }
 

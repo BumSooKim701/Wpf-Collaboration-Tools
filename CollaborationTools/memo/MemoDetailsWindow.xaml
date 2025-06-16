@@ -93,11 +93,6 @@
                      Style="{StaticResource MaterialDesignTextBox}"
                      FontSize="20" />
 
-            <!-- <TextBlock Grid.Row="1" Text="{Binding Title}" -->
-            <!--            TextWrapping="Wrap" -->
-            <!--            Margin="0, 5" -->
-            <!--            Style="{StaticResource MaterialDesignHeadline5TextBlock}" /> -->
-
             <TextBox Grid.Row="2"
                      x:Name="ContentBox"
                      Text="{Binding Content}"
