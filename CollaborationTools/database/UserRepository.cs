@@ -267,47 +267,8 @@ public class UserRepository
         return users;
     }
 
-    // public GetPersonalActivityCount(int userId)
+    // public  GetPersonalActivityCount(int userId)
     // {
-    //     MySqlConnection connection = null;
-    //
-    //     try
-    //     {
-    //         connection = _connectionPool.GetConnection();
-    //         
-    //         var query = "SELECT schedule_count, file_count, memo_count FROM team_member WHERE user_id = @userId and team_id = @teamId";
-    //
-    //         using (var command = new MySqlCommand(query, connection))
-    //         using (var reader = command.ExecuteReader())
-    //         {
-    //             while (reader.Read())
-    //                 users.Add(new User
-    //                 {
-    //                     userId = reader.GetInt32("id"),
-    //                     GoogleId = reader.GetString("google_id"),
-    //                     Name = reader.GetString("name"),
-    //                     Email = reader.GetString("email"),
-    //                     PictureUri = reader.IsDBNull("picture_uri") ? null : reader.GetString("picture_uri"),
-    //                     RefreshToken = reader.GetString("refresh_token"),
-    //                     CreatedAt = reader.GetDateTime("created_at"),
-    //                     LastLoginAt = reader.GetDateTime("last_login_at"),
-    //                     TeamId = reader.GetInt32("team_id")
-    //                 });
-    //         }
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         Console.WriteLine($"GetAllUsers Error: {ex.Message}");
-    //     }
-    //     finally
-    //     {
-    //         // 반드시 연결을 풀에 반환
-    //         if (connection != null)
-    //         {
-    //             _connectionPool.ReleaseConnection(connection);
-    //         }
-    //     }
-    //
-    //     return users;
+    //     
     // }
 }
