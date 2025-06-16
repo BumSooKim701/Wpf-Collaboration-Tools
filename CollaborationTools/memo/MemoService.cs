@@ -19,11 +19,6 @@ public class MemoService
         return await _memoRepository.GetMemosByTeamId(teamId);
     }
 
-    public int GetMemoItemsCount(int userId)
-    {
-        return _memoRepository.GetMemosCount(userId);
-    }
-
     public bool AddMemoItem(MemoItem memoItem)
     {
         return _memoRepository.AddMemo(memoItem);

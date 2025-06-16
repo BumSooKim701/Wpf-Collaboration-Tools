@@ -118,7 +118,7 @@ public partial class TeamMemberRegistrationWindow : Window, INotifyPropertyChang
         {
             _calendarService.CreateCalendarAsync(Team.teamCalendarId, Team.teamName);
 
-            _folderService.ShareFolderWithMemberAsync(Team.teamCalendarId, Team.teamName);
+            _folderService.ShareFolderWithMemberAsync(Team.teamCalendarId, NewMemberEmail);
 
             MessageBox.Show($"'{Team.teamName}' 팀에 {TeamMembers.Count}명의 팀원이 등록되었습니다.",
                 "팀원 등록 완료", MessageBoxButton.OK, MessageBoxImage.Information);

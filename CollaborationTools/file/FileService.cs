@@ -64,7 +64,10 @@ public class FileService
     public async Task<GoogleFile> UploadNewFileAsync(string folderId, string filePath, int teamId)
     {
         var processedFile = await UploadFileAsync(folderId, filePath);
-        IncreaseFileCount(teamId);
+        if (teamId != 0)
+        {
+            IncreaseFileCount(teamId);    
+        }
         
         return processedFile;
     }
