@@ -275,7 +275,7 @@ public class TeamMemberRepository
         return authority;
     }
 
-    public TeamMember FindTeamMemberId(int userId, int teamId)
+    public TeamMember FindTeamMemberId(int teamMemberId)
     {
         var teamMember = new TeamMember();
         MySqlConnection? connection = null;
@@ -285,21 +285,17 @@ public class TeamMemberRepository
             connection = _connectionPool.GetConnection();
 
             using (var command =
-                   new MySqlCommand("SELECT id FROM team_member WHERE user_id = @userId and team_id = @teamId",
+                   new MySqlCommand("SELECT id FROM team_member WHERE id = @memberId",
                        connection))
             {
-                command.Parameters.AddWithValue("@userId", userId);
-                command.Parameters.AddWithValue("@teamId", teamId);
+                command.Parameters.AddWithValue("@memberId", teamMemberId);
 
                 using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                         teamMember = new TeamMember
                         {
-                            memberId = reader.GetInt32("id"),
-                            userId = reader.GetInt32("user_id"),
-                            teamId = reader.GetInt32("team_id"),
-                            authority = reader.GetByte("authority")
+                            memberId = reader.GetInt32("id")
                         };
                 }
             }
