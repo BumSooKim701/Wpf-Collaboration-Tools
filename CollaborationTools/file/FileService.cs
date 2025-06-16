@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Windows;
@@ -6,10 +7,12 @@ using CollaborationTools.authentication;
 using CollaborationTools.database;
 using CollaborationTools.team;
 using CollaborationTools.timeline;
+using CollaborationTools.user;
 using Google;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Download;
 using Google.Apis.Upload;
+using MySqlConnector;
 using GoogleFile = Google.Apis.Drive.v3.Data.File;
 
 namespace CollaborationTools.file;
@@ -58,9 +61,12 @@ public class FileService
     }
 
     // 새 파일 업로드 (최초 업로드)
-    public async Task<GoogleFile> UploadNewFileAsync(string folderId, string filePath)
+    public async Task<GoogleFile> UploadNewFileAsync(string folderId, string filePath, int teamId)
     {
-        return await UploadFileAsync(folderId, filePath);
+        var processedFile = await UploadFileAsync(folderId, filePath);
+        IncreaseFileCount(teamId);
+        
+        return processedFile;
     }
 
 
@@ -195,7 +201,7 @@ public class FileService
         }
     }
 
-    public async Task<bool> SafeDeleteFileAsync(string fileId)
+    public async Task<bool> SafeDeleteFileAsync(string fileId, int teamId)
     {
         var driveService = GoogleAuthentication.DriveService;
 
@@ -214,12 +220,18 @@ public class FileService
 
             // 파일 삭제 실행
             await driveService.Files.Delete(fileId).ExecuteAsync();
+            DecreaseFileCount(teamId);
             return true;
         }
         catch (GoogleApiException ex) when (ex.HttpStatusCode == HttpStatusCode.NotFound)
         {
             Console.WriteLine("파일을 찾을 수 없습니다. 이미 삭제되었을 수 있습니다.");
             return true; // 이미 삭제된 것으로 간주
+        }
+        catch (GoogleApiException ex) when (ex.HttpStatusCode == HttpStatusCode.Forbidden)
+        {
+            Debug.WriteLine(ex.Message);
+            throw;
         }
         catch (Exception ex)
         {
@@ -228,7 +240,6 @@ public class FileService
             return false;
         }
     }
-
 
     private string GetMimeType(string filePath)
     {
@@ -297,5 +308,77 @@ public class FileService
             // 기본값
             _ => "application/octet-stream"
         };
+    }
+    
+    private bool IncreaseFileCount(int teamId)
+    {
+        var result = false;
+        var userId = UserSession.CurrentUser.userId;
+        MySqlConnection connection = null;
+        ConnectionPool _connectionPool = ConnectionPool.GetInstance();
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            
+            using (var command =
+                   new MySqlCommand(
+                       "UPDATE team_member SET file_count = file_count + 1 WHERE user_id = @userId and team_id = @teamId;",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@userId", userId);
+                command.Parameters.AddWithValue("@teamId", teamId);
+
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult > 0) result = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"searching to email error: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
+    }
+    
+    private static bool DecreaseFileCount(int teamId)
+    {
+        var result = false;
+        var userId = UserSession.CurrentUser.userId;
+        MySqlConnection connection = null;
+        ConnectionPool _connectionPool = ConnectionPool.GetInstance();
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            
+            using (var command =
+                   new MySqlCommand(
+                       "UPDATE team_member SET file_count = file_count - 1 WHERE user_id = @userId and team_id = @teamId and file_count > 0;",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@userId", userId);
+                command.Parameters.AddWithValue("@teamId", teamId);
+
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult > 0) result = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"searching to email error: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
     }
 }

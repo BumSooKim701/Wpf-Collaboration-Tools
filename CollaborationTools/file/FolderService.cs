@@ -63,7 +63,7 @@ public class FolderService
         }
     }
 
-    public async Task<bool> DeleteFolderWithContentsAsync(string folderId)
+    public async Task<bool> DeleteFolderWithContentsAsync(string folderId, int teamId)
     {
         var driveService = GoogleAuthentication.DriveService;
         Console.WriteLine("folder delete" + folderId);
@@ -97,9 +97,9 @@ public class FolderService
             if (filesInFolder != null && filesInFolder.Count > 0)
                 foreach (var file in filesInFolder)
                     if (file.MimeType == "application/vnd.google-apps.folder")
-                        await DeleteFolderWithContentsAsync(file.Id);
+                        await DeleteFolderWithContentsAsync(file.Id, teamId);
                     else
-                        await _fileService.SafeDeleteFileAsync(file.Id);
+                        await _fileService.SafeDeleteFileAsync(file.Id, teamId);
 
             // 폴더 자체 삭제
             await driveService.Files.Delete(folderId).ExecuteAsync();
@@ -127,7 +127,7 @@ public class FolderService
         try
         {
             var request = driveService.Files.List();
-            request.Q = $"'{folderId}' in parents and trashed=false";
+            request.Q = $"'{folderId}' in parents and trashed=false and mimeType != 'application/vnd.google-apps.folder'";
             request.Fields = "files(id,name,size,modifiedTime,mimeType,version,parents)";
             request.OrderBy = "modifiedTime desc";
             request.PageSize = 100;

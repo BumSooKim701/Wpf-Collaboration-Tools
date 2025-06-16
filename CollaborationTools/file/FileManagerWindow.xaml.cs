@@ -1,11 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CollaborationTools.team;
+using Google;
 using Microsoft.Win32;
 using GoogleFile = Google.Apis.Drive.v3.Data.File;
 
@@ -235,7 +238,7 @@ public partial class FileManagerWindow : UserControl, INotifyPropertyChanged
                 {
                     // 새 파일 업로드
                     StatusMessage = $"새 파일 업로드 중: {fileName}";
-                    processedFile = await fileService.UploadNewFileAsync(CurrentTeam?.teamFolderId ?? "root", filePath);
+                    processedFile = await fileService.UploadNewFileAsync(CurrentTeam?.teamFolderId ?? "root", filePath, CurrentTeam.teamId);
 
                     // UI에 새 파일 항목 추가
                     if (processedFile != null)
@@ -467,10 +470,15 @@ public partial class FileManagerWindow : UserControl, INotifyPropertyChanged
                 {
                     StatusMessage = $"삭제 중: {fileItem.FileName}";
 
-                    await fileService.SafeDeleteFileAsync(fileItem.FileId);
+                    await fileService.SafeDeleteFileAsync(fileItem.FileId, CurrentTeam.teamId);
                     TeamFiles.Remove(fileItem);
 
                     StatusMessage = $"{TeamFiles.Count}개의 파일";
+                }
+                catch (GoogleApiException ex) when (ex.HttpStatusCode == HttpStatusCode.Forbidden)
+                {
+                    MessageBox.Show(Application.Current.MainWindow, "해당 파일에 대한 권한이 없습니다.", "오류",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 catch (Exception ex)
                 {

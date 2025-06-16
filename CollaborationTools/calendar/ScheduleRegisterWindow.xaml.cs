@@ -1,17 +1,19 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CollaborationTools.team;
 
 namespace CollaborationTools.calendar;
 
 public partial class ScheduleRegisterWindow : Window
 {
     private readonly ScheduleItem _scheduleItem;
-
-    public ScheduleRegisterWindow(ScheduleItem scheduleItem)
+    private Team _currentTeam;
+    public ScheduleRegisterWindow(ScheduleItem scheduleItem, Team currentTeam)
     {
         InitializeComponent();
 
+        _currentTeam = currentTeam;
         _scheduleItem = scheduleItem;
         _scheduleItem.EndDateTime = _scheduleItem.StartDateTime.AddHours(1);
 
@@ -28,7 +30,7 @@ public partial class ScheduleRegisterWindow : Window
         }
         else if (DataContext is ScheduleItem scheduleItem)
         {
-            await ScheduleService.RegisterSchedule(scheduleItem);
+            await ScheduleService.RegisterSchedule(scheduleItem, _currentTeam.teamId);
 
             ScheduleSaved?.Invoke(this, EventArgs.Empty);
 

@@ -13,16 +13,23 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-
-        <Button Grid.Row="0" Width="40" Height="40" Margin="0,0,0,8"
-                Padding="0" HorizontalAlignment="Left"
-                materialDesign:ButtonAssist.CornerRadius="20"
-                ToolTip="메모 추가"
-                Click="CreateButtonClicked"
-                Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
-            <materialDesign:PackIcon Kind="Plus" Width="24" Height="24"
-                                     HorizontalAlignment="Center" />
-        </Button>
+        <DockPanel Grid.Row="0" LastChildFill="False">
+            <Button DockPanel.Dock="Left" Width="40" Height="40" Margin="0,0,0,8"
+                    Padding="0" HorizontalAlignment="Left"
+                    materialDesign:ButtonAssist.CornerRadius="20"
+                    ToolTip="메모 추가"
+                    Click="CreateButtonClicked"
+                    Style="{StaticResource MaterialDesignFloatingActionMiniSecondaryButton}">
+                <materialDesign:PackIcon Kind="Plus" Width="24" Height="24"
+                                         HorizontalAlignment="Center" />
+            </Button>
+            <Button DockPanel.Dock="Right" Style="{StaticResource MaterialDesignIconButton}"
+                    Click="RefreshButton_Clicked" ToolTip="새로고침" Margin="0,0,30,0">
+                <materialDesign:PackIcon Kind="Refresh" Foreground="{DynamicResource MaterialDesignShadowBrush}"
+                                         Width="25" Height="25" />
+            </Button>
+        </DockPanel>
+        
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <ItemsControl x:Name="ItemsControl">

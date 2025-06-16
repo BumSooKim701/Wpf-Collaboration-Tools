@@ -26,8 +26,6 @@ namespace CollaborationTools.profile
         private BitmapImage? profileImageSource;
         private string userName = "알 수 없음";
         private string userEmail = "알 수 없음";
-        private string userId = "0";
-        private string googleId = "알 수 없음";
         private string createdAt = "";
         private string lastLoginAt = "";
         private string primaryTeamName = "없음";
@@ -93,26 +91,6 @@ namespace CollaborationTools.profile
             set
             {
                 userEmail = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string UserId
-        {
-            get => userId;
-            set
-            {
-                userId = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string GoogleId
-        {
-            get => googleId;
-            set
-            {
-                googleId = value;
                 OnPropertyChanged();
             }
         }
@@ -191,8 +169,6 @@ namespace CollaborationTools.profile
         {
             UserName = "알 수 없음";
             UserEmail = "알 수 없음";
-            UserId = "0";
-            GoogleId = "알 수 없음";
             CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             LastLoginAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             PrimaryTeamName = "없음";
@@ -224,17 +200,12 @@ namespace CollaborationTools.profile
                 // 기본 사용자 정보 설정
                 UserName = currentUser.Name;
                 UserEmail = currentUser.Email;
-                UserId = currentUser.userId.ToString();
-                GoogleId = currentUser.GoogleId;
                 CreatedAt = currentUser.CreatedAt.ToString("yyyy-MM-dd HH:mm");
                 LastLoginAt = currentUser.LastLoginAt.ToString("yyyy-MM-dd HH:mm");
 
                 // 프로필 이미지 로드
                 await LoadProfileImage();
-
-                // 팀 정보 로드
-                LoadTeamInfo();
-
+                
                 // 활동 통계 로드
                 LoadActivityStats();
             }
@@ -267,28 +238,7 @@ namespace CollaborationTools.profile
                 ProfileImageSource = null;
             }
         }
-
-        private void LoadTeamInfo()
-        {
-            try
-            {
-                if (currentUser?.TeamId > 0)
-                {
-                    var primaryTeam = teamRepository.FindTeamById(currentUser.TeamId);
-                    PrimaryTeamName = primaryTeam?.teamName ?? "없음";
-                }
-
-                // 사용자가 속한 모든 팀 수 계산
-                var userTeams = teamRepository.FindTeamsByUser(currentUser);
-                TeamCount = userTeams.Count;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"팀 정보 로드 실패: {ex.Message}");
-                PrimaryTeamName = "없음";
-                TeamCount = 0;
-            }
-        }
+        
 
         private void LoadActivityStats()
         {

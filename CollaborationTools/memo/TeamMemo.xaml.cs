@@ -142,4 +142,9 @@ public partial class TeamMemo : UserControl
             foreach (var item in newItems.Result) _memoItems.Add(item);
         }
     }
+
+    private void RefreshButton_Clicked(object sender, RoutedEventArgs e)
+    {
+        LoadMemoItems();
+    }
 }

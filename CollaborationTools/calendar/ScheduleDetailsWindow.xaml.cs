@@ -1,13 +1,16 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using CollaborationTools.team;
 
 namespace CollaborationTools.calendar;
 
 public partial class ScheduleDetailsWindow : Window
 {
-    public ScheduleDetailsWindow(ScheduleItem scheduleItem)
+    private Team _currentTeam;
+    public ScheduleDetailsWindow(ScheduleItem scheduleItem, Team currentTeam)
     {
         InitializeComponent();
+        _currentTeam = currentTeam;
         DataContext = scheduleItem;
     }
 
@@ -57,7 +60,7 @@ public partial class ScheduleDetailsWindow : Window
 
         if (result == MessageBoxResult.Yes)
         {
-            await ScheduleService.DeleteSchedule(scheduleItem);
+            await ScheduleService.DeleteSchedule(scheduleItem, _currentTeam.teamId);
 
             ScheduleSaved?.Invoke(this, EventArgs.Empty);
             MessageBox.Show("일정이 삭제되었습니다.");

@@ -119,7 +119,7 @@ public partial class TeamCalendar : UserControl
 
         if (scheduleItem != null)
         {
-            var scheduleDetailsWindow = new ScheduleDetailsWindow(scheduleItem);
+            var scheduleDetailsWindow = new ScheduleDetailsWindow(scheduleItem, CurrentTeam);
 
             scheduleDetailsWindow.ScheduleSaved += (s, args) => { LoadScheduleItems(); };
 
@@ -138,7 +138,7 @@ public partial class TeamCalendar : UserControl
             {
                 StartDateTime = startDateTime,
                 CalendarId = CurrentTeam?.teamCalendarId ?? "primary"
-            });
+            }, CurrentTeam);
 
         scheduleRegisterWindow.ScheduleSaved += (s, args) => { LoadScheduleItems(); };
         ShowDialog(scheduleRegisterWindow);

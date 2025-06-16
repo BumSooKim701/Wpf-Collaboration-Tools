@@ -37,8 +37,15 @@ public partial class HomeView : UserControl
         if (d is HomeView homeView && homeView.DataContext is HomeViewModel homeViewModel)
         {
             homeViewModel.CurrentTeam = (Team)e.NewValue;
-            
-            homeView.SwitchMeetingView();
+            if (homeViewModel.CurrentTeam == null)
+            {
+                homeView.MeetingSection.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                homeView.MeetingSection.Visibility = Visibility.Visible;
+                homeView.SwitchMeetingView();
+            }
         }
     }
 

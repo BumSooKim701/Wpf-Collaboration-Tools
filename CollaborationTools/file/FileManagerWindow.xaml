@@ -53,12 +53,12 @@
 
                     <!-- Expand Arrow -->
                     <materialDesign:PackIcon Grid.Column="2"
-                                             Kind="{Binding ExpandIcon}"
-                                             Width="20" Height="20"
-                                             Foreground="{DynamicResource MaterialDesignShadowBrush}"
-                                             Opacity="0.6"
-                                             VerticalAlignment="Center"
-                                             Margin="5,0" />
+                             Kind="{Binding ExpandIcon}"
+                             Width="20" Height="20"
+                             Foreground="{DynamicResource MaterialDesignShadowBrush}"
+                             Opacity="0.6"
+                             VerticalAlignment="Center"
+                             Margin="5,0" />
 
                     <!-- Download Button -->
                     <Button Grid.Column="3"

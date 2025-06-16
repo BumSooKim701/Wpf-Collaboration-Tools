@@ -23,37 +23,7 @@
             <!-- Main Content Area -->
             <Grid x:Name="MainContentArea">
                 <!-- Home View -->
-                <local:HomeView x:Name="HomeView" Visibility="Visible">
-                    <!-- <Grid> -->
-                    <!--     <Grid.RowDefinitions> -->
-                    <!--         <RowDefinition Height="Auto"/> -->
-                    <!--         <RowDefinition Height="*"/> -->
-                    <!--     </Grid.RowDefinitions> -->
-                    <!-- -->
-                    <!--     ~1~ 기존 미팅 정보 @1@ -->
-                    <!--     <Border Grid.Row="0" Background="White" Margin="10" Padding="10"  -->
-                    <!--             CornerRadius="8" BorderBrush="#E0E0E0" BorderThickness="1"> -->
-                    <!--         ~1~ 기존 HomeView 내용 @1@ -->
-                    <!--     </Border> -->
-                    <!-- -->
-                        <!-- 타임라인 섹션 -->
-                    <!--     <Border Grid.Row="1" Background="White" Margin="10" Padding="10" -->
-                    <!--             CornerRadius="8" BorderBrush="#E0E0E0" BorderThickness="1"> -->
-                    <!--         <Grid> -->
-                    <!--             <Grid.RowDefinitions> -->
-                    <!--                 <RowDefinition Height="Auto"/> -->
-                    <!--                 <RowDefinition Height="*"/> -->
-                    <!--             </Grid.RowDefinitions> -->
-                    <!-- -->
-                    <!--             <TextBlock Grid.Row="0" Text="팀 타임라인" FontSize="16" -->
-                    <!--                        FontWeight="Bold" Margin="0,0,0,10"/> -->
-                    <!-- -->
-                    <!--             <timeline:TimeLine x:Name="HomeTimeline" Grid.Row="1" -->
-                    <!--                                    Height="300"/> -->
-                    <!--         </Grid> -->
-                    <!--     </Border> -->
-                    <!-- </Grid> -->
-                </local:HomeView>
+                <local:HomeView x:Name="HomeView" Visibility="Visible"/>
 
                 <!-- Calendar View -->
                 <calendar:TeamCalendar x:Name="CalendarView"
@@ -65,12 +35,7 @@
 
                 <!-- Memo View -->
                 <memo:TeamMemo x:Name="MemoView" Visibility="Collapsed" />
-                <!-- <Grid x:Name="MemoView" Visibility="Collapsed"> -->
-                <!--     <TextBlock Text="메모 기능은 준비 중입니다" -->
-                <!--              HorizontalAlignment="Center" -->
-                <!--              VerticalAlignment="Center" -->
-                <!--              FontSize="18"/> -->
-                <!-- </Grid> -->
+                
             </Grid>
         </DockPanel>
     </Grid>

@@ -1,8 +1,14 @@
 ﻿using System.Collections.ObjectModel;
+using System.Data;
+using System.Diagnostics;
+using System.Windows.Media;
 using CollaborationTools.authentication;
+using CollaborationTools.database;
 using CollaborationTools.timeline;
+using CollaborationTools.user;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
+using MySqlConnector;
 
 namespace CollaborationTools.calendar;
 
@@ -121,20 +127,96 @@ public static class ScheduleService
     }
 
     // 일정 등록 요청
-    public static async Task RegisterSchedule(ScheduleItem scheduleItem)
+    public static async Task RegisterSchedule(ScheduleItem scheduleItem, int teamId)
     {
         var calendarService = GoogleAuthentication.CalendarService;
 
         var request = calendarService.Events.Insert(scheduleItem.Event, scheduleItem.CalendarId);
         _ = await request.ExecuteAsync();
+        
+        IncreaseScheduleCount(teamId);
     }
 
     // 일정 삭제 요청
-    public static async Task DeleteSchedule(ScheduleItem scheduleItem)
+    public static async Task DeleteSchedule(ScheduleItem scheduleItem, int teamId)
     {
         var calendarService = GoogleAuthentication.CalendarService;
 
         var request = calendarService.Events.Delete(scheduleItem.CalendarId, scheduleItem.Event.Id);
         _ = await request.ExecuteAsync();
+
+        DecreaseScheduleCount(teamId);
+    }
+
+    private static bool IncreaseScheduleCount(int teamId)
+    {
+        var result = false;
+        var userId = UserSession.CurrentUser.userId;
+        MySqlConnection connection = null;
+        ConnectionPool _connectionPool = ConnectionPool.GetInstance();
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            
+            using (var command =
+                   new MySqlCommand(
+                       "UPDATE team_member SET schedule_count = schedule_count + 1 WHERE user_id = @userId and team_id = @teamId;",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@userId", userId);
+                command.Parameters.AddWithValue("@teamId", teamId);
+
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult > 0) result = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"searching to email error: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
+    }
+
+    private static bool DecreaseScheduleCount(int teamId)
+    {
+        var result = false;
+        var userId = UserSession.CurrentUser.userId;
+        MySqlConnection connection = null;
+        ConnectionPool _connectionPool = ConnectionPool.GetInstance();
+
+        try
+        {
+            connection = _connectionPool.GetConnection();
+            
+            using (var command =
+                   new MySqlCommand(
+                       "UPDATE team_member SET schedule_count = schedule_count - 1 WHERE user_id = @userId and team_id = @teamId and schedule_count > 0;",
+                       connection))
+            {
+                command.Parameters.AddWithValue("@userId", userId);
+                command.Parameters.AddWithValue("@teamId", teamId);
+
+                var executeResult = command.ExecuteNonQuery();
+
+                if (executeResult > 0) result = true;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"searching to email error: {e.Message}");
+        }
+        finally
+        {
+            if (connection != null) _connectionPool.ReleaseConnection(connection);
+        }
+
+        return result;
     }
 }

@@ -183,7 +183,7 @@ public partial class SideBar : UserControl, INotifyPropertyChanged
         if (!string.IsNullOrEmpty(team.teamFolderId))
         {
             Console.WriteLine($"teamFolderId: {team.teamFolderId}");
-            _folderService.DeleteFolderWithContentsAsync(team.teamFolderId);
+            _folderService.DeleteFolderWithContentsAsync(team.teamFolderId, team.teamId);
         }
 
         var result2 = _teamService.RemoveTeam(team);

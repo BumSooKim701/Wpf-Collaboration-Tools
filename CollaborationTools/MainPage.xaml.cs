@@ -35,7 +35,6 @@ public partial class MainPage : Page
         {
             currentTeam = e.Team;
             UpdateCurrentTeamInViews();
-            UpdateTeamInfo();
         }
     }
 
@@ -108,17 +107,6 @@ public partial class MainPage : Page
 
     private void UpdateCurrentTeamInViews()
     {
-        // 모든 뷰에 현재 팀 정보 전달
-        // if (HomeCalendarView != null)
-        // {
-        //     HomeCalendarView.CurrentTeam = currentTeam;
-        // }
-        //
-        // if (HomeFileView != null)
-        // {
-        //     HomeFileView.CurrentTeam = currentTeam;
-        // }
-        
         if (HomeView?.FindName("HomeTimeline") is timeline.TimeLine timelineView)
             timelineView.CurrentTeam = currentTeam;
         if (HomeView != null) HomeView.CurrentTeam = currentTeam;
@@ -136,18 +124,10 @@ public partial class MainPage : Page
 
     private void UpdateCurrentUserInView()
     {
-        // if (HomeCalendarView != null)
-        // {
-        //     HomeCalendarView.CurrentUser = currentUser;
-        // }
-        //
-        // if (HomeFileView != null)
-        // {
-        //     HomeFileView.CurrentUser = currentUser;
-        // }
-        
         if (HomeView?.FindName("HomeTimeline") is timeline.TimeLine timelineView)
             timelineView.CurrentTeam = null;
+        
+        if (HomeView != null) HomeView.CurrentTeam = null;
 
         if (CalendarView != null) CalendarView.CurrentTeam = null;
 
@@ -164,20 +144,6 @@ public partial class MainPage : Page
             timelineControl.CurrentTeam = null;
             Console.WriteLine("primary mode update");
         }
-    }
-
-    private void UpdateTeamInfo()
-    {
-        // if (currentTeam != null)
-        // {
-        //     TeamInfoText.Text = $"팀명: {currentTeam.teamName}\n" +
-        //                         $"팀 설명: {currentTeam.teamDescription ?? "설명 없음"}\n" +
-        //                         $"생성일: {currentTeam.dateOfCreated:yyyy-MM-dd}";
-        // }
-        // else
-        // {
-        //     TeamInfoText.Text = "팀을 선택해주세요";
-        // }
     }
 
     // MenuBar에서 사용할 이벤트 인자
