@@ -11,6 +11,7 @@ using CollaborationTools.user;
 using CollaborationTools.team;
 using CollaborationTools.memo;
 using CollaborationTools.database;
+using CollaborationTools.file;
 using CollaborationTools.login;
 
 namespace CollaborationTools.profile
@@ -20,7 +21,10 @@ namespace CollaborationTools.profile
         public EventHandler? LogoutRequested;
         private UserRepository userRepository = new();
         private TeamRepository teamRepository = new();
+        private TeamMemberRepository teamMemberRepository = new();
         private MemoService memoService = new();
+        private FileService fileService = new FileService();
+        private FolderService folderService = new FolderService();
         
         private User? currentUser;
         private BitmapImage? profileImageSource;
@@ -240,19 +244,14 @@ namespace CollaborationTools.profile
         }
         
 
-        private void LoadActivityStats()
+        private async Task LoadActivityStats()
         {
             try
             {
-                // 메모 개수 계산
-                var userMemos = memoService.GetMemoItems(currentUser.TeamId);
-                MemoCount = userMemos.Result.Count(m => m.EditorUserId == currentUser.userId);
-
-                // 파일 개수는 실제 구현에 따라 조정 필요
-                FileCount = 0; // TODO: 파일 서비스에서 사용자별 파일 개수 가져오기
+                MemoCount = memoService.GetMemoItemsCount(UserSession.CurrentUser.userId);
 
                 // 일정 개수는 실제 구현에 따라 조정 필요  
-                ScheduleCount = 0; // TODO: 캘린더 서비스에서 사용자별 일정 개수 가져오기
+                ScheduleCount = 0;
             }
             catch (Exception ex)
             {

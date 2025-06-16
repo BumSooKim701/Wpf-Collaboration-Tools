@@ -142,4 +142,6 @@ public class FolderService
             throw new Exception($"폴더 내 파일 목록을 가져오는 중 오류가 발생했습니다: {ex.Message}");
         }
     }
+    
+    
 }
