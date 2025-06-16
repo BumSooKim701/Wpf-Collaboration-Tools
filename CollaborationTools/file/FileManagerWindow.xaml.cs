@@ -498,7 +498,7 @@ public partial class FileManagerWindow : UserControl, INotifyPropertyChanged
         var extension = Path.GetExtension(fileName).ToLower();
         return extension switch
         {
-            ".pdf" => "FilePdf",
+            ".pdf" => "FilePdfBox",
             ".doc" or ".docx" => "FileWord",
             ".xls" or ".xlsx" => "FileExcel",
             ".ppt" or ".pptx" => "FilePowerpoint",
