@@ -238,7 +238,7 @@ public partial class FileManagerWindow : UserControl, INotifyPropertyChanged
                 {
                     // 새 파일 업로드
                     StatusMessage = $"새 파일 업로드 중: {fileName}";
-                    processedFile = await fileService.UploadNewFileAsync(CurrentTeam?.teamFolderId ?? "root", filePath, CurrentTeam.teamId);
+                    processedFile = await fileService.UploadNewFileAsync(CurrentTeam?.teamFolderId ?? "root", filePath, CurrentTeam?.teamId ?? 0);
 
                     // UI에 새 파일 항목 추가
                     if (processedFile != null)

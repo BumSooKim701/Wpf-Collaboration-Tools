@@ -117,8 +117,16 @@ public partial class TeamMemberRegistrationWindow : Window, INotifyPropertyChang
         if (success)
         {
             _calendarService.CreateCalendarAsync(Team.teamCalendarId, Team.teamName);
+            
+            foreach (var memberEmail in TeamMembers)
+            {
+                Console.WriteLine($"팀 폴더 공유 대상: {memberEmail}");
+                _folderService.ShareFolderWithMemberAsync(Team.teamFolderId, memberEmail);
+            
+                // 캘린더도 각 멤버에게 공유
+                _calendarService.AddCalendarMemberAsync(Team.teamCalendarId, memberEmail, "writer");
+            }
 
-            _folderService.ShareFolderWithMemberAsync(Team.teamCalendarId, Team.teamName);
 
             MessageBox.Show($"'{Team.teamName}' 팀에 {TeamMembers.Count}명의 팀원이 등록되었습니다.",
                 "팀원 등록 완료", MessageBoxButton.OK, MessageBoxImage.Information);

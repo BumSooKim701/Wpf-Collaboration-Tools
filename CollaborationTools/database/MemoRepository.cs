@@ -145,40 +145,6 @@ public class MemoRepository
 
         return memoItems;
     }
-    
-    public int GetMemosCount(int userId)
-    {
-        MySqlConnection connection = null;
-        int result = 0;
-
-        try
-        {
-            connection = _connectionPool.GetConnection();
-
-            using (var command = new MySqlCommand(
-                       "SELECT memo_count FROM team_member WHERE user_id = @userId",
-                       connection))
-            {
-                command.Parameters.AddWithValue("@userId", userId);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                        result = reader.GetInt32("memo_count");
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error fetching memo: {e.Message}");
-        }
-        finally
-        {
-            if (connection != null) _connectionPool.ReleaseConnection(connection);
-        }
-
-        return result;
-    }
 
     public bool AddMemo(MemoItem memoItem)
     {
