@@ -40,28 +40,83 @@ public class FolderService
 
     // 폴더에 멤버 추가
     public async Task<bool> ShareFolderWithMemberAsync(string folderId, string email, string role = "writer")
+{
+    var driveService = GoogleAuthentication.DriveService;
+
+    try
     {
-        var driveService = GoogleAuthentication.DriveService;
-
-        try
+        Console.WriteLine("share folder: " + email);
+        // 이메일 주소 유효성 검증
+        if (string.IsNullOrWhiteSpace(email) || !IsValidEmail(email))
         {
-            var permission = new Permission
-            {
-                EmailAddress = email,
-                Type = "user",
-                Role = role // "reader", "writer", "owner"
-            };
-
-            await driveService.Permissions.Create(permission, folderId).ExecuteAsync();
-            return true;
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"폴더 공유 실패: {ex.Message}", "오류",
+            MessageBox.Show("유효하지 않은 이메일 주소입니다.", "오류",
                 MessageBoxButton.OK, MessageBoxImage.Error);
             return false;
         }
+
+        // 권한 역할 검증
+        var validRoles = new[] { "reader", "writer", "owner" };
+        if (!validRoles.Contains(role.ToLower()))
+        {
+            MessageBox.Show("유효하지 않은 권한입니다.", "오류",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+            return false;
+        }
+
+        var permission = new Permission
+        {
+            EmailAddress = email.Trim().ToLower(),
+            Type = "user",
+            Role = role.ToLower()
+        };
+
+        var request = driveService.Permissions.Create(permission, folderId);
+        request.SendNotificationEmail = false; // 알림 이메일 비활성화
+        request.Fields = "id,emailAddress,role,type"; // 필요한 필드만 요청
+        
+        await request.ExecuteAsync();
+        return true;
     }
+    catch (GoogleApiException gex) when (gex.HttpStatusCode == System.Net.HttpStatusCode.BadRequest)
+    {
+        if (gex.Message.Contains("EmailAddress is invalid"))
+        {
+            MessageBox.Show($"이메일 주소가 유효하지 않거나 Google 계정이 아닙니다: {email}", "오류",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        else if (gex.Message.Contains("invalidSharingRequest"))
+        {
+            MessageBox.Show("공유 설정이 허용되지 않습니다. 도메인 공유 정책을 확인하세요.", "오류",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        else
+        {
+            MessageBox.Show($"권한 설정 오류: {gex.Message}", "오류",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        return false;
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show($"폴더 공유 실패: {ex.Message}", "오류",
+            MessageBoxButton.OK, MessageBoxImage.Error);
+        return false;
+    }
+}
+
+// 이메일 유효성 검증 메서드 추가
+private bool IsValidEmail(string email)
+{
+    try
+    {
+        var addr = new System.Net.Mail.MailAddress(email);
+        return addr.Address == email;
+    }
+    catch
+    {
+        return false;
+    }
+}
 
     public async Task<bool> DeleteFolderWithContentsAsync(string folderId, int teamId)
     {
