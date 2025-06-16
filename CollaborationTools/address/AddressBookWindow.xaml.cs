@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using CollaborationTools.address;
 using CollaborationTools.database;
 using CollaborationTools.user;
 
@@ -163,11 +160,6 @@ namespace CollaborationTools.address
                     }
                 }
             }
-        }
-
-        private void AddressItemClick(object sender, MouseButtonEventArgs e)
-        {
-            // 주소 아이템 클릭 시 추가 동작이 필요하면 여기에 구현
         }
     }
 }

@@ -19,9 +19,7 @@ public partial class TeamCalendar : UserControl
     private ObservableCollection<ScheduleItem> _oneDaySchedules;
     private ObservableCollection<ScheduleItem> _schedules;
 
-    public TeamCalendar() : this("primary")
-    {
-    }
+    public TeamCalendar() : this("primary") { }
 
     public TeamCalendar(string calendarId = "primary")
     {

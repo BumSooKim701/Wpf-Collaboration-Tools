@@ -360,9 +360,7 @@ C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddAddressWindow.g.cs
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddressBookWindow.g.cs
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\timeline\TimeLine.baml
-C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\timeline\FullTimeLineWindow.g.cs
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\timeline\TimeLine.g.cs
-C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\timeline\FullTimeLineWindow.baml
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\meeting_schedule\PersonalScheduleSubmitWindow.baml
 C:\my_codes\wpf\clone\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\meeting_schedule\PersonalScheduleSubmitWindow.g.cs
 C:\Users\leegunho\RiderProjects\Wpf-Collaboration-Tools\CollaborationTools\obj\Debug\net8.0-windows\address\AddAddressWindow.baml

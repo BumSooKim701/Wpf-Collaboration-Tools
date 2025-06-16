@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using CollaborationTools.team;
-using CollaborationTools.user;
 
 namespace CollaborationTools.timeline
 {

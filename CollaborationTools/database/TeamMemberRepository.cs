@@ -10,41 +10,6 @@ public class TeamMemberRepository
     private readonly TeamRepository _teamRepository = new();
     private readonly UserRepository _userRepository = new();
 
-    public bool AddTeamMember(int teamId, int userId, byte authority)
-    {
-        MySqlConnection connection = null;
-        var result = true;
-
-        try
-        {
-            connection = _connectionPool.GetConnection();
-
-            using (var command =
-                   new MySqlCommand(
-                       "INSERT INTO team_member (user_id, team_id, authority) VALUES (@userId, @teamId, @authority)",
-                       connection))
-            {
-                command.Parameters.AddWithValue("@userId", userId);
-                command.Parameters.AddWithValue("@teamId", teamId);
-                command.Parameters.AddWithValue("@authority", authority);
-
-                var executeResult = command.ExecuteNonQuery();
-
-                if (executeResult == 0) result = false;
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error adding team member: {e.Message}");
-        }
-        finally
-        {
-            if (connection != null) _connectionPool.ReleaseConnection(connection);
-        }
-
-        return result;
-    }
-
     public bool AddTeamMember(string uuid, string userEmail, byte authority)
     {
         MySqlConnection connection = null;

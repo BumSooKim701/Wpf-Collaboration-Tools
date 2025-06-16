@@ -174,8 +174,7 @@ public class ScheduleItem : INotifyPropertyChanged
                 TimeZone = "Asia/Seoul"
             };
     }
-
-
+    
     public ScheduleItem Clone()
     {
         var clone = new ScheduleItem

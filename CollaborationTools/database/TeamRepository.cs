@@ -139,49 +139,6 @@ public class TeamRepository
 
         return result;
     }
-
-    public Team? FindTeamById(int id)
-    {
-        Team? team = null;
-        MySqlConnection connection = null;
-
-        try
-        {
-            connection = _connectionPool.GetConnection();
-
-            using (var command = new MySqlCommand("SELECT * FROM team WHERE id = @id", connection))
-            {
-                command.Parameters.AddWithValue("@id", id);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    if (reader.Read())
-                        team = new Team
-                        {
-                            teamId = reader.GetInt32("id"),
-                            uuid = reader.GetString("uuid"),
-                            teamName = reader.GetString("team_name"),
-                            teamMemberCount = reader.GetInt32("team_member_count"),
-                            dateOfCreated = reader.GetDateTime("date_of_created"),
-                            teamCalendarName = reader.GetString("team_calendar_name"),
-                            teamCalendarId = reader.GetString("team_calendar_id"),
-                            teamDescription = reader.GetString("team_description"),
-                            teamFolderId = reader.GetString("shared_drive_id")
-                        };
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"find team by id error: {e.Message}");
-        }
-        finally
-        {
-            if (connection != null) _connectionPool.ReleaseConnection(connection);
-        }
-
-        return team;
-    }
     
     public Team? FindTeamByCalId(string id)
     {
@@ -370,33 +327,4 @@ public class TeamRepository
 
         return team;
     }
-
-    public int FindTeamIdFromFolderId(string folderId)
-    {
-        var result = -1;
-        MySqlConnection connection = null;
-
-        try
-        {
-            connection = _connectionPool.GetConnection();
-
-            using var command = new MySqlCommand("SELECT id FROM team WHERE shared_drive_id = @folder_id", connection);
-            command.Parameters.AddWithValue("@folder_id", folderId);
-
-            using var reader = command.ExecuteReader();
-            if (reader.Read()) result = reader.GetInt32("id");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error getting teamId: {e.Message}");
-        }
-        finally
-        {
-            if (connection != null) _connectionPool.ReleaseConnection(connection);
-        }
-
-        return result;
-    }
-    
-    
 }

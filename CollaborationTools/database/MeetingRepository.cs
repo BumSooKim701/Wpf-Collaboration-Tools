@@ -247,7 +247,7 @@ public class MeetingRepository
     }
 
     // 조율 중인 팀 미팅에 대한 개인 일정 조회 
-    public PersonalScheduleList getPersonalSchedule(int userId, int teamId)
+    public PersonalScheduleList GetPersonalSchedule(int userId, int teamId)
     {
         MySqlConnection connection = null;
         var result = false;

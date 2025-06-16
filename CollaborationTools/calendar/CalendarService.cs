@@ -32,25 +32,6 @@ public class CalendarService
         }
     }
 
-    public async Task<List<CalendarListEntry>> GetCalendarListAsync()
-    {
-        var calendarService = GoogleAuthentication.CalendarService;
-
-        try
-        {
-            // 캘린더 목록 요청
-            var calendarList = await calendarService.CalendarList.List().ExecuteAsync();
-            return calendarList.Items != null
-                ? new List<CalendarListEntry>(calendarList.Items)
-                : new List<CalendarListEntry>();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"캘린더 목록 조회 오류: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
-            return new List<CalendarListEntry>();
-        }
-    }
-
     public async Task<bool> DeleteCalendarAsync(string calendarId)
     {
         var calendarService = GoogleAuthentication.CalendarService;

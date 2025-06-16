@@ -1,13 +1,13 @@
-﻿using System;
-using System.IO;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media.Imaging;
-using CollaborationTools.user;
-using CollaborationTools.memo;
 using CollaborationTools.database;
+using CollaborationTools.file;
+using CollaborationTools.memo;
+using CollaborationTools.user;
 
 namespace CollaborationTools.profile
 {
@@ -16,7 +16,10 @@ namespace CollaborationTools.profile
         public EventHandler? LogoutRequested;
         private UserRepository userRepository = new();
         private TeamRepository teamRepository = new();
+        private TeamMemberRepository teamMemberRepository = new();
         private MemoService memoService = new();
+        private FileService fileService = new FileService();
+        private FolderService folderService = new FolderService();
         
         private User? currentUser;
         private BitmapImage? profileImageSource;
@@ -35,7 +38,7 @@ namespace CollaborationTools.profile
             InitializeComponent();
             DataContext = this;
             
-            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            if (DesignerProperties.GetIsInDesignMode(this))
             {
                 SetDefaultValues();
                 return;
@@ -241,6 +244,7 @@ namespace CollaborationTools.profile
             try
             {
                 List<int> counts = userRepository.GetPersonalActivityCount(UserSession.CurrentUser.userId);
+                Console.WriteLine($"GetPersonalActivityCount: {counts[0]}");
                 ScheduleCount = counts[0];
                 FileCount = counts[1];
                 MemoCount = counts[2];
@@ -248,7 +252,7 @@ namespace CollaborationTools.profile
             catch (Exception ex)
             {
                 Console.WriteLine($"활동 통계 로드 실패: {ex.Message}");
-                MemoCount = 0;
+                ScheduleCount = 0;
                 FileCount = 0;
                 ScheduleCount = 0;
             }
@@ -257,7 +261,7 @@ namespace CollaborationTools.profile
         private void RefreshProfile_Click(object sender, RoutedEventArgs e)
         {
             LoadUserProfile();
-            MessageBox.Show(Application.Current.MainWindow,"프로필 정보가 새로고침되었습니다.", "알림", 
+            MessageBox.Show("프로필 정보가 새로고침되었습니다.", "알림", 
                           MessageBoxButton.OK, MessageBoxImage.Information);
         }
 

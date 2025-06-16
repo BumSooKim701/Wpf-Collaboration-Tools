@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using CollaborationTools.Common;
 using CollaborationTools.user;
 
 namespace CollaborationTools.meeting_schedule;

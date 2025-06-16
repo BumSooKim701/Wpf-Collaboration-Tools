@@ -111,9 +111,6 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <!-- <Button Grid.Row="2" Content="날짜 추가" Command="{Binding AddDateRowCommand}" Margin="0,10" -->
-            <!--         HorizontalAlignment="Center" /> -->
-
             <StackPanel Grid.Row="2" Margin="0,10" Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="제출"
                         Style="{StaticResource MaterialDesignFlatSecondaryButton}"

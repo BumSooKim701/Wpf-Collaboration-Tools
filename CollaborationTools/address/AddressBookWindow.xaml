@@ -14,7 +14,7 @@
                                 Background="{DynamicResource MaterialDesign.Brush.Card.Background}" 
                                 Margin="5" 
                                 materialDesign:ElevationAssist.Elevation="Dp2">
-                <Grid MouseLeftButtonDown="AddressItemClick" Cursor="Hand">
+                <Grid Cursor="Hand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>

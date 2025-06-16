@@ -1,7 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using CollaborationTools.database;
-using CollaborationTools.team;
-using CollaborationTools.timeline;
 
 namespace CollaborationTools.memo;
 
