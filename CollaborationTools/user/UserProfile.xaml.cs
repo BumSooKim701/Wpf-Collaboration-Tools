@@ -248,7 +248,10 @@ namespace CollaborationTools.profile
         {
             try
             {
-                MemoCount = memoService.GetMemoItemsCount(UserSession.CurrentUser.userId);
+                List<int> counts = userRepository.GetPersonalActivityCount(UserSession.CurrentUser.userId);
+                MemoCount = counts[0];
+                FileCount = counts[1];
+                MemoCount = counts[2];
 
                 // 일정 개수는 실제 구현에 따라 조정 필요  
                 ScheduleCount = 0;
