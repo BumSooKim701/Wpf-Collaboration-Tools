@@ -1,10 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using System.Data;
-using System.Diagnostics;
-using System.Windows.Media;
 using CollaborationTools.authentication;
 using CollaborationTools.database;
-using CollaborationTools.timeline;
 using CollaborationTools.user;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;

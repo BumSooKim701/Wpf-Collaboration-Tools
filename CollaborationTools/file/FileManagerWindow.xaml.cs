@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -157,12 +156,6 @@ public partial class FileManagerWindow : UserControl, INotifyPropertyChanged
     {
         DropZoneOverlay.Visibility = Visibility.Collapsed;
 
-        // if (CurrentTeam?.teamFolderId == null)
-        // {
-        //     MessageBox.Show("팀을 먼저 선택해주세요.");
-        //     return;
-        // }
-
         try
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -294,67 +287,6 @@ public partial class FileManagerWindow : UserControl, INotifyPropertyChanged
             e.Effects = DragDropEffects.None;
             DropZoneOverlay.Visibility = Visibility.Collapsed;
             Console.WriteLine($"드래그 오버 오류: {ex.Message}");
-        }
-    }
-
-    private async Task UploadFiles(string[] filePaths)
-    {
-        try
-        {
-            UploadProgressBar.Visibility = Visibility.Visible;
-
-            foreach (var filePath in filePaths)
-            {
-                // 파일 존재 확인
-                if (!File.Exists(filePath))
-                {
-                    StatusMessage = $"파일을 찾을 수 없습니다: {Path.GetFileName(filePath)}";
-                    continue;
-                }
-
-                // 파일 크기 확인 (100MB 제한)
-                var fileInfo = new FileInfo(filePath);
-                if (fileInfo.Length > 100 * 1024 * 1024) // 100MB
-                {
-                    StatusMessage = $"파일이 너무 큽니다 (100MB 제한): {fileInfo.Name}";
-                    MessageBox.Show($"파일 크기가 100MB를 초과합니다: {fileInfo.Name}");
-                    continue;
-                }
-
-                StatusMessage = $"업로드 중: {Path.GetFileName(filePath)}";
-
-                var uploadedFile = await fileService.UploadFileAsync(
-                    CurrentTeam.teamFolderId,
-                    filePath);
-
-                if (uploadedFile != null)
-                {
-                    var fileItem = new FileItemViewModel
-                    {
-                        FileId = uploadedFile.Id,
-                        FileName = uploadedFile.Name,
-                        FileSize = FormatFileSize(uploadedFile.Size ?? 0),
-                        ModifiedDate = uploadedFile.ModifiedTime?.ToString("yyyy-MM-dd HH:mm") ?? "",
-                        FileIcon = GetFileIcon(uploadedFile.Name),
-                        MimeType = uploadedFile.MimeType
-                    };
-
-                    TeamFiles.Add(fileItem);
-                }
-            }
-
-            // NoFilesMessage 숨김 처리
-            NoFilesMessage.Visibility = TeamFiles.Count == 0 ? Visibility.Visible : Visibility.Hidden;
-            StatusMessage = $"{TeamFiles.Count}개의 파일";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"업로드 오류: {ex.Message}";
-            MessageBox.Show($"파일 업로드 중 오류가 발생했습니다: {ex.Message}");
-        }
-        finally
-        {
-            UploadProgressBar.Visibility = Visibility.Collapsed;
         }
     }
 

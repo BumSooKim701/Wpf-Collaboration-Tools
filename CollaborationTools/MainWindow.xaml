@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Style="{StaticResource MaterialDesignWindow}"
-        Title="MainWindow" Width="1100" Height="600" 
+        Title="MainWindow" Width="1500" Height="1000" 
         MinWidth="1000" MinHeight="550">
 
     <Grid>

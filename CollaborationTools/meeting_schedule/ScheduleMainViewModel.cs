@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
-using CollaborationTools.Common;
 
 namespace CollaborationTools.meeting_schedule;
 
@@ -19,14 +17,9 @@ public class ScheduleMainViewModel : INotifyPropertyChanged
             OnPropertyChanged(); 
         }
     }
-    // public ICommand AddDateRowCommand { get; }
-
     
     public ScheduleMainViewModel(Meeting meeting)
     {
-        // AddDateRowCommand = new RelayCommand(AddDateRow);
-        // AddDateRow(null);
-
         var meetingPlan = meeting;
         var meetingService = new MeetingService();
         meetingPlan.DateList = meetingService.GetMeetingDates(meetingPlan.MeetingId);
@@ -44,9 +37,6 @@ public class ScheduleMainViewModel : INotifyPropertyChanged
         
 
     }
-
-    
-    // private void AddDateRow(object obj) => ScheduleRows.Add(new ScheduleRowViewModel());
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {

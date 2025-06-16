@@ -102,49 +102,6 @@ public class MemoRepository
 
         return memoItems;
     }
-    
-    public async Task<ObservableCollection<MemoItem>> GetMemosByMemberId(int memberId)
-    {
-        MySqlConnection connection = null;
-        var result = true;
-        var memoItems = new ObservableCollection<MemoItem>();
-
-        try
-        {
-            connection = _connectionPool.GetConnection();
-
-            using (var command = new MySqlCommand(
-                       "SELECT * FROM team_memo WHERE team_member_id=@memberId ORDER BY date_of_modified DESC, id DESC",
-                       connection))
-            {
-                command.Parameters.AddWithValue("@memberId", memberId);
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                        memoItems.Add(new MemoItem
-                        {
-                            MemoId = reader.GetInt32("id"),
-                            Title = reader.GetString("memo_title"),
-                            Content = reader.GetString("memo_content"),
-                            LastModifiedDate = reader.GetDateTime("date_of_modified"),
-                            LastEditorName = reader.GetString("last_editor_name"),
-                            TeamId = 0
-                        });
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error fetching memo: {e.Message}");
-        }
-        finally
-        {
-            if (connection != null) _connectionPool.ReleaseConnection(connection);
-        }
-
-        return memoItems;
-    }
 
     public bool AddMemo(MemoItem memoItem)
     {

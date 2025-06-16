@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Mail;
 using System.Windows;
 using CollaborationTools.authentication;
 using Google;
@@ -77,7 +78,7 @@ public class FolderService
         await request.ExecuteAsync();
         return true;
     }
-    catch (GoogleApiException gex) when (gex.HttpStatusCode == System.Net.HttpStatusCode.BadRequest)
+    catch (GoogleApiException gex) when (gex.HttpStatusCode == HttpStatusCode.BadRequest)
     {
         if (gex.Message.Contains("EmailAddress is invalid"))
         {
@@ -109,7 +110,7 @@ private bool IsValidEmail(string email)
 {
     try
     {
-        var addr = new System.Net.Mail.MailAddress(email);
+        var addr = new MailAddress(email);
         return addr.Address == email;
     }
     catch
@@ -197,6 +198,4 @@ private bool IsValidEmail(string email)
             throw new Exception($"폴더 내 파일 목록을 가져오는 중 오류가 발생했습니다: {ex.Message}");
         }
     }
-    
-    
 }

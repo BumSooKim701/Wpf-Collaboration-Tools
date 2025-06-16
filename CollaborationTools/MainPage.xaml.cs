@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using CollaborationTools.team;
+using CollaborationTools.timeline;
 
 namespace CollaborationTools;
 
@@ -107,7 +108,7 @@ public partial class MainPage : Page
 
     private void UpdateCurrentTeamInViews()
     {
-        if (HomeView?.FindName("HomeTimeline") is timeline.TimeLine timelineView)
+        if (HomeView?.FindName("HomeTimeline") is TimeLine timelineView)
             timelineView.CurrentTeam = currentTeam;
         if (HomeView != null) HomeView.CurrentTeam = currentTeam;
         if (CalendarView != null) CalendarView.CurrentTeam = currentTeam;
@@ -124,7 +125,7 @@ public partial class MainPage : Page
 
     private void UpdateCurrentUserInView()
     {
-        if (HomeView?.FindName("HomeTimeline") is timeline.TimeLine timelineView)
+        if (HomeView?.FindName("HomeTimeline") is TimeLine timelineView)
             timelineView.CurrentTeam = null;
         
         if (HomeView != null) HomeView.CurrentTeam = null;
@@ -139,7 +140,7 @@ public partial class MainPage : Page
             MemoView.CurrentTeam = null;
         }
         
-        if (HomeView?.FindName("TimelineControl") is timeline.TimeLine timelineControl)
+        if (HomeView?.FindName("TimelineControl") is TimeLine timelineControl)
         {
             timelineControl.CurrentTeam = null;
             Console.WriteLine("primary mode update");

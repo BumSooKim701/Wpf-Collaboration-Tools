@@ -32,8 +32,7 @@ public class ConnectionPool : IDisposable
         _connectionPool = new Queue<MySqlConnection>();
         InitializePool();
     }
-
-    //IDisposable 인터페이스에 있는 함수 구현.
+    
     //앱 종료 시 커넥션 Dispose
     public void Dispose()
     {

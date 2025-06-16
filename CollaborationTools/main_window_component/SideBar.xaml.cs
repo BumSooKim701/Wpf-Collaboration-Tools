@@ -11,7 +11,6 @@ using CollaborationTools.file;
 using CollaborationTools.profile;
 using CollaborationTools.team;
 using CollaborationTools.user;
-using MaterialDesignThemes.Wpf;
 
 namespace CollaborationTools;
 

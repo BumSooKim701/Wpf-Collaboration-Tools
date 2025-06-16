@@ -220,8 +220,7 @@ public class UserRepository
 
         return users;
     }
-
-    // UserRepository.cs에 추가할 메서드
+    
     public List<User> GetAllUsers()
     {
         var users = new List<User>();

@@ -42,7 +42,7 @@ public class MeetingService
     
     public PersonalScheduleList GetPersonalSchedule(int userId, int teamId)
     {
-        return _meetingRepository.getPersonalSchedule(userId, teamId);
+        return _meetingRepository.GetPersonalSchedule(userId, teamId);
     }
     
     public bool DeleteMeeting(int meetingId)

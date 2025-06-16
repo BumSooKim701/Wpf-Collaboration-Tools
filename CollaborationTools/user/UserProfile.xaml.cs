@@ -1,18 +1,13 @@
-﻿using System;
-using System.IO;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using CollaborationTools.user;
-using CollaborationTools.team;
-using CollaborationTools.memo;
 using CollaborationTools.database;
 using CollaborationTools.file;
-using CollaborationTools.login;
+using CollaborationTools.memo;
+using CollaborationTools.user;
 
 namespace CollaborationTools.profile
 {
@@ -43,7 +38,7 @@ namespace CollaborationTools.profile
             InitializeComponent();
             DataContext = this;
             
-            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            if (DesignerProperties.GetIsInDesignMode(this))
             {
                 SetDefaultValues();
                 return;
@@ -249,17 +244,15 @@ namespace CollaborationTools.profile
             try
             {
                 List<int> counts = userRepository.GetPersonalActivityCount(UserSession.CurrentUser.userId);
-                MemoCount = counts[0];
+                Console.WriteLine($"GetPersonalActivityCount: {counts[0]}");
+                ScheduleCount = counts[0];
                 FileCount = counts[1];
                 MemoCount = counts[2];
-
-                // 일정 개수는 실제 구현에 따라 조정 필요  
-                ScheduleCount = 0;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"활동 통계 로드 실패: {ex.Message}");
-                MemoCount = 0;
+                ScheduleCount = 0;
                 FileCount = 0;
                 ScheduleCount = 0;
             }

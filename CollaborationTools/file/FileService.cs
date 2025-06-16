@@ -1,15 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Windows;
 using CollaborationTools.authentication;
 using CollaborationTools.database;
-using CollaborationTools.team;
-using CollaborationTools.timeline;
 using CollaborationTools.user;
 using Google;
-using Google.Apis.Calendar.v3;
 using Google.Apis.Download;
 using Google.Apis.Upload;
 using MySqlConnector;
@@ -19,12 +16,10 @@ namespace CollaborationTools.file;
 
 public class FileService
 {
-    private readonly TeamRepository _teamRepository = new();
-
     // 파일 업로드 (등록)
     public async Task<GoogleFile> UploadFileAsync(string folderId, string filePath)
     {
-        if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             return null;
         
         var driveService = GoogleAuthentication.DriveService;
@@ -76,7 +71,7 @@ public class FileService
     // 기존 파일 버전 업데이트 (핵심 기능)
     public async Task<GoogleFile> UpdateFileVersionAsync(string fileId, string filePath)
     {
-        if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             return null;
         
         var driveService = GoogleAuthentication.DriveService;
@@ -115,7 +110,7 @@ public class FileService
     // 파일이 이미 존재하는지 확인
     public async Task<string> FindExistingFileAsync(string folderId, string fileName)
     {
-        if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             return null;
         
         var driveService = GoogleAuthentication.DriveService;
@@ -168,7 +163,7 @@ public class FileService
 
     public async Task<IList<GoogleFile>> GetFileVersionsAsync(string fileId)
     {
-        if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
             return null;
         
         var driveService = GoogleAuthentication.DriveService;
